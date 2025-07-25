@@ -76,12 +76,6 @@ export class TlsPolicyAgent extends Agent {
       return embeddedSctResult.error;
     }
 
-    // TODO: Extract and verify OCSP SCTs
-    // const ocspSctResult = this.validateOcspScts(cert, policy);
-
-    // TODO: Extract and verify TLS extension SCTs
-    // const tlsExtensionSctResult = this.validateTlsExtensionScts(cert, policy);
-
     // Evaluate compliance against the given CT policy
     return this.evaluateCtPolicyCompliance(embeddedSctResult, policy);
   }
@@ -89,10 +83,14 @@ export class TlsPolicyAgent extends Agent {
   private validateEmbeddedScts(
     cert: DetailedPeerCertificate,
     policy: CertificateTransparencyPolicy,
-  ): { validScts: Array<{ sct: Buffer; logOperator: string }>; error?: Error } {
+  ): { totalScts: number; validScts: Array<{ sct: Buffer; logOperator: string }>; error?: Error } {
     this.log('Validating embedded SCTs...');
     let pkiCert: Certificate;
     let sctExtension: Extension | undefined;
+
+    const returnError = (error: Error) => {
+      return { totalScts: 0, validScts: [], error };
+    };
 
     try {
       const asn1 = fromBER(cert.raw);
@@ -104,11 +102,11 @@ export class TlsPolicyAgent extends Agent {
       sctExtension = pkiCert.extensions?.find((ext) => ext.extnID === SCT_EXTENSION_OID_V1);
     } catch (error) {
       this.error('Error during certificate parsing.', error);
-      return { validScts: [], error: new Error('Failed to parse certificate for SCT validation.') };
+      return returnError(new Error('Failed to parse certificate for SCT validation.'));
     }
 
     if (!sctExtension || !(sctExtension.extnValue instanceof OctetString)) {
-      return { validScts: [], error: new Error('No SCTs found in the certificate.') };
+      return returnError(new Error('No SCTs found in the certificate.'));
     }
 
     try {
@@ -117,7 +115,7 @@ export class TlsPolicyAgent extends Agent {
       // the DER-encoded SCT list.
       const innerAsn1 = fromBER(sctExtension.extnValue.getValue());
       if (innerAsn1.offset === -1 || !(innerAsn1.result instanceof OctetString)) {
-        return { validScts: [], error: new Error('Failed to parse inner SCT extension value') };
+        return returnError(new Error('Failed to parse inner SCT extension value'));
       }
 
       // The value of the inner OCTET STRING is the raw SCT list.
@@ -139,7 +137,7 @@ export class TlsPolicyAgent extends Agent {
 
       const trustedLogs = fromUnifiedCTLogList(policy.logList);
       if (trustedLogs.length === 0) {
-        return { validScts: [], error: new Error('No trusted CT logs available for verification.') };
+        return returnError(new Error('No trusted CT logs available for verification.'));
       }
 
       this.log(`Found ${trustedLogs.length} trusted CT logs.`);
@@ -148,7 +146,7 @@ export class TlsPolicyAgent extends Agent {
       // the pre-certificate from the leaf and issuer certificates to verify them.
       const issuerCert = cert.issuerCertificate;
       if (!issuerCert) {
-        return { validScts: [], error: new Error('Could not find issuer certificate in the chain.') };
+        return returnError(new Error('Could not find issuer certificate in the chain.'));
       }
 
       let signedEntry: Buffer;
@@ -156,13 +154,13 @@ export class TlsPolicyAgent extends Agent {
         signedEntry = reconstructPrecert(cert.raw, issuerCert.raw);
       } catch (error) {
         this.error('Error reconstructing the pre-certificate signed entry.', error);
-        return { validScts: [], error: new Error('Failed to reconstruct pre-certificate for SCT validation.') };
+        return returnError(new Error('Failed to reconstruct pre-certificate for SCT validation.'));
       }
 
       const validScts: Array<{ sct: Buffer; logOperator: string }> = [];
       for (const sct of scts) {
         try {
-          const matchingLog = verifySct(sct, signedEntry, ENTRY_TYPE.PRECERT_ENTRY, Date.now(), trustedLogs);
+          const { log: matchingLog } = verifySct(sct, signedEntry, ENTRY_TYPE.PRECERT_ENTRY, Date.now(), trustedLogs);
           if (matchingLog) {
             validScts.push({ sct, logOperator: matchingLog.operated_by });
           }
@@ -171,26 +169,26 @@ export class TlsPolicyAgent extends Agent {
         }
       }
 
-      this.log(`Successfully verified ${validScts.length} embedded SCT(s).`);
-      return { validScts };
+      this.log(`Successfully verified ${validScts.length} out of ${scts.length} embedded SCT(s).`);
+      return { totalScts: scts.length, validScts };
     } catch (error) {
       this.error('Error parsing the SCT list from the certificate extension.', error);
-      return { validScts: [], error: new Error('Failed to parse SCT list from certificate.') };
+      return returnError(new Error('Failed to parse SCT list from certificate.'));
     }
   }
 
   private evaluateCtPolicyCompliance(
-    embeddedSctResult: { validScts: Array<{ sct: Buffer; logOperator: string }> },
+    embeddedSctResult: { totalScts: number; validScts: Array<{ sct: Buffer; logOperator: string }> },
     policy: CertificateTransparencyPolicy,
   ): Error | undefined {
     this.log('Evaluating overall CT policy compliance...');
-    const { validScts } = embeddedSctResult;
+    const { totalScts, validScts } = embeddedSctResult;
 
     // Check minimum embedded SCTs requirement
     const minEmbeddedScts = policy.minEmbeddedScts ?? 0;
     if (validScts.length < minEmbeddedScts) {
       return new Error(
-        `Certificate has ${validScts.length} valid embedded SCTs, but policy requires at least ${minEmbeddedScts}.`,
+        `Certificate has ${validScts.length} valid embedded SCTs (out of ${totalScts} found), but policy requires at least ${minEmbeddedScts}.`,
       );
     }
 
@@ -212,6 +210,8 @@ export class TlsPolicyAgent extends Agent {
       return undefined;
     }
 
-    return new Error('No valid SCTs could be verified against the provided trusted log list.');
+    return new Error(
+      `No valid SCTs could be verified (out of ${totalScts} found) against the provided trusted log list.`,
+    );
   }
 }

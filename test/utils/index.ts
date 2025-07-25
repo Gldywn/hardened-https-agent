@@ -72,3 +72,5 @@ export function getTestTlsPolicyAgent(
 
   return new TlsPolicyAgent({ ca, ctPolicy, enableLogging });
 }
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

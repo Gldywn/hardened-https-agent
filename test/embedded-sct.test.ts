@@ -112,7 +112,9 @@ describe('Embedded SCT validation', () => {
 
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeInstanceOf(Error);
-      expect((err as Error).message).toBe('Certificate has 2 valid embedded SCTs, but policy requires at least 3.');
+      expect((err as Error).message).toBe(
+        'Certificate has 2 valid embedded SCTs (out of 2 found), but policy requires at least 3.',
+      );
       // Socket has been destroyed by the agent, so it must be undefined
       expect(socket).toBeUndefined();
       expect(validateSctSpy).toHaveBeenCalledTimes(1);

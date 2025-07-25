@@ -2,7 +2,7 @@ import { fromUnifiedCTLogList } from '../src/utils';
 import type { UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from '../src/types/uni-ct-log-list-schema';
 import { UNIFIED_LOG_LIST } from './utils';
 
-describe('fromUnifiedCTLogList', () => {
+describe('Unified log list transformation', () => {
   it('should transform a valid log list into an array of Log objects', () => {
     const transformedLogs = fromUnifiedCTLogList(UNIFIED_LOG_LIST);
 
@@ -32,7 +32,7 @@ describe('fromUnifiedCTLogList', () => {
     expect(transformedLogs).toEqual([]);
   });
 
-  it('should ignore logs that are not in a usable, readonly, or qualified state', () => {
+  it('should correctly process logs with different states', () => {
     const dummyBase64Key =
       'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfahLEimAoz2t01p3uMziiLOl/fHTDM0YDOhBRuiBARsV4UvxG2LdNgoIGLrtCzWE0J5APC2em4JlvR8EEEFMoA==';
     const list: UnifiedCTLogList = {
@@ -62,8 +62,43 @@ describe('fromUnifiedCTLogList', () => {
     };
 
     const transformedLogs = fromUnifiedCTLogList(list);
-    expect(transformedLogs.length).toBe(1);
-    expect(transformedLogs[0].description).toBe('Usable Log');
+    expect(transformedLogs.length).toBe(2);
+
+    const retiredLog = transformedLogs.find((log) => log.description === 'Retired Log');
+    expect(retiredLog).toBeDefined();
+    if (retiredLog?.status === 'retired') {
+      expect(retiredLog.status).toBe('retired');
+      expect(retiredLog.retirement_date).toBe(new Date('2020-01-01T00:00:00Z').getTime());
+    }
+
+    const usableLog = transformedLogs.find((log) => log.description === 'Usable Log');
+    expect(usableLog).toBeDefined();
+    expect(usableLog?.status).toBe('usable');
+  });
+
+  it('should ignore logs with an unsupported state', () => {
+    const dummyBase64Key =
+      'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfahLEimAoz2t01p3uMziiLOl/fHTDM0YDOhBRuiBARsV4UvxG2LdNgoIGLrtCzWE0J5APC2em4JlvR8EEEFMoA==';
+    const list: UnifiedCTLogList = {
+      operators: [
+        {
+          name: 'Test Operator',
+          logs: [
+            {
+              log_id: 'pLkJkLQYWBSHuxOizGdwCjw1mAT5G9+443fNDsgN3BA=',
+              key: dummyBase64Key,
+              mmd: 86400,
+              url: 'https://ct.googleapis.com/pilot/',
+              description: 'Pending Log',
+              state: { pending: { timestamp: '2020-01-01T00:00:00Z' } },
+            },
+          ],
+        },
+      ],
+    };
+
+    const transformedLogs = fromUnifiedCTLogList(list);
+    expect(transformedLogs.length).toBe(0);
   });
 
   it('should ignore logs with missing essential properties', () => {

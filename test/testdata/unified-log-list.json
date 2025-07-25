@@ -1,10 +1,12 @@
 {
-  "version": "59.13",
-  "log_list_timestamp": "2025-07-22T12:56:17Z",
+  "version": "59.14",
+  "log_list_timestamp": "2025-07-23T12:54:12Z",
   "operators": [
     {
       "name": "Google",
-      "email": ["google-ct-logs@googlegroups.com"],
+      "email": [
+        "google-ct-logs@googlegroups.com"
+      ],
       "logs": [
         {
           "description": "Google 'Argon2025h1' log",
@@ -459,7 +461,12 @@
     },
     {
       "name": "Cloudflare",
-      "email": ["ct-logs@cloudflare.com", "mihir@cloudflare.com", "dkozlov@cloudflare.com", "leland@cloudflare.com"],
+      "email": [
+        "ct-logs@cloudflare.com",
+        "mihir@cloudflare.com",
+        "dkozlov@cloudflare.com",
+        "leland@cloudflare.com"
+      ],
       "logs": [
         {
           "description": "Cloudflare 'Nimbus2025'",
@@ -634,7 +641,9 @@
     },
     {
       "name": "DigiCert",
-      "email": ["ctops@digicert.com"],
+      "email": [
+        "ctops@digicert.com"
+      ],
       "logs": [
         {
           "description": "DigiCert Yeti2025 Log",
@@ -1189,7 +1198,9 @@
     },
     {
       "name": "Sectigo",
-      "email": ["ctops@sectigo.com"],
+      "email": [
+        "ctops@sectigo.com"
+      ],
       "logs": [
         {
           "description": "Sectigo 'Sabre2025h1'",
@@ -1599,7 +1610,9 @@
     },
     {
       "name": "Let's Encrypt",
-      "email": ["sre@letsencrypt.org"],
+      "email": [
+        "sre@letsencrypt.org"
+      ],
       "logs": [
         {
           "description": "Let's Encrypt 'Oak2025h1'",
@@ -1789,7 +1802,9 @@
     },
     {
       "name": "TrustAsia",
-      "email": ["trustasia-ct-logs@trustasia.com"],
+      "email": [
+        "trustasia-ct-logs@trustasia.com"
+      ],
       "logs": [
         {
           "description": "TrustAsia Log2025a",
@@ -1945,7 +1960,9 @@
     },
     {
       "name": "Geomys",
-      "email": ["ct@geomys.org"],
+      "email": [
+        "ct@geomys.org"
+      ],
       "logs": [
         {
           "description": "Bogus placeholder log to unbreak misbehaving CT libraries",
@@ -2019,7 +2036,9 @@
       ]
     },
     {
-      "email": ["ct@startssl.com"],
+      "email": [
+        "ct@startssl.com"
+      ],
       "logs": [
         {
           "description": "StartCom log",
@@ -2038,7 +2057,9 @@
       "name": "StartCom"
     },
     {
-      "email": ["ctlog@wosign.com"],
+      "email": [
+        "ctlog@wosign.com"
+      ],
       "logs": [
         {
           "description": "WoSign log",
@@ -2057,7 +2078,9 @@
       "name": "WoSign"
     },
     {
-      "email": ["capoc@gdca.com.cn"],
+      "email": [
+        "capoc@gdca.com.cn"
+      ],
       "logs": [
         {
           "description": "GDCA 'CT Log 1' log",
@@ -2097,7 +2120,9 @@
       "name": "GDCA"
     },
     {
-      "email": ["ctlog-admin@venafi.com"],
+      "email": [
+        "ctlog-admin@venafi.com"
+      ],
       "logs": [
         {
           "description": "Venafi Gen2 CT log",
@@ -2129,7 +2154,9 @@
       "name": "Venafi"
     },
     {
-      "email": ["ctlog-admin@cnnic.cn"],
+      "email": [
+        "ctlog-admin@cnnic.cn"
+      ],
       "logs": [
         {
           "description": "CNNIC CT log",
@@ -2148,7 +2175,9 @@
       "name": "CNNIC"
     },
     {
-      "email": ["atecnica@izenpe.net"],
+      "email": [
+        "atecnica@izenpe.net"
+      ],
       "logs": [
         {
           "description": "Izenpe log",
@@ -2167,7 +2196,9 @@
       "name": "Izenpe"
     },
     {
-      "email": ["certificatetransparency@outlook.com"],
+      "email": [
+        "certificatetransparency@outlook.com"
+      ],
       "logs": [
         {
           "description": "PuChuangSiDa CT log",
@@ -2186,7 +2217,9 @@
       "name": "Beijing PuChuangSiDa Technology Ltd."
     },
     {
-      "email": ["ian@certly.io"],
+      "email": [
+        "ian@certly.io"
+      ],
       "logs": [
         {
           "description": "Certly.IO log",
