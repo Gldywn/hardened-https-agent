@@ -46,20 +46,6 @@ export interface CertificateTransparencyPolicy {
   minEmbeddedScts?: number;
 
   /**
-   * The minimum number of valid OCSP SCTs required for a certificate
-   * to be considered compliant. Validation will fail if the certificate
-   * does not contain at least this many valid OCSP SCTs.
-   */
-  // TODO: minOcspScts?: number;
-
-  /**
-   * The minimum number of valid TLS extension SCTs required for a certificate
-   * to be considered compliant. Validation will fail if the certificate
-   * does not contain at least this many valid TLS extension SCTs.
-   */
-  // TODO: minTlsExtensionScts?: number;
-
-  /**
    * The minimum number of distinct log operators that must have issued the SCTs.
    */
   minDistinctOperators?: number;

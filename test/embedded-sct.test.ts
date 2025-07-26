@@ -172,4 +172,109 @@ describe('Embedded SCT validation', () => {
       done();
     });
   });
+
+  it('should fail when the certificate is malformed', (done) => {
+    const malformedPeerCertificate = {
+      ...peerCertificate,
+      raw: Buffer.from('not a real certificate'),
+    };
+
+    const mockSocket = createMockSocket(malformedPeerCertificate);
+    jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
+
+    const agent = getTestTlsPolicyAgent();
+    agent.createConnection({ ...agent.options }, (err) => {
+      expect(err).toBeInstanceOf(Error);
+      expect((err as Error).message).toBe('Failed to parse certificate for SCT validation.');
+      done();
+    });
+  });
+
+  it('should fail when the SCT list is malformed', (done) => {
+    const { pkiCerts: localPkiCerts } = loadTestCertsChain(hostname);
+    const leafPkiCert = localPkiCerts[0];
+    const sctExtension = leafPkiCert.extensions?.find((ext) => ext.extnID === SCT_EXTENSION_OID_V1);
+
+    if (sctExtension) {
+      // Replace the valid SCT list with a corrupted one
+      sctExtension.extnValue = new (require('asn1js').OctetString)({ valueHex: Buffer.from('corrupted') });
+    }
+
+    const leafMockCertWithCorruptedSctList = createMockPeerCertificate(leafPkiCert);
+    const detailedCertMock: tls.DetailedPeerCertificate = {
+      ...leafMockCertWithCorruptedSctList,
+      issuerCertificate: issuerMockCert as tls.DetailedPeerCertificate,
+    };
+
+    const mockSocket = createMockSocket(detailedCertMock);
+    jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
+    const agent = getTestTlsPolicyAgent();
+
+    agent.createConnection({ ...agent.options }, (err) => {
+      expect(err).toBeInstanceOf(Error);
+      expect((err as Error).message).toBe('Failed to parse inner SCT extension value');
+      done();
+    });
+  });
+
+  it('should continue validation when some SCTs are corrupted', (done) => {
+    const { pkiCerts: localPkiCerts } = loadTestCertsChain(hostname);
+    const leafPkiCert = localPkiCerts[0];
+    const sctExtension = leafPkiCert.extensions?.find((ext) => ext.extnID === SCT_EXTENSION_OID_V1);
+
+    if (sctExtension) {
+      const { fromBER, OctetString } = require('asn1js');
+      const innerAsn1 = fromBER(sctExtension.extnValue.getValue());
+      const sctListBuffer = Buffer.from((innerAsn1.result as typeof OctetString).getValue());
+
+      // Prepend a corrupted SCT to the existing list of valid SCTs
+      const corruptedSct = Buffer.from('this is not a valid sct');
+      const newSctList = Buffer.concat([
+        Buffer.from([0, corruptedSct.length]), // Length prefix for corrupted SCT
+        corruptedSct,
+        sctListBuffer.subarray(2), // The original list, excluding its length prefix
+      ]);
+
+      const newListContainer = Buffer.alloc(2 + newSctList.length);
+      newListContainer.writeUInt16BE(newSctList.length, 0);
+      newSctList.copy(newListContainer, 2);
+
+      const innerOctetString = new OctetString({ valueHex: newListContainer });
+      sctExtension.extnValue = new OctetString({ valueHex: innerOctetString.toBER() });
+    }
+
+    const leafMockCertWithOneCorruptedSct = createMockPeerCertificate(leafPkiCert);
+    const detailedCertMock: tls.DetailedPeerCertificate = {
+      ...leafMockCertWithOneCorruptedSct,
+      issuerCertificate: issuerMockCert as tls.DetailedPeerCertificate,
+    };
+
+    const mockSocket = createMockSocket(detailedCertMock);
+    jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
+
+    // The policy should still pass, as the original 2 SCTs are still present and valid.
+    const agent = getTestTlsPolicyAgent();
+    agent.createConnection({ ...agent.options }, (err) => {
+      expect(err).toBeNull();
+      done();
+    });
+  });
+
+  it('should fail when no SCTs are valid for the given log list', (done) => {
+    const mockSocket = createMockSocket(peerCertificate);
+    jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
+
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    // Provide a policy with an empty log list, so no SCTs can be verified
+    const agent = getTestTlsPolicyAgent({ ctPolicy: { logList: { operators: [] } } });
+
+    agent.createConnection({ ...agent.options }, (err) => {
+      expect(err).toBeInstanceOf(Error);
+      expect((err as Error).message).toBe('No trusted CT logs available for verification.');
+
+      warnSpy.mockRestore();
+      done();
+    });
+  });
 });

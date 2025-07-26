@@ -4,13 +4,14 @@
   "description": "A configurable HTTPS agent for Axios enforcing advanced TLS certificate validation: custom root store, Certificate Transparency policy, CRLSet/CRLite-style revocation checks, and OCSP stapling.",
   "main": "index.js",
   "scripts": {
-    "start": "tsx src/index.ts",
     "test": "jest",
     "test:e2e": "jest --config jest.config.e2e.js",
-    "test:setup": "npm run test:fetch-test-certs && npm run test:fetch-test-log-list && npm run test:fetch-test-ca-bundle",
+    "test:update-test-data": "npm run test:fetch-test-certs && npm run test:fetch-test-log-list && npm run test:fetch-test-ca-bundle",
     "test:fetch-test-certs": "tsx scripts/fetch-test-certs.ts",
     "test:fetch-test-log-list": "tsx scripts/fetch-test-log-list.ts",
     "test:fetch-test-ca-bundle": "tsx scripts/fetch-test-ca-bundle.ts",
+    "coverage": "npm run test -- --coverage",
+    "build": "tsup",
     "generate:schema": "tsx scripts/generate-unified-ct-log-list-schema.ts",
     "format": "prettier --write ."
   },
@@ -35,6 +36,7 @@
     "json-schema-merge-allof": "^0.8.1",
     "json-schema-to-typescript": "^15.0.4",
     "ts-jest": "^29.4.0",
+    "tsup": "^8.5.0",
     "tsx": "^4.20.3"
   },
   "dependencies": {

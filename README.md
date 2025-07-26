@@ -33,19 +33,33 @@ This project includes a comprehensive test suite to ensure correctness and stabi
 
 ### Updating Test Data
 
-The repository includes pre-generated test data. To update these fixtures, run:
+The repository includes pre-fetched test data. To update these fixtures, run:
 
 ```sh
-npm run test:setup
+npm run test:update-test-data
 ```
 
 ### Running Tests
 
-To run the complete test suite:
+This project includes both unit and end-to-end tests. Unit tests are self-contained and run locally, while end-to-end tests perform live requests and may be unstable due to network conditions or remote server configuration changes.
+
+#### Unit Tests
+
+To run the unit tests:
 
 ```sh
 npm test
 ```
+
+#### End-to-End Tests
+
+To run the end-to-end tests:
+
+```sh
+npm run test:e2e
+```
+
+Note: Due to their reliance on external network conditions, these tests are not executed in CI environments.
 
 ## License
 

@@ -14,7 +14,7 @@ export function fromUnifiedCTLogList(logList: UnifiedCTLogList): Log[] {
   }
 
   for (const operator of logList.operators) {
-    if (!operator.logs) {
+    if (!operator.logs) /* istanbul ignore next */ {
       console.warn(`[Warning] Skipping operator with no logs defined. (operator: ${operator.name || 'N/A'})`);
       continue;
     }

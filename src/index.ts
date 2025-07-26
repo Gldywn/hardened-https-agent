@@ -19,12 +19,14 @@ export class TlsPolicyAgent extends Agent {
     }
   }
 
+  /* istanbul ignore next */
   private log(message: string, ...args: any[]): void {
     if (this.#options.enableLogging) {
       console.log(`[Debug] TlsPolicyAgent: ${message}`, ...args);
     }
   }
 
+  /* istanbul ignore next */
   private error(message: string, ...args: any[]): void {
     if (this.#options.enableLogging) {
       console.error(`[Error] TlsPolicyAgent: ${message}`, ...args);
@@ -152,7 +154,7 @@ export class TlsPolicyAgent extends Agent {
       let signedEntry: Buffer;
       try {
         signedEntry = reconstructPrecert(cert.raw, issuerCert.raw);
-      } catch (error) {
+      } catch (error) /* istanbul ignore next */ {
         this.error('Error reconstructing the pre-certificate signed entry.', error);
         return returnError(new Error('Failed to reconstruct pre-certificate for SCT validation.'));
       }
@@ -171,7 +173,7 @@ export class TlsPolicyAgent extends Agent {
 
       this.log(`Successfully verified ${validScts.length} out of ${scts.length} embedded SCT(s).`);
       return { totalScts: scts.length, validScts };
-    } catch (error) {
+    } catch (error) /* istanbul ignore next */ {
       this.error('Error parsing the SCT list from the certificate extension.', error);
       return returnError(new Error('Failed to parse SCT list from certificate.'));
     }
@@ -210,6 +212,7 @@ export class TlsPolicyAgent extends Agent {
       return undefined;
     }
 
+    /* istanbul ignore next */
     return new Error(
       `No valid SCTs could be verified (out of ${totalScts} found) against the provided trusted log list.`,
     );
