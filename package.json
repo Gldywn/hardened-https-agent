@@ -42,6 +42,7 @@
   "dependencies": {
     "@gldywn/sct.js": "^2.0.0",
     "asn1js": "^3.0.6",
+    "easy-ocsp": "https://github.com/Gldywn/easy-ocsp#be426ccc80968479c8a2b73fb3a6d22537665d0a",
     "pkijs": "^3.2.5",
     "web-streams-polyfill": "^4.1.0"
   }

@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-import { delay, getTestTlsPolicyAgent } from '../utils';
+import { delay, getTestTlsPolicyAgent, CT_POLICY_CHROME } from '../utils';
 
 // Note: This test file is not completely stable because it relies on network.
 // If the remote server (e.g. google.com) updates its certificates and our local CA bundle becomes outdated,
@@ -48,7 +48,7 @@ describe('End-to-end TLS policy validation on known rejection scenarios', () => 
     console.log(`[E2E] Starting rejection test for ${domain} (${description})...`);
     await delay(500); // Avoid network congestion
     
-    const agent = getTestTlsPolicyAgent({ enableLogging: false });
+    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME, enableLogging: true });
 
     const config: AxiosRequestConfig = {
       httpsAgent: agent,

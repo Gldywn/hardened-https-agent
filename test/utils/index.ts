@@ -3,8 +3,9 @@ import * as path from 'node:path';
 import { Certificate } from 'pkijs';
 import { fromBER } from 'asn1js';
 import { getTestDataDir } from '../../scripts/utils';
-import { TlsPolicyAgent } from '../../src';
-import { CertificateTransparencyPolicy } from '../../src/interfaces';
+import { TlsPolicyAgent, CertificateTransparencyPolicy, OCSPPolicy } from '../../src';
+
+export { createMockSocket, createMockPeerCertificate } from './createMock';
 
 const testDataDir = getTestDataDir();
 
@@ -60,17 +61,19 @@ export const CA_BUNDLE = loadTestCaBundle();
 export function getTestTlsPolicyAgent(
   options: {
     ca?: string | Buffer | (string | Buffer)[];
-    ctPolicy?: CertificateTransparencyPolicy;
+    ctPolicy?: CertificateTransparencyPolicy | undefined;
+    ocspPolicy?: OCSPPolicy | undefined;
     enableLogging?: boolean;
   } = {},
 ) {
-  const { ca = CA_BUNDLE, enableLogging = false } = options;
+  const { ca = CA_BUNDLE, ctPolicy, ocspPolicy, enableLogging = false } = options;
 
-  // Use the provided ctPolicy even if it is `undefined`.
-  // If no ctPolicy is provided at all, then we fall back to the default.
-  const ctPolicy = 'ctPolicy' in options ? options.ctPolicy : CT_POLICY_CHROME;
-
-  return new TlsPolicyAgent({ ca, ctPolicy, enableLogging });
+  return new TlsPolicyAgent({
+    ca,
+    ctPolicy,
+    ocspPolicy,
+    enableLogging,
+  });
 }
 
 export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

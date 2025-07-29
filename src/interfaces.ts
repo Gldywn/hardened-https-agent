@@ -18,6 +18,12 @@ export interface TlsPolicyAgentOptions extends AgentOptions {
   ctPolicy?: CertificateTransparencyPolicy;
 
   /**
+   * An optional OCSP policy to enforce.
+   * If this object is provided, OCSP checking is implicitly enabled.
+   */
+  ocspPolicy?: OCSPPolicy;
+
+  /**
    * An optional boolean to enable or disable logging.
    *
    * @default false
@@ -49,4 +55,20 @@ export interface CertificateTransparencyPolicy {
    * The minimum number of distinct log operators that must have issued the SCTs.
    */
   minDistinctOperators?: number;
+}
+
+export interface OCSPPolicy {
+  /**
+   * The validation strategy to use for OCSP checks.
+   * - 'stapling': (Default) Enforces that the server provides a valid OCSP staple with its TLS handshake. This mode is highly performant and preserves privacy.
+   * - 'direct': Performs a direct, live OCSP query to the CA's responder for each connection. This offers the highest security against replay attacks by using a unique nonce, but it incurs significant performance and privacy costs.
+   */
+  mode: 'stapling' | 'direct';
+
+  /**
+   * Determines the agent's behavior when an OCSP check fails.
+   * - true: (Default) "Hard-fail". The connection is immediately terminated if the OCSP check fails for any reason (e.g., no staple provided in 'stapling' mode, status is 'revoked', responder is unavailable in 'live' mode).
+   * - false: "Soft-fail". The agent will attempt the OCSP check but will allow the connection to proceed even if it fails. Failures will be logged if logging is enabled. Use with caution.
+   */
+  failHard: boolean;
 }

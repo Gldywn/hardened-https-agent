@@ -2,10 +2,10 @@ import { type Log } from '@gldywn/sct.js';
 import {
   type UnifiedCertificateTransparencyLogList as UnifiedCTLogList,
   type Log as CTLog,
-} from './types/uni-ct-log-list-schema';
+} from '../types/uni-ct-log-list-schema';
 import { createPublicKey } from 'node:crypto';
 
-export function fromUnifiedCTLogList(logList: UnifiedCTLogList): Log[] {
+export function fromUnifiedCtLogList(logList: UnifiedCTLogList): Log[] {
   const transformedLogs: Log[] = [];
 
   if (!logList.operators || logList.operators.length === 0) {
@@ -14,8 +14,10 @@ export function fromUnifiedCTLogList(logList: UnifiedCTLogList): Log[] {
   }
 
   for (const operator of logList.operators) {
-    if (!operator.logs) /* istanbul ignore next */ {
-      console.warn(`[Warning] Skipping operator with no logs defined. (operator: ${operator.name || 'N/A'})`);
+    if (!operator.logs) {
+      /* istanbul ignore next */ console.warn(
+        `[Warning] Skipping operator with no logs defined. (operator: ${operator.name || 'N/A'})`,
+      );
       continue;
     }
 

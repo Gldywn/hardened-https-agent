@@ -4,7 +4,7 @@ import { fromBER } from 'asn1js';
 import * as tls from 'node:tls';
 import { Duplex } from 'stream';
 
-export function createMockSocket(peerCertificate: tls.DetailedPeerCertificate, onSecureConnect = true): tls.TLSSocket {
+export function createMockSocket(peerCertificate: tls.DetailedPeerCertificate): tls.TLSSocket {
   const socket = new Duplex({
     read() {},
     write(_, __, cb) {
@@ -12,40 +12,13 @@ export function createMockSocket(peerCertificate: tls.DetailedPeerCertificate, o
     },
   });
 
-  socket.on = jest.fn().mockImplementation((event, handler) => {
-    if (event === 'secureConnect' && onSecureConnect) {
-      setImmediate(() => handler());
-    }
-    return socket;
-  });
-
-  socket.destroy = jest.fn();
-  (socket as any).getPeerCertificate = jest.fn().mockReturnValue(peerCertificate);
+  // Add TLSSocket properties to the mock without interfering with EventEmitter behavior
+  const mockTlsSocket = socket as any;
+  mockTlsSocket.destroy = jest.fn();
+  mockTlsSocket.getPeerCertificate = jest.fn().mockReturnValue(peerCertificate);
 
   return socket as unknown as tls.TLSSocket;
 }
-
-export const getSubjectField = (subject: any, shortName: string): string | string[] => {
-  const field = subject.typesAndValues.find((f: any) => f.type === shortName);
-  return field ? field.value.valueBlock.value : '';
-};
-
-export const getSubjectAltNames = (extensions: any[]): string => {
-  const sanExtension = extensions.find((ext) => ext.extnID === '2.5.29.17');
-  if (!sanExtension) return '';
-  const asn1 = fromBER(sanExtension.extnValue.getValue());
-  if (asn1.offset === -1) return '';
-  const generalNames = new GeneralNames({ schema: asn1.result });
-  return generalNames.names
-    .filter((name: any) => name.type === 2)
-    .map((name: any) => `DNS:${name.value}`)
-    .join(', ');
-};
-
-export const getFingerprint = (buffer: Buffer, algorithm: string): string => {
-  const hash = createHash(algorithm).update(buffer).digest('hex');
-  return hash.replace(/(.{2})(?!$)/g, '$1:').toUpperCase();
-};
 
 export const createMockPeerCertificate = (pkiCert: Certificate): tls.PeerCertificate => {
   // Use the exact DER encoding from the parsed certificate
@@ -94,4 +67,26 @@ export const createMockPeerCertificate = (pkiCert: Certificate): tls.PeerCertifi
     fingerprint512: getFingerprint(der, 'sha512'),
     ca: isCa,
   };
+};
+
+const getSubjectField = (subject: any, shortName: string): string | string[] => {
+  const field = subject.typesAndValues.find((f: any) => f.type === shortName);
+  return field ? field.value.valueBlock.value : '';
+};
+
+const getSubjectAltNames = (extensions: any[]): string => {
+  const sanExtension = extensions.find((ext) => ext.extnID === '2.5.29.17');
+  if (!sanExtension) return '';
+  const asn1 = fromBER(sanExtension.extnValue.getValue());
+  if (asn1.offset === -1) return '';
+  const generalNames = new GeneralNames({ schema: asn1.result });
+  return generalNames.names
+    .filter((name: any) => name.type === 2)
+    .map((name: any) => `DNS:${name.value}`)
+    .join(', ');
+};
+
+const getFingerprint = (buffer: Buffer, algorithm: string): string => {
+  const hash = createHash(algorithm).update(buffer).digest('hex');
+  return hash.replace(/(.{2})(?!$)/g, '$1:').toUpperCase();
 };

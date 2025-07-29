@@ -1,4 +1,4 @@
-import { fromUnifiedCTLogList } from '../src/utils';
+import { fromUnifiedCtLogList } from '../src/utils';
 import type { UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from '../src/types/uni-ct-log-list-schema';
 import { UNIFIED_LOG_LIST } from './utils';
 
@@ -12,7 +12,7 @@ describe('Unified log list parsing', () => {
   });
 
   it('should transform a valid log list into an array of Log objects', () => {
-    const logs = fromUnifiedCTLogList(UNIFIED_LOG_LIST);
+    const logs = fromUnifiedCtLogList(UNIFIED_LOG_LIST);
 
     expect(Array.isArray(logs)).toBe(true);
     expect(logs.length).toBeGreaterThan(0);
@@ -28,7 +28,7 @@ describe('Unified log list parsing', () => {
 
   it('should return an empty array for a log list with no operators', () => {
     const emptyList: UnifiedCTLogList = { operators: [] };
-    const logs = fromUnifiedCTLogList(emptyList);
+    const logs = fromUnifiedCtLogList(emptyList);
     expect(logs).toEqual([]);
   });
 
@@ -36,7 +36,7 @@ describe('Unified log list parsing', () => {
     const list: UnifiedCTLogList = {
       operators: [{ name: 'Test Operator', logs: [] }],
     };
-    const logs = fromUnifiedCTLogList(list);
+    const logs = fromUnifiedCtLogList(list);
     expect(logs).toEqual([]);
   });
 
@@ -69,7 +69,7 @@ describe('Unified log list parsing', () => {
       ],
     };
 
-    const logs = fromUnifiedCTLogList(list);
+    const logs = fromUnifiedCtLogList(list);
     expect(logs.length).toBe(2);
 
     const retiredLog = logs.find((log) => log.description === 'Retired Log');
@@ -105,7 +105,7 @@ describe('Unified log list parsing', () => {
       ],
     };
 
-    const logs = fromUnifiedCTLogList(list);
+    const logs = fromUnifiedCtLogList(list);
     expect(logs.length).toBe(0);
   });
 
@@ -138,7 +138,7 @@ describe('Unified log list parsing', () => {
         },
       ],
     };
-    const logs = fromUnifiedCTLogList(list);
+    const logs = fromUnifiedCtLogList(list);
     expect(logs.length).toBe(1);
     expect(logs[0].description).toBe('Valid Log');
   });

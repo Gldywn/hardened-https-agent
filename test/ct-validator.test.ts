@@ -3,11 +3,12 @@ import * as tls from 'node:tls';
 import { loadTestCertsChain, getTestTlsPolicyAgent, CT_POLICY_CHROME } from './utils';
 import { TEST_CERT_HOSTS } from '../scripts/constants';
 import { SCT_EXTENSION_OID_V1 } from '@gldywn/sct.js';
-import { createMockSocket, createMockPeerCertificate } from './utils/createMock';
+import { createMockSocket, createMockPeerCertificate, delay } from './utils';
+import { CTValidator } from '../src/validators';
 
 jest.mock('node:tls');
 
-describe('Embedded SCT validation', () => {
+describe('Certificate transparency validation', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -40,8 +41,11 @@ describe('Embedded SCT validation', () => {
       const mockSocket = createMockSocket(peerCertificate);
       jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-      const agent = getTestTlsPolicyAgent();
-      const validateSctSpy = jest.spyOn(agent as any, 'validateCertificateTransparency');
+      const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
+      const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+
+      // Simulate the secureConnect event on the next tick
+      process.nextTick(() => mockSocket.emit('secureConnect'));
 
       agent.createConnection({ ...agent.options }, (err, socket) => {
         expect(err).toBeNull();
@@ -70,8 +74,11 @@ describe('Embedded SCT validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
+    const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
     const agent = getTestTlsPolicyAgent({ ctPolicy: undefined });
-    const validateSctSpy = jest.spyOn(agent as any, 'validateCertificateTransparency');
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
 
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeNull();
@@ -90,12 +97,15 @@ describe('Embedded SCT validation', () => {
     } as unknown as tls.DetailedPeerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent();
-    const validateSctSpy = jest.spyOn(agent as any, 'validateCertificateTransparency');
+    const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
+    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
 
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeInstanceOf(Error);
-      expect((err as Error).message).toBe('Could not find issuer certificate in the chain.');
+      expect((err as Error).message).toBe('[CTValidator] Could not find issuer certificate in the chain.');
       expect(socket).toBeUndefined();
       expect(validateSctSpy).toHaveBeenCalledTimes(1);
 
@@ -107,8 +117,11 @@ describe('Embedded SCT validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
+    const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
     const agent = getTestTlsPolicyAgent({ ctPolicy: strictSctCountPolicy });
-    const validateSctSpy = jest.spyOn(agent as any, 'validateCertificateTransparency');
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
 
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeInstanceOf(Error);
@@ -127,8 +140,11 @@ describe('Embedded SCT validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
+    const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
     const agent = getTestTlsPolicyAgent({ ctPolicy: strictOperatorPolicy });
-    const validateSctSpy = jest.spyOn(agent as any, 'validateCertificateTransparency');
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
 
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeInstanceOf(Error);
@@ -160,12 +176,15 @@ describe('Embedded SCT validation', () => {
     const mockSocket = createMockSocket(detailedCertMock);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent();
-    const validateSctSpy = jest.spyOn(agent as any, 'validateCertificateTransparency');
+    const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
+    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
 
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeInstanceOf(Error);
-      expect((err as Error).message).toBe('No SCTs found in the certificate.');
+      expect((err as Error).message).toBe('[CTValidator] No SCTs found in the certificate.');
       expect(socket).toBeUndefined();
       expect(validateSctSpy).toHaveBeenCalledTimes(1);
 
@@ -182,10 +201,14 @@ describe('Embedded SCT validation', () => {
     const mockSocket = createMockSocket(malformedPeerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent();
+    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
+
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).toBeInstanceOf(Error);
-      expect((err as Error).message).toBe('Failed to parse certificate for SCT validation.');
+      expect((err as Error).message).toBe('[CTValidator] Failed to parse certificate for SCT validation.');
       done();
     });
   });
@@ -208,11 +231,14 @@ describe('Embedded SCT validation', () => {
 
     const mockSocket = createMockSocket(detailedCertMock);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
-    const agent = getTestTlsPolicyAgent();
+    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
 
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).toBeInstanceOf(Error);
-      expect((err as Error).message).toBe('Failed to parse inner SCT extension value');
+      expect((err as Error).message).toBe('[CTValidator] Failed to parse inner SCT extension value.');
       done();
     });
   });
@@ -253,7 +279,11 @@ describe('Embedded SCT validation', () => {
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     // The policy should still pass, as the original 2 SCTs are still present and valid.
-    const agent = getTestTlsPolicyAgent();
+    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
+
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).toBeNull();
       done();
@@ -269,9 +299,12 @@ describe('Embedded SCT validation', () => {
     // Provide a policy with an empty log list, so no SCTs can be verified
     const agent = getTestTlsPolicyAgent({ ctPolicy: { logList: { operators: [] } } });
 
+    // Simulate the secureConnect event on the next tick
+    process.nextTick(() => mockSocket.emit('secureConnect'));
+
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).toBeInstanceOf(Error);
-      expect((err as Error).message).toBe('No trusted CT logs available for verification.');
+      expect((err as Error).message).toBe('[CTValidator] Empty trusted CT log list.');
 
       warnSpy.mockRestore();
       done();
