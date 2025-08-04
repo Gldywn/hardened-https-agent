@@ -18,6 +18,8 @@ This behavior is, in fact, (more or less) intentional. As explained in the Node.
 
 This is where `hardened-https-agent` comes in: an enhanced `https.Agent` for Node.js that does the heavy lifting to bridge this gap, providing modern security policies for your outbound TLS connections.
 
+It is a drop-in replacement that works with any library supporting the standard `https.Agent`, including [`axios`](https://axios-http.com/), [`got`](https://github.com/sindresorhus/got), [`node-fetch`](https://github.com/node-fetch/node-fetch), [`needle`](https://github.com/tomas/needle), and [`superagent`](https://github.com/forwardemail/superagent).
+
 ### Default Node.js Behavior vs. `hardened-https-agent`
 
 | Verification Check            | Default Node.js (`https.Agent`) |   `hardened-https-agent`    |
