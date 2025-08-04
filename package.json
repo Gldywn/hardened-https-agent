@@ -1,7 +1,7 @@
 {
-  "name": "axios-tls-policy-agent",
+  "name": "hardened-https-agent",
   "version": "1.0.0",
-  "description": "A configurable HTTPS agent for Axios enforcing advanced TLS certificate validation: custom root store, Certificate Transparency policy, CRLSet/CRLite-style revocation checks, and OCSP stapling.",
+  "description": "A security-first https.Agent for Node.js that adds critical layers of trust to your HTTPS requests. Enforce modern security policies with support for Certificate Transparency, advanced revocation checks (CRLSet, OCSP), and custom CAs.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gldywn/axios-tls-policy-agent.git"
+    "url": "git+https://github.com/Gldywn/hardened-https-agent.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Gldywn/axios-tls-policy-agent/issues"
+    "url": "https://github.com/Gldywn/hardened-https-agent/issues"
   },
-  "homepage": "https://github.com/Gldywn/axios-tls-policy-agent#readme",
+  "homepage": "https://github.com/Gldywn/hardened-https-agent#readme",
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/json-schema-merge-allof": "^0.6.5",
