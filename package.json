@@ -10,7 +10,7 @@
     "test:fetch-test-certs": "tsx scripts/fetch-test-certs.ts",
     "test:fetch-test-log-list": "tsx scripts/fetch-test-log-list.ts",
     "test:fetch-test-ca-bundle": "tsx scripts/fetch-test-ca-bundle.ts",
-    "coverage": "npm run test -- --coverage",
+    "test:coverage": "npm run test -- --coverage",
     "build": "tsup",
     "generate:schema": "tsx scripts/generate-unified-ct-log-list-schema.ts",
     "format": "prettier --write ."
@@ -40,6 +40,7 @@
     "tsx": "^4.20.3"
   },
   "dependencies": {
+    "@gldywn/crlset.js": "^1.0.0",
     "@gldywn/sct.js": "^2.0.0",
     "asn1js": "^3.0.6",
     "easy-ocsp": "https://github.com/Gldywn/easy-ocsp#be426ccc80968479c8a2b73fb3a6d22537665d0a",
