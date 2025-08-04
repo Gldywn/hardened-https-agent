@@ -70,7 +70,4 @@ async function main() {
   await fetchCerts();
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+main();

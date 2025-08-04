@@ -82,7 +82,4 @@ async function main() {
   await fetchLogLists();
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+main();

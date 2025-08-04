@@ -146,7 +146,4 @@ async function main() {
   await generateUnifiedSchema();
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+main();
