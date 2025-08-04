@@ -117,7 +117,7 @@ describe('OCSP stapling validation', () => {
     const agent = getTestTlsPolicyAgent({ ocspPolicy: failHardPolicy });
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
-      expect(err?.message).toBe('[OCSPStaplingValidator] Invalid certificate revocation status: revoked.');
+      expect(err?.message).toBe('[OCSPStaplingValidator] Certificate is revoked. Status: revoked.');
       expect(mockParseOCSPResponse).toHaveBeenCalledTimes(1);
       done();
     });
@@ -133,7 +133,7 @@ describe('OCSP stapling validation', () => {
     const agent = getTestTlsPolicyAgent({ ocspPolicy: failSoftPolicy });
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
-      expect(err?.message).toBe('[OCSPStaplingValidator] Invalid certificate revocation status: revoked.');
+      expect(err?.message).toBe('[OCSPStaplingValidator] Certificate is revoked. Status: revoked.');
       expect(mockParseOCSPResponse).toHaveBeenCalledTimes(1);
       done();
     });

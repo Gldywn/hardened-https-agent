@@ -54,10 +54,10 @@ export class OCSPStaplingValidator extends BaseValidator {
 
           const ocspResponse = await parseOCSPResponse(response, leafCertPki, issuerCertPki, ocspConfig, null);
           if (ocspResponse.status !== 'good') {
-            return reject(this.wrapError(new Error(`Invalid certificate revocation status: ${ocspResponse.status}.`)));
+            return reject(this.wrapError(new Error(`Certificate is revoked. Status: ${ocspResponse.status}.`)));
           }
 
-          this.log(`Successfully validated certificate revocation status.`);
+          this.log(`Certificate is not revoked.`);
           resolve();
         } catch (err: any) {
           if (ocspPolicy.failHard) {

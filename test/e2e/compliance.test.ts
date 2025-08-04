@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-import { delay, getTestTlsPolicyAgent, CT_POLICY_CHROME } from '../utils';
+import { delay, getTestTlsPolicyAgent, DEFAULT_CT_POLICY } from '../utils';
 import { type OCSPPolicy } from '../../src';
 
 // Note: This test file is not completely stable because it relies on network.
@@ -55,11 +55,11 @@ describe('End-to-end TLS policy validation on major production domains', () => {
     await delay(500); // Avoid network congestion
 
     const ocspPolicy: OCSPPolicy = {
-      mode: 'direct',
+      mode: 'stapling',
       failHard: true,
     };
 
-    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME, ocspPolicy, enableLogging: true });
+    const agent = getTestTlsPolicyAgent({ ctPolicy: DEFAULT_CT_POLICY, ocspPolicy, enableLogging: true });
 
     const config: AxiosRequestConfig = {
       httpsAgent: agent,

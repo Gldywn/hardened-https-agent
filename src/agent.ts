@@ -2,8 +2,8 @@ import { Agent } from 'node:https';
 import tls from 'node:tls';
 import type { Duplex } from 'node:stream';
 import { TlsPolicyAgentOptions } from './interfaces';
-import { CTValidator, OCSPStaplingValidator, OCSPDirectValidator } from './validators';
 import { BaseValidator } from './validators/base';
+import { CTValidator, OCSPStaplingValidator, OCSPDirectValidator, CRLSetValidator } from './validators';
 
 /* istanbul ignore next */
 export class Logger {
@@ -49,6 +49,7 @@ export class TlsPolicyAgent extends Agent {
       new CTValidator(this.#logger),
       new OCSPStaplingValidator(this.#logger),
       new OCSPDirectValidator(this.#logger),
+      new CRLSetValidator(this.#logger),
     ];
   }
 

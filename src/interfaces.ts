@@ -1,5 +1,6 @@
 import type { AgentOptions } from 'node:https';
 import type { UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from './types/uni-ct-log-list-schema';
+import type { CRLSet } from '@gldywn/crlset.js';
 
 export interface TlsPolicyAgentOptions extends AgentOptions {
   /**
@@ -22,6 +23,14 @@ export interface TlsPolicyAgentOptions extends AgentOptions {
    * If this object is provided, OCSP checking is implicitly enabled.
    */
   ocspPolicy?: OCSPPolicy;
+
+  /**
+   * Enables CRLSet-based revocation checking if provided.
+   * - If set to "downloadLatest", the agent will automatically download the latest CRLSet using the `downloadLatestCRLSetCrx` function from the library and will verify its signature internally.
+   *   In this case, signature verification ensures the CRLSet is an authentic Chrome component signed by Google. The agent checks that the CRX3 file is signed with the official Google key associated with the CRLSet component ID (hfnkpimlhhgieaddgfemjhofmfblmnib), and that the public key in the signature matches the expected component.
+   * - If a custom CRLSet object is provided, it will be used as-is for revocation checks. In this case, the user is responsible for constructing and trusting the CRLSet.
+   */
+  crlSet?: 'downloadLatest' | CRLSet;
 
   /**
    * An optional boolean to enable or disable logging.
@@ -67,8 +76,10 @@ export interface OCSPPolicy {
 
   /**
    * Determines the agent's behavior when an OCSP check fails.
-   * - true: (Default) "Hard-fail". The connection is immediately terminated if the OCSP check fails for any reason (e.g., no staple provided in 'stapling' mode, status is 'revoked', responder is unavailable in 'live' mode).
-   * - false: "Soft-fail". The agent will attempt the OCSP check but will allow the connection to proceed even if it fails. Failures will be logged if logging is enabled. Use with caution.
+   * - true: (Default) "Hard-fail". The connection is immediately terminated if the OCSP check fails for any reason (e.g., network error, no staple provided in 'stapling' mode, responder is unavailable in 'live' mode, etc.).
+   * - false: "Soft-fail". The agent will attempt the OCSP check and allow the connection to proceed if the check itself fails (e.g., network error, responder unavailable, etc.), but will still block the connection if a valid OCSP response is received indicating the certificate is revoked. Failures will be logged if logging is enabled. Use with caution.
+   *
+   * @default true
    */
   failHard: boolean;
 }

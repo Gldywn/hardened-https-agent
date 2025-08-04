@@ -1,6 +1,6 @@
 import type { CertificateTransparencyPolicy } from '../src/interfaces';
 import * as tls from 'node:tls';
-import { loadTestCertsChain, getTestTlsPolicyAgent, CT_POLICY_CHROME } from './utils';
+import { loadTestCertsChain, getTestTlsPolicyAgent, DEFAULT_CT_POLICY } from './utils';
 import { TEST_CERT_HOSTS } from '../scripts/constants';
 import { SCT_EXTENSION_OID_V1 } from '@gldywn/sct.js';
 import { createMockSocket, createMockPeerCertificate, delay } from './utils';
@@ -15,13 +15,13 @@ describe('Certificate transparency validation', () => {
 
   // CT Policy that requires more SCTs than available
   const strictSctCountPolicy: CertificateTransparencyPolicy = {
-    ...CT_POLICY_CHROME,
+    ...DEFAULT_CT_POLICY,
     minEmbeddedScts: 3,
   };
 
   // CT Policy that requires more distinct operators than available
   const strictOperatorPolicy: CertificateTransparencyPolicy = {
-    ...CT_POLICY_CHROME,
+    ...DEFAULT_CT_POLICY,
     minDistinctOperators: 3,
   };
 
@@ -42,7 +42,7 @@ describe('Certificate transparency validation', () => {
       jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
       const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
-      const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+      const agent = getTestTlsPolicyAgent({ ctPolicy: DEFAULT_CT_POLICY });
 
       // Simulate the secureConnect event on the next tick
       process.nextTick(() => mockSocket.emit('secureConnect'));
@@ -98,7 +98,7 @@ describe('Certificate transparency validation', () => {
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
-    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+    const agent = getTestTlsPolicyAgent({ ctPolicy: DEFAULT_CT_POLICY });
 
     // Simulate the secureConnect event on the next tick
     process.nextTick(() => mockSocket.emit('secureConnect'));
@@ -177,7 +177,7 @@ describe('Certificate transparency validation', () => {
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     const validateSctSpy = jest.spyOn(CTValidator.prototype as any, 'validateCertificateTransparency');
-    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+    const agent = getTestTlsPolicyAgent({ ctPolicy: DEFAULT_CT_POLICY });
 
     // Simulate the secureConnect event on the next tick
     process.nextTick(() => mockSocket.emit('secureConnect'));
@@ -201,7 +201,7 @@ describe('Certificate transparency validation', () => {
     const mockSocket = createMockSocket(malformedPeerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+    const agent = getTestTlsPolicyAgent({ ctPolicy: DEFAULT_CT_POLICY });
 
     // Simulate the secureConnect event on the next tick
     process.nextTick(() => mockSocket.emit('secureConnect'));
@@ -231,7 +231,7 @@ describe('Certificate transparency validation', () => {
 
     const mockSocket = createMockSocket(detailedCertMock);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
-    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+    const agent = getTestTlsPolicyAgent({ ctPolicy: DEFAULT_CT_POLICY });
 
     // Simulate the secureConnect event on the next tick
     process.nextTick(() => mockSocket.emit('secureConnect'));
@@ -279,7 +279,7 @@ describe('Certificate transparency validation', () => {
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     // The policy should still pass, as the original 2 SCTs are still present and valid.
-    const agent = getTestTlsPolicyAgent({ ctPolicy: CT_POLICY_CHROME });
+    const agent = getTestTlsPolicyAgent({ ctPolicy: DEFAULT_CT_POLICY });
 
     // Simulate the secureConnect event on the next tick
     process.nextTick(() => mockSocket.emit('secureConnect'));

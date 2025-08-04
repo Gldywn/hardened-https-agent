@@ -4,6 +4,7 @@ import { Certificate } from 'pkijs';
 import { fromBER } from 'asn1js';
 import { getTestDataDir } from '../../scripts/utils';
 import { TlsPolicyAgent, CertificateTransparencyPolicy, OCSPPolicy } from '../../src';
+import { CRLSet } from '@gldywn/crlset.js';
 
 export { createMockSocket, createMockPeerCertificate } from './createMock';
 
@@ -40,13 +41,13 @@ export function loadTestCaBundle(): string {
 
 export const UNIFIED_LOG_LIST = loadLogList('unified-log-list.json');
 
-export const CT_POLICY_CHROME = {
+export const DEFAULT_CT_POLICY = {
   logList: UNIFIED_LOG_LIST,
   minEmbeddedScts: 2,
   minDistinctOperators: 2,
 };
 
-export const CA_BUNDLE = loadTestCaBundle();
+export const CFSSL_CA_BUNDLE = loadTestCaBundle();
 
 /**
  * Creates a pre-configured `TlsPolicyAgent` for testing purposes.
@@ -63,15 +64,17 @@ export function getTestTlsPolicyAgent(
     ca?: string | Buffer | (string | Buffer)[];
     ctPolicy?: CertificateTransparencyPolicy | undefined;
     ocspPolicy?: OCSPPolicy | undefined;
+    crlSet?: 'downloadLatest' | CRLSet | undefined;
     enableLogging?: boolean;
   } = {},
 ) {
-  const { ca = CA_BUNDLE, ctPolicy, ocspPolicy, enableLogging = false } = options;
+  const { ca = CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSet, enableLogging = false } = options;
 
   return new TlsPolicyAgent({
     ca,
     ctPolicy,
     ocspPolicy,
+    crlSet,
     enableLogging,
   });
 }

@@ -100,7 +100,7 @@ describe('OCSP direct validation', () => {
 
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
-      expect(err?.message).toBe('[OCSPDirectValidator] Invalid certificate revocation status: revoked.');
+      expect(err?.message).toBe('[OCSPDirectValidator] Certificate is revoked. Status: revoked.');
       done();
     });
 
@@ -115,7 +115,7 @@ describe('OCSP direct validation', () => {
 
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
-      expect(err?.message).toBe('[OCSPDirectValidator] Invalid certificate revocation status: revoked.');
+      expect(err?.message).toBe('[OCSPDirectValidator] Certificate is revoked. Status: revoked.');
       done();
     });
 
