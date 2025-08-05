@@ -2,10 +2,11 @@ import { writeFile, readFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { exit } from 'node:process';
 import type { UnifiedCertificateTransparencyLogList } from '../src/types/uni-ct-log-list-schema';
-import { getTestDataDir } from './utils';
+import { getTestDataDir, getResDir } from './utils';
 import { LOG_LISTS } from './constants';
 
-const TEST_DATA_DIR = getTestDataDir();
+const forTest = process.argv.includes('--for-test');
+const OUTPUT_DIR = forTest ? getTestDataDir() : getResDir();
 
 async function fetchAndSave(name: string, url: string) {
   try {
@@ -15,7 +16,7 @@ async function fetchAndSave(name: string, url: string) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    const filePath = join(TEST_DATA_DIR, name);
+    const filePath = join(OUTPUT_DIR, name);
     await writeFile(filePath, JSON.stringify(data, null, 2));
     console.log(`[+] Successfully saved to ${filePath}`);
   } catch (error) {
@@ -26,7 +27,7 @@ async function fetchAndSave(name: string, url: string) {
 
 async function fetchLogLists() {
   console.log('[*] Starting download of CT log lists...');
-  await mkdir(TEST_DATA_DIR, { recursive: true });
+  await mkdir(OUTPUT_DIR, { recursive: true });
   for (const logList of LOG_LISTS) {
     await fetchAndSave(logList.name, logList.sourceUrl);
   }
@@ -37,8 +38,8 @@ async function fetchLogLists() {
 async function mergeLogLists() {
   console.log('[*] Merging Google and Apple log lists...');
   try {
-    const googleListPath = join(TEST_DATA_DIR, 'google-log-list.json');
-    const appleListPath = join(TEST_DATA_DIR, 'apple-log-list.json');
+    const googleListPath = join(OUTPUT_DIR, 'google-log-list.json');
+    const appleListPath = join(OUTPUT_DIR, 'apple-log-list.json');
 
     const googleList: UnifiedCertificateTransparencyLogList = JSON.parse(await readFile(googleListPath, 'utf-8'));
     const appleList: UnifiedCertificateTransparencyLogList = JSON.parse(await readFile(appleListPath, 'utf-8'));
@@ -69,7 +70,7 @@ async function mergeLogLists() {
       }
     }
 
-    const unifiedListPath = join(TEST_DATA_DIR, 'unified-log-list.json');
+    const unifiedListPath = join(OUTPUT_DIR, 'unified-log-list.json');
     await writeFile(unifiedListPath, JSON.stringify(unifiedList, null, 2));
     console.log(`[+] Successfully merged and saved to ${unifiedListPath}`);
   } catch (error) {

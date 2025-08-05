@@ -1,6 +1,6 @@
 import { fromUnifiedCtLogList } from '../src/utils';
 import type { UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from '../src/types/uni-ct-log-list-schema';
-import { UNIFIED_LOG_LIST } from './utils';
+import { TEST_UNIFIED_LOG_LIST } from './utils';
 
 describe('Unified log list parsing', () => {
   beforeAll(() => {
@@ -12,7 +12,7 @@ describe('Unified log list parsing', () => {
   });
 
   it('should transform a valid log list into an array of Log objects', () => {
-    const logs = fromUnifiedCtLogList(UNIFIED_LOG_LIST); // Default log type is 'prod'
+    const logs = fromUnifiedCtLogList(TEST_UNIFIED_LOG_LIST); // Default log type is 'prod'
 
     expect(Array.isArray(logs)).toBe(true);
     expect(logs.length).toBeGreaterThan(0);

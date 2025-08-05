@@ -8,11 +8,15 @@ import { CRLSet } from '@gldywn/crlset.js';
 
 export { createMockSocket, createMockPeerCertificate } from './createMock';
 
-const testDataDir = getTestDataDir();
+const TEST_DATA_DIR = getTestDataDir();
+
+function loadTestFile(filename: string): string {
+  return fs.readFileSync(path.join(TEST_DATA_DIR, filename), 'utf8');
+}
 
 export function loadTestCertsChain(hostname: string) {
   const filename = `${hostname.replace(/\./g, '-')}-certs-chain.pem`;
-  const certChainPem = fs.readFileSync(path.join(testDataDir, filename), 'utf8');
+  const certChainPem = loadTestFile(filename);
   const certPems = certChainPem
     .split('-----END CERTIFICATE-----')
     .filter((pem) => pem.trim() !== '')
@@ -30,24 +34,15 @@ export function loadTestCertsChain(hostname: string) {
   return { certPems, pkiCerts };
 }
 
-export function loadLogList(filename: string) {
-  return JSON.parse(fs.readFileSync(path.join(testDataDir, filename), 'utf8'));
-}
+export const TEST_CFSSL_CA_BUNDLE = loadTestFile('cfssl-ca-bundle.crt');
 
-export function loadTestCaBundle(): string {
-  const caBundlePath = path.join(testDataDir, 'ca-bundle.crt');
-  return fs.readFileSync(caBundlePath, 'utf8');
-}
+export const TEST_UNIFIED_LOG_LIST = JSON.parse(loadTestFile('unified-log-list.json'));
 
-export const UNIFIED_LOG_LIST = loadLogList('unified-log-list.json');
-
-export const DEFAULT_CT_POLICY = {
-  logList: UNIFIED_LOG_LIST,
+export const TEST_CT_POLICY = {
+  logList: TEST_UNIFIED_LOG_LIST,
   minEmbeddedScts: 2,
   minDistinctOperators: 2,
 };
-
-export const CFSSL_CA_BUNDLE = loadTestCaBundle();
 
 /**
  * Creates a pre-configured `HardenedHttpsAgent` for testing purposes.
@@ -66,9 +61,10 @@ export function getTestHardenedHttpsAgent(
     ocspPolicy?: OCSPPolicy | undefined;
     crlSet?: 'downloadLatest' | CRLSet | undefined;
     enableLogging?: boolean;
+    rejectUnauthorized?: boolean;
   } = {},
 ) {
-  const { ca = CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSet, enableLogging = false } = options;
+  const { ca = TEST_CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSet, enableLogging = false, rejectUnauthorized = true } = options;
 
   return new HardenedHttpsAgent({
     ca,
@@ -76,6 +72,7 @@ export function getTestHardenedHttpsAgent(
     ocspPolicy,
     crlSet,
     enableLogging,
+    rejectUnauthorized,
   });
 }
 
