@@ -1,7 +1,7 @@
 import { Duplex } from 'node:stream';
 import tls, { TLSSocket } from 'node:tls';
-import { TlsPolicyAgent } from '../src/agent';
-import { TlsPolicyAgentOptions } from '../src/interfaces';
+import { HardenedHttpsAgent } from '../src/agent';
+import { HardenedHttpsAgentOptions } from '../src/interfaces';
 import { CTValidator, OCSPStaplingValidator } from '../src/validators';
 
 jest.mock('../src/validators/ct');
@@ -16,9 +16,9 @@ const MockedOCSPStaplingValidator = OCSPStaplingValidator as jest.MockedClass<ty
 const mockedTlsConnect = tls.connect as jest.Mock;
 
 type MockValidator = {
-  shouldRun: jest.Mock<boolean, [TlsPolicyAgentOptions]>;
+  shouldRun: jest.Mock<boolean, [HardenedHttpsAgentOptions]>;
   onBeforeConnect: jest.Mock<tls.ConnectionOptions, [tls.ConnectionOptions]>;
-  validate: jest.Mock<Promise<void>, [TLSSocket, TlsPolicyAgentOptions]>;
+  validate: jest.Mock<Promise<void>, [TLSSocket, HardenedHttpsAgentOptions]>;
   constructor: { name: string };
 };
 
@@ -29,12 +29,12 @@ const createMockValidator = (name: string): MockValidator => ({
   constructor: { name },
 });
 
-describe('TlsPolicyAgent', () => {
+describe('HardenedHttpsAgent', () => {
   let mockSocket: jest.Mocked<TLSSocket>;
   let mockCtValidator: MockValidator;
   let mockOcspValidator: MockValidator;
 
-  const baseOptions: TlsPolicyAgentOptions = {
+  const baseOptions: HardenedHttpsAgentOptions = {
     ca: 'a-valid-ca',
     enableLogging: false,
   };
@@ -58,15 +58,15 @@ describe('TlsPolicyAgent', () => {
   });
 
   test('should throw an error if "ca" property is not provided', () => {
-    expect(() => new TlsPolicyAgent({} as TlsPolicyAgentOptions)).toThrow('The `ca` property cannot be empty.');
+    expect(() => new HardenedHttpsAgent({} as HardenedHttpsAgentOptions)).toThrow('The `ca` property cannot be empty.');
   });
 
   test('should throw an error if "ca" property is an empty array', () => {
-    expect(() => new TlsPolicyAgent({ ca: [] })).toThrow('The `ca` property cannot be empty.');
+    expect(() => new HardenedHttpsAgent({ ca: [] })).toThrow('The `ca` property cannot be empty.');
   });
 
   test('should check all validators to see if they should run', () => {
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     agent.createConnection({}, jest.fn());
 
     expect(mockCtValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
@@ -77,7 +77,7 @@ describe('TlsPolicyAgent', () => {
     mockCtValidator.shouldRun.mockReturnValue(true);
     mockOcspValidator.shouldRun.mockReturnValue(false);
 
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     agent.createConnection({}, jest.fn());
 
     expect(mockCtValidator.validate).toHaveBeenCalled();
@@ -88,7 +88,7 @@ describe('TlsPolicyAgent', () => {
     mockCtValidator.shouldRun.mockReturnValue(true);
     mockOcspValidator.shouldRun.mockReturnValue(true);
 
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     agent.createConnection({}, jest.fn());
 
     expect(mockCtValidator.validate).toHaveBeenCalled();
@@ -99,7 +99,7 @@ describe('TlsPolicyAgent', () => {
     mockCtValidator.shouldRun.mockReturnValue(false);
     mockOcspValidator.shouldRun.mockReturnValue(false);
 
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     const callback = jest.fn((err, stream) => {
       expect(err).toBeNull();
       expect(stream).toBe(mockSocket);
@@ -126,7 +126,7 @@ describe('TlsPolicyAgent', () => {
     mockCtValidator.validate.mockReturnValue(ctPromise);
     mockOcspValidator.validate.mockReturnValue(ocspPromise);
 
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     const callback = jest.fn();
 
     agent.createConnection({}, callback);
@@ -144,7 +144,7 @@ describe('TlsPolicyAgent', () => {
     mockCtValidator.shouldRun.mockReturnValue(true);
     mockCtValidator.validate.mockRejectedValue(validationError);
 
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     const callback = jest.fn();
 
     agent.createConnection({}, callback);
@@ -167,7 +167,7 @@ describe('TlsPolicyAgent', () => {
     mockCtValidator.onBeforeConnect.mockReturnValue(ctModifiedOpts);
     mockOcspValidator.onBeforeConnect.mockReturnValue(ocspModifiedOpts);
 
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     agent.createConnection(initialConnOpts, jest.fn());
 
     expect(mockCtValidator.onBeforeConnect).toHaveBeenCalledWith(initialConnOpts);
@@ -176,7 +176,7 @@ describe('TlsPolicyAgent', () => {
   });
 
   test('should handle socket errors during connection setup', (done) => {
-    const agent = new TlsPolicyAgent(baseOptions);
+    const agent = new HardenedHttpsAgent(baseOptions);
     const connectionError = new Error('TLS connection failed');
 
     const callback = jest.fn((err, stream) => {

@@ -1,6 +1,6 @@
 import type { OCSPPolicy } from '../src/interfaces';
 import * as tls from 'node:tls';
-import { loadTestCertsChain, getTestTlsPolicyAgent } from './utils';
+import { loadTestCertsChain, getTestHardenedHttpsAgent } from './utils';
 import { createMockSocket, createMockPeerCertificate } from './utils/createMock';
 import * as easyOcsp from 'easy-ocsp';
 import { OCSPStaplingValidator } from '../src/validators';
@@ -51,7 +51,7 @@ describe('OCSP stapling validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failHardPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeNull();
       expect(socket).toBe(mockSocket);
@@ -69,7 +69,7 @@ describe('OCSP stapling validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failHardPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
 
     // Simulate the secureConnect event on the next tick
     process.nextTick(() => mockSocket.emit('secureConnect'));
@@ -85,7 +85,7 @@ describe('OCSP stapling validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failSoftPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeNull();
       expect(socket).toBe(mockSocket);
@@ -99,7 +99,7 @@ describe('OCSP stapling validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failHardPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
       expect(err?.message).toBe('[OCSPStaplingValidator] Empty OCSP stapling response.');
@@ -114,7 +114,7 @@ describe('OCSP stapling validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failHardPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
       expect(err?.message).toBe('[OCSPStaplingValidator] Certificate is revoked. Status: revoked.');
@@ -130,7 +130,7 @@ describe('OCSP stapling validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failSoftPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
       expect(err?.message).toBe('[OCSPStaplingValidator] Certificate is revoked. Status: revoked.');
@@ -147,7 +147,7 @@ describe('OCSP stapling validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failHardPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
       expect(err?.message).toBe(`[OCSPStaplingValidator] ${parsingError.message}`);
@@ -164,7 +164,7 @@ describe('OCSP stapling validation', () => {
     } as unknown as tls.DetailedPeerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: failHardPolicy });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
     agent.createConnection({ ...agent.options }, (err) => {
       expect(err).not.toBeNull();
       expect(err?.message).toBe('[OCSPStaplingValidator] Could not find issuer certificate in the chain.');
@@ -179,7 +179,7 @@ describe('OCSP stapling validation', () => {
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const ocspValidatorSpy = jest.spyOn(OCSPStaplingValidator.prototype, 'validate');
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: undefined });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: undefined });
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeNull();
       expect(socket).toBe(mockSocket);
@@ -195,7 +195,7 @@ describe('OCSP stapling validation', () => {
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const ocspValidatorSpy = jest.spyOn(OCSPStaplingValidator.prototype, 'validate');
 
-    const agent = getTestTlsPolicyAgent({ ocspPolicy: { mode: 'direct', failHard: true } });
+    const agent = getTestHardenedHttpsAgent({ ocspPolicy: { mode: 'direct', failHard: true } });
     agent.createConnection({ ...agent.options }, (err, socket) => {
       expect(err).toBeNull();
       expect(socket).toBe(mockSocket);

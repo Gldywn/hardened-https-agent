@@ -1,7 +1,7 @@
 import * as tls from 'tls';
 import { convertToPkijsCert } from 'easy-ocsp';
 import { BaseValidator } from './base';
-import { TlsPolicyAgentOptions } from '../interfaces';
+import { HardenedHttpsAgentOptions } from '../interfaces';
 import { getLeafAndIssuerCertificates } from '../utils';
 import { Buffer } from 'buffer';
 import { CRLSet, loadLatestCRLSet, RevocationStatus } from '@gldywn/crlset.js';
@@ -11,7 +11,7 @@ export class CRLSetValidator extends BaseValidator {
   /**
    * This validator should only run if the crlSet option is provided.
    */
-  public shouldRun(options: TlsPolicyAgentOptions): boolean {
+  public shouldRun(options: HardenedHttpsAgentOptions): boolean {
     return !!options.crlSet;
   }
 
@@ -19,7 +19,7 @@ export class CRLSetValidator extends BaseValidator {
    * Checks the revocation status of the server's certificate using a specified CRLSet.
    * If the check fails, the connection is aborted.
    */
-  public validate(socket: tls.TLSSocket, options: TlsPolicyAgentOptions): Promise<void> {
+  public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
     const maybeCrlSet = options.crlSet!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {

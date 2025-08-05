@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as tls from 'node:tls';
 import { Duplex } from 'stream';
-import { getTestTlsPolicyAgent } from './utils';
+import { getTestHardenedHttpsAgent } from './utils';
 
 jest.mock('node:tls');
 
@@ -11,7 +11,7 @@ describe('Axios integration', () => {
   });
 
   it("should route requests through the agent's createConnection method", async () => {
-    const agent = getTestTlsPolicyAgent();
+    const agent = getTestHardenedHttpsAgent();
     const createConnectionSpy = jest.spyOn(agent, 'createConnection');
 
     jest.spyOn(tls, 'connect').mockImplementation(((options: tls.ConnectionOptions) => {

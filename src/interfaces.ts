@@ -2,7 +2,7 @@ import type { AgentOptions } from 'node:https';
 import type { UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from './types/uni-ct-log-list-schema';
 import type { CRLSet } from '@gldywn/crlset.js';
 
-export interface TlsPolicyAgentOptions extends AgentOptions {
+export interface HardenedHttpsAgentOptions extends AgentOptions {
   /**
    * A required list of trusted CA certificates for the agent.
    *

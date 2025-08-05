@@ -1,42 +1,42 @@
 import { Agent } from 'node:https';
 import tls from 'node:tls';
 import type { Duplex } from 'node:stream';
-import { TlsPolicyAgentOptions } from './interfaces';
+import { HardenedHttpsAgentOptions } from './interfaces';
 import { BaseValidator } from './validators/base';
 import { CTValidator, OCSPStaplingValidator, OCSPDirectValidator, CRLSetValidator } from './validators';
 
 /* istanbul ignore next */
 export class Logger {
-  private options: TlsPolicyAgentOptions;
-  constructor(options: TlsPolicyAgentOptions) {
+  private options: HardenedHttpsAgentOptions;
+  constructor(options: HardenedHttpsAgentOptions) {
     this.options = options;
   }
 
   public log(message: string, ...args: any[]): void {
     if (this.options.enableLogging) {
-      console.log(`[Debug] TlsPolicyAgent: ${message}`, ...args);
+      console.log(`[Debug] HardenedHttpsAgent: ${message}`, ...args);
     }
   }
 
   public warn(message: string, ...args: any[]): void {
     if (this.options.enableLogging) {
-      console.warn(`[Warning] TlsPolicyAgent: ${message}`, ...args);
+      console.warn(`[Warning] HardenedHttpsAgent: ${message}`, ...args);
     }
   }
 
   public error(message: string, ...args: any[]): void {
     if (this.options.enableLogging) {
-      console.error(`[Error] TlsPolicyAgent: ${message}`, ...args);
+      console.error(`[Error] HardenedHttpsAgent: ${message}`, ...args);
     }
   }
 }
 
-export class TlsPolicyAgent extends Agent {
-  #options: TlsPolicyAgentOptions;
+export class HardenedHttpsAgent extends Agent {
+  #options: HardenedHttpsAgentOptions;
   #logger: Logger;
   #validators: BaseValidator[];
 
-  constructor(options: TlsPolicyAgentOptions) {
+  constructor(options: HardenedHttpsAgentOptions) {
     super(options);
     this.#options = options;
     if (!this.#options.ca || (Array.isArray(this.#options.ca) && this.#options.ca.length === 0)) {

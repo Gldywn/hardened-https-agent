@@ -1,2 +1,2 @@
-export { TlsPolicyAgent } from './agent';
-export type { TlsPolicyAgentOptions, CertificateTransparencyPolicy, OCSPPolicy } from './interfaces';
+export { HardenedHttpsAgent } from './agent';
+export type { HardenedHttpsAgentOptions, CertificateTransparencyPolicy, OCSPPolicy } from './interfaces';

@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import { Certificate } from 'pkijs';
 import { fromBER } from 'asn1js';
 import { getTestDataDir } from '../../scripts/utils';
-import { TlsPolicyAgent, CertificateTransparencyPolicy, OCSPPolicy } from '../../src';
+import { HardenedHttpsAgent, CertificateTransparencyPolicy, OCSPPolicy } from '../../src';
 import { CRLSet } from '@gldywn/crlset.js';
 
 export { createMockSocket, createMockPeerCertificate } from './createMock';
@@ -50,16 +50,16 @@ export const DEFAULT_CT_POLICY = {
 export const CFSSL_CA_BUNDLE = loadTestCaBundle();
 
 /**
- * Creates a pre-configured `TlsPolicyAgent` for testing purposes.
+ * Creates a pre-configured `HardenedHttpsAgent` for testing purposes.
  *
  * By default, it is pre-configured with the Cloudflare CA, which is retrieved
  * from `testdata/ca-bundle.crt` and updated via the `fetch-test-ca-bundle.ts` script.
  * The default Certificate Transparency (CT) policy is set to Chrome's requirements,
  * and logging is disabled. All properties can be overridden for specific test needs.
  *
- * @returns A pre-configured `TlsPolicyAgent` for testing.
+ * @returns A pre-configured `HardenedHttpsAgent` for testing.
  */
-export function getTestTlsPolicyAgent(
+export function getTestHardenedHttpsAgent(
   options: {
     ca?: string | Buffer | (string | Buffer)[];
     ctPolicy?: CertificateTransparencyPolicy | undefined;
@@ -70,7 +70,7 @@ export function getTestTlsPolicyAgent(
 ) {
   const { ca = CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSet, enableLogging = false } = options;
 
-  return new TlsPolicyAgent({
+  return new HardenedHttpsAgent({
     ca,
     ctPolicy,
     ocspPolicy,

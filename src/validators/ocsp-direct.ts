@@ -1,14 +1,14 @@
 import * as tls from 'tls';
 import { convertToPkijsCert, getCertStatus, getCertURLs, OCSPStatusConfig } from 'easy-ocsp';
 import { BaseValidator } from './base';
-import { TlsPolicyAgentOptions } from '../interfaces';
+import { HardenedHttpsAgentOptions } from '../interfaces';
 import { getLeafAndIssuerCertificates } from '../utils';
 
 export class OCSPDirectValidator extends BaseValidator {
   /**
    * This validator should only run if the ocspPolicy mode is 'direct'.
    */
-  public shouldRun(options: TlsPolicyAgentOptions): boolean {
+  public shouldRun(options: HardenedHttpsAgentOptions): boolean {
     return options.ocspPolicy?.mode === 'direct';
   }
 
@@ -16,7 +16,7 @@ export class OCSPDirectValidator extends BaseValidator {
    * Performs a direct OCSP request to check the revocation status of the server's certificate.
    * If the check fails, the connection is aborted if `failHard` is true.
    */
-  public validate(socket: tls.TLSSocket, options: TlsPolicyAgentOptions): Promise<void> {
+  public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
     const ocspPolicy = options.ocspPolicy!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {

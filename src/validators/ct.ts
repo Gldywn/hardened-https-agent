@@ -1,6 +1,6 @@
 import * as tls from 'tls';
 import { BaseValidator } from './base';
-import { CertificateTransparencyPolicy, TlsPolicyAgentOptions } from '../interfaces';
+import { CertificateTransparencyPolicy, HardenedHttpsAgentOptions } from '../interfaces';
 import { verifySct, SCT_EXTENSION_OID_V1, ENTRY_TYPE, reconstructPrecert } from '@gldywn/sct.js';
 import { Certificate, Extension } from 'pkijs';
 import { fromBER, OctetString } from 'asn1js';
@@ -10,7 +10,7 @@ export class CTValidator extends BaseValidator {
   /**
    * This validator should only run if a `ctPolicy` is defined in the options.
    */
-  public shouldRun(options: TlsPolicyAgentOptions): boolean {
+  public shouldRun(options: HardenedHttpsAgentOptions): boolean {
     return !!options.ctPolicy;
   }
 
@@ -20,7 +20,7 @@ export class CTValidator extends BaseValidator {
    * verifies them against known CT logs, and evaluates compliance with the configured CT policy.
    * If CT validation passes, the promise resolves; if it fails, the promise rejects with an error.
    */
-  public validate(socket: tls.TLSSocket, options: TlsPolicyAgentOptions): Promise<void> {
+  public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
     return new Promise((resolve, reject) => {
       socket.once('secureConnect', () => {
         this.log('Secure connection established, performing validation...');
