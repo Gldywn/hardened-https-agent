@@ -27,7 +27,7 @@ The primary motivation for `hardened-https-agent` lies in what Node.js _omits_ f
 - **OCSP (Online Certificate Status Protocol)**: Node.js can request an OCSP staple from the server (`requestOCSP` option), which is a signed assertion of the certificate's status from the CA. However, Node.js only provides the raw OCSP response to the developer. It is up to the application code to parse the response, verify its signature, and act on the status (e.g., terminate the connection if `revoked`). It does not do this automatically.
 - **CRLSet/CRLite**: Modern browsers like Google Chrome use aggregated, compressed lists of revoked certificates (CRLSet) to quickly block known-bad certificates without the high overhead of traditional CRL/OCSP checks. Node.js has no equivalent mechanism.
 
-**This is where `hardened-https-agent` steps in**, using libraries like `crlset.js` to integrate fast, efficient, and modern revocation checks into the connection process.
+**This is where `hardened-https-agent` steps in**, handling both OCSP stapling (via [`easy-ocsp`](https://github.com/timokoessler/easy-ocsp)) and modern CRLSet-based checks (via [`crlset.js`](https://github.com/Gldywn/crlset.js)) to provide comprehensive revocation coverage.
 
 ### 2. No Certificate Transparency (CT) Enforcement
 
@@ -35,7 +35,7 @@ The primary motivation for `hardened-https-agent` lies in what Node.js _omits_ f
 
 **Node.js does not perform any Certificate Transparency checks.** A certificate that would be rejected by Chrome for lacking valid SCTs will be accepted by a default Node.js HTTPS client.
 
-**`hardened-https-agent` solves this problem** by leveraging libraries like `sct.js` to parse, verify, and enforce a configurable Certificate Transparency policy on all TLS connections, ensuring that only publicly logged and audited certificates are trusted.
+**`hardened-https-agent` solves this problem** by leveraging libraries like [`sct.js`](https://github.com/Gldywn/sct.js) to parse, verify, and enforce a configurable Certificate Transparency policy on all TLS connections, ensuring that only publicly logged and audited certificates are trusted.
 
 ### 3. Enforced Custom Trust Store
 

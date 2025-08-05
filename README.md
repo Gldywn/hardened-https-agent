@@ -38,7 +38,7 @@ For a detailed technical explanation of the gaps in Node.js's default behavior, 
 
 ## Use Cases
 
-This agent is designed for any Node.js application or library that needs to **reliably verify the authenticity of a remote server**. Its primary goal is to protect against connecting to servers using _revoked or mis-issued certificates_—a check that Node.js does not perform by default. It is essential for securing backend services, hardening client libraries (like SDKs), or protecting applications in zero-trust environments like TEEs or AI agents. The library ships with a **set of pre-defined policies** for common needs, while **also providing complete control to create a tailored policy** that fits your exact security requirements.
+This agent is designed for any Node.js application or library that needs to **reliably verify the authenticity of a remote server**. Its primary goal is to protect against connecting to servers using _revoked or mis-issued certificates_, a check that Node.js does not perform by default. It is essential for securing backend services, hardening client libraries (like SDKs), or protecting applications in trust-minimized environments like TEEs or AI agents. The library ships with a **set of pre-defined policies** for common needs, while **also providing complete control to create a tailored policy** that fits your exact security requirements.
 
 ## Features
 
@@ -66,39 +66,9 @@ npm install hardened-https-agent
 
 _Coming soon..._
 
-## Testing
+## Contributing
 
-This project includes a comprehensive test suite to ensure correctness and stability.
-
-### Updating Test Data
-
-The repository includes pre-fetched test data. To update these fixtures, run:
-
-```sh
-npm run test:update-test-data
-```
-
-### Running Tests
-
-This project includes both unit and end-to-end tests. Unit tests are self-contained and run locally, while end-to-end tests perform live requests and may be unstable due to network conditions or remote server configuration changes.
-
-#### Unit Tests
-
-To run the unit tests:
-
-```sh
-npm test
-```
-
-#### End-to-End Tests
-
-To run the end-to-end tests:
-
-```sh
-npm run test:e2e
-```
-
-Note: Due to their reliance on external network conditions, these tests are not executed in CI environments.
+Contributions are more than welcome! Please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file for detailed guidelines on how to get started.
 
 ## Related Works
 
