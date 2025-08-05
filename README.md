@@ -34,7 +34,7 @@ It is a drop-in replacement that works with any library supporting the standard 
 | **Certificate Integrity**     |                                 |                             |
 | Certificate Transparency (CT) |               ❌                |             ✅              |
 
-For a detailed technical explanation of the gaps in Node.js's default behavior, see [Why a Hardened Agent?](./BACKGROUND.md).
+> For a detailed technical explanation of the gaps in Node.js's default behavior, **see [Why a Hardened Agent?](./BACKGROUND.md)**.
 
 ## Use Cases
 
@@ -68,7 +68,9 @@ _Coming soon..._
 
 ## Contributing
 
-Contributions are more than welcome! Please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file for detailed guidelines on how to get started.
+We welcome contributions of all kinds! A great place to start is by checking out the [Roadmap](#roadmap) for planned features or looking at the open [issues](https://github.com/Gldywn/hardened-https-agent/issues) for bugs and feature requests.
+
+Before you get started, please take a moment to review our **[CONTRIBUTING.md](./CONTRIBUTING.md)** guide, which contains all the information you need to set up your environment and submit your changes.
 
 ## Related Works
 
