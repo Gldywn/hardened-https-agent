@@ -48,11 +48,11 @@ This agent is designed for any Node.js application or library that needs to **re
 - [x] **[Certificate Transparency (CT)](https://certificate.transparency.dev/)** (via Embedded SCTs)
 - [x] **[OCSP "Stapling"](https://en.wikipedia.org/wiki/OCSP_stapling)** (Checks the OCSP response provided by the server during the TLS handshake)
 - [x] **[OCSP "Direct"](https://fr.wikipedia.org/wiki/Online_Certificate_Status_Protocol)** (Client sends an OCSP request directly to the CA)
+- [x] **[OCSP "Mixed"]** (Use OCSP Stapling with a fallback to a direct OCSP request if the staple is not provided or fails.)
 - [x] **[CRLSet](https://www.chromium.org/Home/chromium-security/crlsets/)** (Fast and efficient revocation checks using Google Chrome's aggregated CRL lists)
 
 ### Roadmap
 
-- [ ] **Hybrid OCSP Mode**: Use OCSP Stapling with a fallback to a direct OCSP request if the staple is not provided or if stapling fails.
 - [ ] **[Classic CRLs](https://en.wikipedia.org/wiki/Certificate_revocation_list)**: Support for checking CRLs from Distribution Points extracted from the certificate.
 - [ ] **Enforce CT Pre-Publication**: Add an option to require that certificates have been publicly logged in CT for a minimum duration before being trusted, making mis-issuance nearly impossible.
 - [ ] **[CRLite](https://blog.mozilla.org/security/2020/01/09/crlite-part-1-all-web-pki-revocations-compressed/)**: Support for lightweight, aggregated CRLs (an alternative to Chrome's CRLSet, developed by Mozilla).
