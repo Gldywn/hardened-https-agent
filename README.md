@@ -9,6 +9,7 @@ A security-first `https.Agent` for Node.js with advanced certificate validation:
 [![Build Status](https://github.com/Gldywn/hardened-https-agent/actions/workflows/build.yml/badge.svg)](https://github.com/Gldywn/hardened-https-agent/actions/workflows/build.yml)
 [![Coverage Status (codecov.io)](https://codecov.io/gh/Gldywn/hardened-https-agent/branch/main/graph/badge.svg)](https://codecov.io/gh/Gldywn/hardened-https-agent)
 [![npm](https://img.shields.io/npm/v/hardened-https-agent.svg)](https://www.npmjs.com/package/hardened-https-agent)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## What is hardened-https-agent?
 
@@ -18,7 +19,7 @@ This behavior is, in fact, (more or less) intentional. As explained in the Node.
 
 This is where `hardened-https-agent` comes in: an enhanced `https.Agent` for Node.js that does the heavy lifting to bridge this gap, providing modern security policies for your outbound TLS connections.
 
-It is a drop-in replacement that works with any library supporting the standard `https.Agent`, including [`axios`](https://axios-http.com/), [`got`](https://github.com/sindresorhus/got), [`node-fetch`](https://github.com/node-fetch/node-fetch), [`needle`](https://github.com/tomas/needle), and [`superagent`](https://github.com/forwardemail/superagent).
+It is a drop-in replacement that works with any library supporting the standard `https.Agent`, including [`axios`](https://axios-http.com/), [`got`](https://github.com/sindresorhus/got), [`node-fetch`](https://github.com/node-fetch/node-fetch), [`needle`](https://github.com/tomas/needle), and more.
 
 ### Default Node.js Behavior vs. `hardened-https-agent`
 

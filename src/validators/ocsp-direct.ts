@@ -1,10 +1,8 @@
 import * as tls from 'tls';
-import { convertToPkijsCert, getCertStatus, getCertURLs, OCSPStatusConfig } from 'easy-ocsp';
-import { BaseValidator } from './base';
 import { HardenedHttpsAgentOptions } from '../interfaces';
-import { getLeafAndIssuerCertificates } from '../utils';
+import { OCSPBaseValidator } from './ocsp-base';
 
-export class OCSPDirectValidator extends BaseValidator {
+export class OCSPDirectValidator extends OCSPBaseValidator {
   /**
    * This validator should only run if the ocspPolicy mode is 'direct'.
    */
@@ -17,34 +15,18 @@ export class OCSPDirectValidator extends BaseValidator {
    * If the check fails, the connection is aborted if `failHard` is true.
    */
   public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
-    const ocspPolicy = options.ocspPolicy!; // Safe due to shouldRun check
+    const { failHard } = options.ocspPolicy!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {
       socket.once('secureConnect', async () => {
-        this.log('Secure connection established, performing validation...');
+        this.log('Secure connection established, performing direct OCSP validation...');
 
         try {
-          const { leafCert, issuerCert } = getLeafAndIssuerCertificates(socket);
-          const leafCertPki = convertToPkijsCert(leafCert.raw);
-
-          const ocspConfig: OCSPStatusConfig = {
-            ca: issuerCert.raw,
-          };
-
-          const ocspResponse = await getCertStatus(leafCertPki, ocspConfig);
-          if (ocspResponse.status !== 'good') {
-            return reject(this.wrapError(new Error(`Certificate is revoked. Status: ${ocspResponse.status}.`)));
-          }
-
+          await this._performDirectOCSPCheck(socket);
           this.log(`Certificate is not revoked.`);
           resolve();
         } catch (err: any) {
-          if (ocspPolicy.failHard) {
-            reject(this.wrapError(err));
-          } else {
-            this.warn(`Failed to validate certificate revocation status: ${err.message}.`);
-            resolve();
-          }
+          this._handleOCSPError(err, failHard, reject, resolve);
         }
       });
     });

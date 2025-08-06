@@ -3,7 +3,13 @@ import tls from 'node:tls';
 import type { Duplex } from 'node:stream';
 import { HardenedHttpsAgentOptions } from './interfaces';
 import { BaseValidator } from './validators/base';
-import { CTValidator, OCSPStaplingValidator, OCSPDirectValidator, CRLSetValidator } from './validators';
+import {
+  CTValidator,
+  OCSPStaplingValidator,
+  OCSPDirectValidator,
+  OCSPMixedValidator,
+  CRLSetValidator,
+} from './validators';
 
 /* istanbul ignore next */
 export class Logger {
@@ -49,6 +55,7 @@ export class HardenedHttpsAgent extends Agent {
       new CTValidator(this.#logger),
       new OCSPStaplingValidator(this.#logger),
       new OCSPDirectValidator(this.#logger),
+      new OCSPMixedValidator(this.#logger),
       new CRLSetValidator(this.#logger),
     ];
   }

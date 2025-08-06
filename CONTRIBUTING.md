@@ -17,7 +17,7 @@ There are many ways to contribute, and all are appreciated:
 To get started, clone the repository and install the dependencies:
 
 ```sh
-git clone https://github.com/YOUR_USERNAME/hardened-https-agent.git
+git clone https://github.com/Gldywn/hardened-https-agent.git
 cd hardened-https-agent
 npm install
 ```

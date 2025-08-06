@@ -1,10 +1,8 @@
 import * as tls from 'tls';
-import { BaseValidator } from './base';
 import { HardenedHttpsAgentOptions } from '../interfaces';
-import { convertToPkijsCert, getCertURLs, parseOCSPResponse, type OCSPStatusConfig } from 'easy-ocsp';
-import { getLeafAndIssuerCertificates } from '../utils';
+import { OCSPBaseValidator } from './ocsp-base';
 
-export class OCSPStaplingValidator extends BaseValidator {
+export class OCSPStaplingValidator extends OCSPBaseValidator {
   /**
    * Overrides the base implementation to set the `requestOCSP` option to `true`,
    * which is required to trigger the 'OCSPResponse' event on the TLS socket.
@@ -28,7 +26,7 @@ export class OCSPStaplingValidator extends BaseValidator {
    * If no OCSP staple is received, applies the OCSP stapling policy to determine whether to fail or allow the connection.
    */
   public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
-    const ocspPolicy = options.ocspPolicy!; // Safe due to shouldRun check
+    const { failHard } = options.ocspPolicy!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {
       let ocspReceived = false;
@@ -37,47 +35,20 @@ export class OCSPStaplingValidator extends BaseValidator {
         this.log('OCSP stapling response received, performing validation...');
         ocspReceived = true;
 
-        if (!response || response.length === 0) {
-          return reject(this.wrapError(new Error('Empty OCSP stapling response.')));
-        }
-
         try {
-          const { leafCert, issuerCert } = getLeafAndIssuerCertificates(socket);
-          const leafCertPki = convertToPkijsCert(leafCert.raw);
-          const issuerCertPki = convertToPkijsCert(issuerCert.raw);
-
-          const ocspConfig: OCSPStatusConfig = {
-            ca: issuerCert.raw,
-            // Nonce must be disabled for OCSP stapling to allow the use of cached OCSP responses.
-            enableNonce: false,
-          };
-
-          const ocspResponse = await parseOCSPResponse(response, leafCertPki, issuerCertPki, ocspConfig, null);
-          if (ocspResponse.status !== 'good') {
-            return reject(this.wrapError(new Error(`Certificate is revoked. Status: ${ocspResponse.status}.`)));
-          }
-
+          await this._validateStapledResponse(response, socket);
           this.log(`Certificate is not revoked.`);
           resolve();
         } catch (err: any) {
-          if (ocspPolicy.failHard) {
-            reject(this.wrapError(err));
-          } else {
-            this.warn(`Failed to validate certificate revocation status: ${err.message}.`);
-            resolve();
-          }
+          this._handleOCSPError(err, failHard, reject, resolve);
         }
       });
 
       // Handle the case where the server doesn't send an OCSP staple.
       socket.once('secureConnect', () => {
         if (!ocspReceived) {
-          if (ocspPolicy.failHard) {
-            reject(this.wrapError(new Error('OCSP stapling response required but not received.')));
-          } else {
-            this.warn('OCSP stapling response expected but not received.');
-            resolve();
-          }
+          const err = new Error('OCSP stapling response required but not received.');
+          this._handleOCSPError(err, failHard, reject, resolve);
         }
       });
     });
