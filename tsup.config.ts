@@ -7,4 +7,8 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+  loader: {
+    '.json': 'json',
+    '.crt': 'text',
+  },
 });

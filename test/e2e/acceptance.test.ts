@@ -4,11 +4,14 @@ import {
   basicCtPolicy,
   basicDirectOcspPolicy,
   basicStaplingOcspPolicy,
-  cfsslCaBundle,
   HardenedHttpsAgent,
   type HardenedHttpsAgentOptions,
 } from '../../src';
 import { spoofedAxios } from '../utils/spoofedAxios';
+import { basicMixedOcspPolicy, defaultAgentOptions } from '../../src/default-options';
+
+// @ts-ignore
+import cfsslCaBundle from '../../src/resources/cfssl-ca-bundle.crt';
 
 // Note: This test file is not completely stable because it relies on network.
 // If the remote server (e.g. google.com) updates its certificates and our local CA bundle becomes outdated,
@@ -23,6 +26,11 @@ interface AcceptanceScenario {
 }
 
 const SCENARIOS: AcceptanceScenario[] = [
+  {
+    domains: ['https://google.com', 'https://github.com', 'https://microsoft.com', 'https://bitcoin.org'],
+    behaviorDescription: 'Default Agent Options',
+    agentOptions: defaultAgentOptions(),
+  },
   {
     domains: ['https://google.com', 'https://github.com', 'https://microsoft.com', 'https://bitcoin.org'],
     behaviorDescription: 'Certificate Transparency',
@@ -45,10 +53,16 @@ const SCENARIOS: AcceptanceScenario[] = [
       ocspPolicy: basicDirectOcspPolicy(),
     },
   },
+  {
+    domains: ['https://google.com', 'https://github.com', 'https://microsoft.com', 'https://bitcoin.org'],
+    behaviorDescription: 'OCSP Mixed',
+    agentOptions: {
+      ocspPolicy: basicMixedOcspPolicy(),
+    },
+  },
   /*
    TODO: Add scenarios for:
    - CRLs and CRLSet (need to find a way to test this against live targets)
-   - `defaultAgentOptions` (when `basicMixedOcspPolicy()` is implemented)
   */
 ];
 
@@ -58,11 +72,10 @@ describe('End-to-end policy validation on known acceptance scenarios', () => {
   test.each(SCENARIOS)(
     '$behaviorDescription: should successfully connect to $domains',
     async ({ domains, behaviorDescription, agentOptions }) => {
-      console.log(`[E2E] Starting test: ${behaviorDescription} should successfully connect to ${domains}`);
-      await delay(1500); // Avoid network congestion and rate limiting
+      console.log(`[E2E] Starting test: ${behaviorDescription} should successfully connect to: ${domains}`);
 
       const agent = new HardenedHttpsAgent({
-        ca: cfsslCaBundle(),
+        ca: cfsslCaBundle,
         ...agentOptions,
         enableLogging: true,
       });
@@ -72,10 +85,11 @@ describe('End-to-end policy validation on known acceptance scenarios', () => {
       };
 
       for (const domain of domains) {
+        await delay(1500); // Avoid network congestion and rate limiting
         try {
           const response = await spoofedAxios.get(domain, config);
           expect(response.status).toBe(200);
-          console.log(`[E2E] ${behaviorDescription} successfully connected to ${domain}`);
+          console.log(`[E2E] ${behaviorDescription} successfully connected to ${domain}.`);
         } catch (error: any) {
           if (axios.isAxiosError(error) && !error.response && error.code) {
             console.warn(

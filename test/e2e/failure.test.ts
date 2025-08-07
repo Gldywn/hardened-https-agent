@@ -5,9 +5,12 @@ import { HardenedHttpsAgent, type HardenedHttpsAgentOptions } from '../../src';
 import {
   basicCtPolicy,
   basicDirectOcspPolicy,
+  basicMixedOcspPolicy,
   basicStaplingOcspPolicy,
-  cfsslCaBundle,
 } from '../../src/default-options';
+
+// @ts-ignore
+import cfsslCaBundle from '../../src/resources/cfssl-ca-bundle.crt';
 
 // Note: This test file is not completely stable because it relies on network.
 // If the remote server (e.g. google.com) updates its certificates and our local CA bundle becomes outdated,
@@ -65,6 +68,13 @@ const SCENARIOS: FailureScenario[] = [
     agentOptions: { ocspPolicy: basicDirectOcspPolicy() },
   },
   {
+    domain: 'https://revoked.badssl.com/',
+    behaviorDescription: 'OCSP Direct',
+    failureDescription: 'a revoked certificate',
+    expectedError: /\[OCSPMixedValidator\] Certificate does not contain OCSP url/,
+    agentOptions: { ocspPolicy: basicMixedOcspPolicy() },
+  },
+  {
     domain: 'https://no-sct.badssl.com/',
     behaviorDescription: 'Certificate Transparency',
     failureDescription: 'a certificate without any SCTs',
@@ -106,7 +116,7 @@ describe('End-to-end policy validation on known failure scenarios', () => {
       };
 
       await expect(spoofedAxios.get(domain, config)).rejects.toThrow(expectedError);
-      console.log(`[E2E] ${behaviorDescription} successfully rejected ${domain} due to ${failureDescription}`);
+      console.log(`[E2E] ${behaviorDescription} successfully rejected ${domain} due to ${failureDescription}.`);
     },
   );
 });

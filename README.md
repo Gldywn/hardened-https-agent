@@ -48,7 +48,7 @@ This agent is designed for any Node.js application or library that needs to **re
 - [x] **[Certificate Transparency (CT)](https://certificate.transparency.dev/)** (via Embedded SCTs)
 - [x] **[OCSP "Stapling"](https://en.wikipedia.org/wiki/OCSP_stapling)** (Checks the OCSP response provided by the server during the TLS handshake)
 - [x] **[OCSP "Direct"](https://fr.wikipedia.org/wiki/Online_Certificate_Status_Protocol)** (Client sends an OCSP request directly to the CA)
-- [x] **[OCSP "Mixed"]** (Use OCSP Stapling with a fallback to a direct OCSP request if the staple is not provided or fails.)
+- [x] **OCSP "Mixed"** (Use OCSP Stapling with a fallback to a direct OCSP request if the staple is not provided or fails.)
 - [x] **[CRLSet](https://www.chromium.org/Home/chromium-security/crlsets/)** (Fast and efficient revocation checks using Google Chrome's aggregated CRL lists)
 
 ### Roadmap
@@ -75,9 +75,9 @@ Before you get started, please take a moment to review our **[CONTRIBUTING.md](.
 
 ## Related Works
 
-- [**sct.js**](https://github.com/Gldywn/sct.js): SCT.js is a low-level TypeScript library for Node.js that parses and verifies Signed Certificate Timestamps (SCTs).
-- [**crlset.js**](https://github.com/Gldywn/crlset.js): CRLSet.js is a lightweight CRLSet parser and verifier in TypeScript for Node.js. It fetches and parses the latest Chrome CRLSet in memory, with support for checking whether a certificate or its issuer has been revoked.
-- [**easy-ocsp**](https://github.com/timokoessler/easy-ocsp): An easy-to-use OCSP client for Node.js
+- [**@gldywn/sct.js**](https://github.com/Gldywn/sct.js): SCT.js is a low-level TypeScript library for Node.js that parses and verifies Signed Certificate Timestamps (SCTs).
+- [**@gldywn/crlset.js**](https://github.com/Gldywn/crlset.js): CRLSet.js is a lightweight CRLSet parser and verifier in TypeScript for Node.js. It fetches and parses the latest Chrome CRLSet in memory, with support for checking whether a certificate or its issuer has been revoked.
+- [**@timokoessler/easy-ocsp**](https://github.com/timokoessler/easy-ocsp): An easy-to-use OCSP client for Node.js
 
 ## License
 

@@ -1,13 +1,14 @@
 import { HardenedHttpsAgentOptions, type CertificateTransparencyPolicy, type OCSPPolicy } from './interfaces';
 import { type UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from './types/uni-ct-log-list-schema';
-import { loadResFile } from './utils';
+import * as cfsslCaBundle from './resources/cfssl-ca-bundle.crt';
+import unifiedCtLogListJson from './resources/unified-log-list.json';
 
-export const cfsslCaBundle = (): string => loadResFile('cfssl-ca-bundle.crt');
-export const unifiedCtLogList = (): UnifiedCTLogList => JSON.parse(loadResFile('unified-log-list.json'));
+export { cfsslCaBundle };
+export const unifiedCtLogList = unifiedCtLogListJson as UnifiedCTLogList;
 
 export const basicCtPolicy = (): CertificateTransparencyPolicy => {
   return {
-    logList: unifiedCtLogList(),
+    logList: unifiedCtLogList,
     minEmbeddedScts: 2,
     minDistinctOperators: 2,
   };
@@ -27,11 +28,18 @@ export const basicDirectOcspPolicy = (): OCSPPolicy => {
   };
 };
 
+export const basicMixedOcspPolicy = (): OCSPPolicy => {
+  return {
+    mode: 'mixed',
+    failHard: true,
+  };
+};
+
 export const defaultAgentOptions = (): HardenedHttpsAgentOptions => {
   return {
-    ca: cfsslCaBundle(),
+    ca: cfsslCaBundle,
     ctPolicy: basicCtPolicy(),
-    ocspPolicy: undefined, // When ready, we will switch to `basicMixedOcspPolicy()` (Stapling first, then direct if stapling fails, if both fail, fail hard)
+    ocspPolicy: basicMixedOcspPolicy(),
     crlSet: 'downloadLatest',
     enableLogging: false,
   };

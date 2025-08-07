@@ -5,7 +5,7 @@ export function getTestDataDir(): string {
 }
 
 export function getResDir(): string {
-  return join(__dirname, '..', 'resources');
+  return join(__dirname, '..', 'src', 'resources');
 }
 
 export function getSchemaDir(): string {
