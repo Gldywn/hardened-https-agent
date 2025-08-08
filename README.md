@@ -9,7 +9,7 @@ A security-first `https.Agent` for Node.js with advanced certificate validation:
 [![Build Status](https://github.com/Gldywn/hardened-https-agent/actions/workflows/build.yml/badge.svg)](https://github.com/Gldywn/hardened-https-agent/actions/workflows/build.yml)
 [![Coverage Status (codecov.io)](https://codecov.io/gh/Gldywn/hardened-https-agent/branch/main/graph/badge.svg)](https://codecov.io/gh/Gldywn/hardened-https-agent)
 [![npm](https://img.shields.io/npm/v/hardened-https-agent.svg)](https://www.npmjs.com/package/hardened-https-agent)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## What is hardened-https-agent?
 
