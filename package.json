@@ -16,7 +16,11 @@
     "test:coverage": "npm run test -- --coverage",
     "build": "tsup",
     "generate:schema": "tsx scripts/generate-unified-ct-log-list-schema.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "example:axios": "npm run build && tsx examples/axios.ts",
+    "example:got": "npm run build && tsx examples/got.ts",
+    "example:https": "npm run build && tsx examples/https-native.ts",
+    "example:custom": "npm run build && tsx examples/custom-options.ts"
   },
   "repository": {
     "type": "git",
@@ -35,6 +39,7 @@
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "axios": "^1.10.0",
+    "got": "^14.4.4",
     "jest": "^30.0.4",
     "json-schema-merge-allof": "^0.8.1",
     "json-schema-to-typescript": "^15.0.4",
