@@ -1,5 +1,5 @@
 export { HardenedHttpsAgent } from './agent';
-export type { HardenedHttpsAgentOptions, CertificateTransparencyPolicy, OCSPPolicy } from './interfaces';
+export type { HardenedHttpsAgentOptions, CertificateTransparencyPolicy, OCSPPolicy, CRLSetPolicy } from './interfaces';
 
 export {
   cfsslCaBundle,
@@ -7,5 +7,6 @@ export {
   basicCtPolicy,
   basicStaplingOcspPolicy,
   basicDirectOcspPolicy,
+  basicCrlSetPolicy,
   defaultAgentOptions,
 } from './default-options';

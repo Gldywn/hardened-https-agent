@@ -26,16 +26,17 @@ It is a drop-in replacement that works with any library supporting the standard 
 | Verification Check            | Default Node.js (`https.Agent`) |   `hardened-https-agent`    |
 | ----------------------------- | :-----------------------------: | :-------------------------: |
 | **Trust Model**               |                                 |                             |
-| Custom CA Store               |    ⚠️ (Optional `ca` prop.)     | ✅ (Enforced, with helpers) |
+| [Custom CA Store](https://en.wikipedia.org/wiki/Root_certificate)               |    ⚠️ (Optional `ca` prop.)     | ✅ (Enforced, with helpers) |
 | **Certificate Revocation**    |                                 |                             |
-| OCSP Stapling                 | ⚠️ (Raw staple, not validated)  |             ✅              |
-| OCSP Direct                   |               ❌                |             ✅              |
-| CRLs                          |    ⚠️ (Manual CRL file only)    |             ✅              |
-| CRLSet                        |               ❌                |             ✅              |
+| [OCSP Stapling](https://en.wikipedia.org/wiki/OCSP_stapling)                 | ⚠️ (Raw staple, not validated)  |             ✅              |
+| [OCSP Direct](https://fr.wikipedia.org/wiki/Online_Certificate_Status_Protocol)                   |               ❌                |             ✅              |
+| [CRLs](https://en.wikipedia.org/wiki/Certificate_revocation_list)                          |    ⚠️ (Manual CRL file only)    |         ⏳ (Planned)         |
+| [CRLSet](https://www.chromium.org/Home/chromium-security/crlsets/)                        |               ❌                |             ✅              |
+| [CRLite](https://blog.mozilla.org/security/2020/01/09/crlite-part-1-all-web-pki-revocations-compressed/)                        |               ❌                |         ⏳ (Planned)         |
 | **Certificate Integrity**     |                                 |                             |
-| Certificate Transparency (CT) |               ❌                |             ✅              |
+| [Certificate Transparency (CT)](https://certificate.transparency.dev/) |               ❌                |             ✅              |
 
-> For a detailed technical explanation of the gaps in Node.js's default behavior, **see [Why a Hardened Agent?](./BACKGROUND.md)**.
+> For a detailed technical explanation of the gaps in Node.js's default behavior, **see [Why a Hardened Agent?](./BACKGROUND.md)**
 
 ## Use Cases
 
@@ -45,17 +46,17 @@ This agent is designed for any Node.js application or library that needs to **re
 
 ### Implemented
 
-- [x] **[Certificate Transparency (CT)](https://certificate.transparency.dev/)** (via Embedded SCTs)
-- [x] **[OCSP "Stapling"](https://en.wikipedia.org/wiki/OCSP_stapling)** (Checks the OCSP response provided by the server during the TLS handshake)
-- [x] **[OCSP "Direct"](https://fr.wikipedia.org/wiki/Online_Certificate_Status_Protocol)** (Client sends an OCSP request directly to the CA)
+- [x] **Certificate Transparency (CT)** (via Embedded SCTs)
+- [x] **OCSP "Stapling"** (Checks the OCSP response provided by the server during the TLS handshake)
+- [x] **OCSP "Direct"** (Client sends an OCSP request directly to the CA)
 - [x] **OCSP "Mixed"** (Use OCSP Stapling with a fallback to a direct OCSP request if the staple is not provided or fails.)
-- [x] **[CRLSet](https://www.chromium.org/Home/chromium-security/crlsets/)** (Fast and efficient revocation checks using Google Chrome's aggregated CRL lists)
+- [x] **CRLSet** (Fast and efficient revocation checks using Google Chrome's aggregated CRL lists)
 
 ### Roadmap
 
-- [ ] **[Classic CRLs](https://en.wikipedia.org/wiki/Certificate_revocation_list)**: Support for checking CRLs from Distribution Points extracted from the certificate.
+- [ ] **Classic CRLs**: Support for checking CRLs from Distribution Points extracted from the certificate.
 - [ ] **Enforce CT Pre-Publication**: Add an option to require that certificates have been publicly logged in CT for a minimum duration before being trusted, making mis-issuance nearly impossible.
-- [ ] **[CRLite](https://blog.mozilla.org/security/2020/01/09/crlite-part-1-all-web-pki-revocations-compressed/)**: Support for lightweight, aggregated CRLs (an alternative to Chrome's CRLSet, developed by Mozilla).
+- [ ] **CRLite**: Support for lightweight, aggregated CRLs (an alternative to Chrome's CRLSet, developed by Mozilla).
 
 ## Installation
 

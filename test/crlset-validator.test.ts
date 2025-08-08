@@ -6,7 +6,7 @@ import {
   loadTestCertsChain,
 } from './utils';
 import { CRLSetValidator } from '../src/validators';
-import { CRLSet, RevocationStatus, loadLatestCRLSet } from '@gldywn/crlset.js';
+import { CRLSet, RevocationStatus, loadLatestCRLSet, type CRLSetHeader } from '@gldywn/crlset.js';
 import { createHash } from 'crypto';
 
 jest.mock('node:tls');
@@ -39,20 +39,26 @@ describe('CRLSet validation', () => {
   const issuerSpkiHash = createHash('sha256').update(Buffer.from(issuerSpkiBer)).digest('hex');
   const leafSerialNumber = Buffer.from(leafPkiCert.serialNumber.valueBlock.valueHex).toString('hex');
 
-  const mockCrlSet = new CRLSet({
+  const baseHeader: CRLSetHeader = {
+    Version: 0,
+    ContentType: 'CRLSet',
     Sequence: 123,
+    DeltaFrom: 0,
     NumParents: 1,
     BlockedSPKIs: [],
     KnownInterceptionSPKIs: [],
     BlockedInterceptionSPKIs: [],
-  }, new Map());
+    NotAfter: 4102444800, // 2100-01-01
+  };
 
-  it('should not run when no crlSet option is provided', (done) => {
+  const mockCrlSet = new CRLSet(baseHeader, new Map());
+
+  it('should not run when no crlSetPolicy option is provided', (done) => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     const validateSpy = jest.spyOn(CRLSetValidator.prototype, 'validate');
-    const agent = getTestHardenedHttpsAgent({ crlSet: undefined });
+    const agent = getTestHardenedHttpsAgent({ crlSetPolicy: undefined });
 
     process.nextTick(() => mockSocket.emit('secureConnect'));
 
@@ -70,7 +76,7 @@ describe('CRLSet validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestHardenedHttpsAgent({ crlSet: mockCrlSet });
+    const agent = getTestHardenedHttpsAgent({ crlSetPolicy: { crlSet: mockCrlSet } });
 
     process.nextTick(() => mockSocket.emit('secureConnect'));
 
@@ -91,7 +97,7 @@ describe('CRLSet validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestHardenedHttpsAgent({ crlSet: mockRevokedCrlSet });
+    const agent = getTestHardenedHttpsAgent({ crlSetPolicy: { crlSet: mockRevokedCrlSet } });
 
     process.nextTick(() => mockSocket.emit('secureConnect'));
 
@@ -108,16 +114,13 @@ describe('CRLSet validation', () => {
   });
 
   it('should fail when certificate is revoked by SPKI', (done) => {
-    const mockRevokedCrlSet = new CRLSet(
-      { ...mockCrlSet.header, BlockedSPKIs: [issuerSpkiHash] },
-      new Map(),
-    );
+    const mockRevokedCrlSet = new CRLSet({ ...baseHeader, BlockedSPKIs: [issuerSpkiHash] }, new Map());
     jest.spyOn(mockRevokedCrlSet, 'check').mockReturnValue(RevocationStatus.REVOKED_BY_SPKI);
 
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestHardenedHttpsAgent({ crlSet: mockRevokedCrlSet });
+    const agent = getTestHardenedHttpsAgent({ crlSetPolicy: { crlSet: mockRevokedCrlSet } });
 
     process.nextTick(() => mockSocket.emit('secureConnect'));
 
@@ -133,14 +136,14 @@ describe('CRLSet validation', () => {
     });
   });
 
-  it('should download latest CRLSet when "downloadLatest" is specified', (done) => {
+  it('should download latest CRLSet when policy requires fetching', (done) => {
     jest.spyOn(mockCrlSet, 'check').mockReturnValue(RevocationStatus.OK);
     mockedLoadLatestCRLSet.mockResolvedValue(mockCrlSet);
 
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestHardenedHttpsAgent({ crlSet: 'downloadLatest' });
+    const agent = getTestHardenedHttpsAgent({ crlSetPolicy: { verifySignature: true, updateStrategy: 'always' } });
 
     process.nextTick(() => mockSocket.emit('secureConnect'));
 
@@ -148,6 +151,7 @@ describe('CRLSet validation', () => {
       expect(err).toBeNull();
       expect(socket).toBe(mockSocket);
       expect(mockedLoadLatestCRLSet).toHaveBeenCalledTimes(1);
+      expect(mockedLoadLatestCRLSet).toHaveBeenCalledWith({ verifySignature: true, updateStrategy: 'always' });
       expect(mockCrlSet.check).toHaveBeenCalledWith(issuerSpkiHash, leafSerialNumber);
       done();
     });
@@ -160,7 +164,7 @@ describe('CRLSet validation', () => {
     const mockSocket = createMockSocket(peerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestHardenedHttpsAgent({ crlSet: 'downloadLatest' });
+    const agent = getTestHardenedHttpsAgent({ crlSetPolicy: { verifySignature: true, updateStrategy: 'always' } });
 
     process.nextTick(() => mockSocket.emit('secureConnect'));
 
@@ -169,6 +173,7 @@ describe('CRLSet validation', () => {
       expect((err as Error).message).toBe(`[CRLSetValidator] ${downloadError.message}`);
       expect(socket).toBeUndefined();
       expect(mockedLoadLatestCRLSet).toHaveBeenCalledTimes(1);
+      expect(mockedLoadLatestCRLSet).toHaveBeenCalledWith({ verifySignature: true, updateStrategy: 'always' });
       done();
     });
   });
@@ -180,7 +185,7 @@ describe('CRLSet validation', () => {
     } as unknown as tls.DetailedPeerCertificate);
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
-    const agent = getTestHardenedHttpsAgent({ crlSet: mockCrlSet });
+    const agent = getTestHardenedHttpsAgent({ crlSetPolicy: { crlSet: mockCrlSet } });
 
     process.nextTick(() => mockSocket.emit('secureConnect'));
 

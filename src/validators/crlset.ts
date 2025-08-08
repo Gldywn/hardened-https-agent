@@ -9,10 +9,10 @@ import { createHash } from 'crypto';
 
 export class CRLSetValidator extends BaseValidator {
   /**
-   * This validator should only run if the crlSet option is provided.
+   * This validator should only run if the crlSetPolicy option is provided.
    */
   public shouldRun(options: HardenedHttpsAgentOptions): boolean {
-    return !!options.crlSet;
+    return !!options.crlSetPolicy;
   }
 
   /**
@@ -20,7 +20,7 @@ export class CRLSetValidator extends BaseValidator {
    * If the check fails, the connection is aborted.
    */
   public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
-    const maybeCrlSet = options.crlSet!; // Safe due to shouldRun check
+    const policy = options.crlSetPolicy!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {
       socket.once('secureConnect', async () => {
@@ -38,11 +38,14 @@ export class CRLSetValidator extends BaseValidator {
           const leafSerialNumber = Buffer.from(leafCertPki.serialNumber.valueBlock.valueHex).toString('hex');
 
           let crlSet: CRLSet;
-          if (typeof maybeCrlSet !== 'string') {
-            crlSet = maybeCrlSet;
+          if (policy.crlSet) {
+            crlSet = policy.crlSet;
           } else {
             this.log('Downloading latest CRLSet...');
-            crlSet = await loadLatestCRLSet();
+            crlSet = await loadLatestCRLSet({
+              verifySignature: policy.verifySignature,
+              updateStrategy: policy.updateStrategy,
+            });
             this.log('Latest CRLSet downloaded successfully.');
           }
 

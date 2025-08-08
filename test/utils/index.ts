@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import { Certificate } from 'pkijs';
 import { fromBER } from 'asn1js';
 import { getTestDataDir } from '../../scripts/utils';
-import { HardenedHttpsAgent, CertificateTransparencyPolicy, OCSPPolicy } from '../../src';
+import { HardenedHttpsAgent, CertificateTransparencyPolicy, OCSPPolicy, CRLSetPolicy } from '../../src';
 import { CRLSet } from '@gldywn/crlset.js';
 
 export { createMockSocket, createMockPeerCertificate } from './createMock';
@@ -59,18 +59,18 @@ export function getTestHardenedHttpsAgent(
     ca?: string | Buffer | (string | Buffer)[];
     ctPolicy?: CertificateTransparencyPolicy | undefined;
     ocspPolicy?: OCSPPolicy | undefined;
-    crlSet?: 'downloadLatest' | CRLSet | undefined;
+    crlSetPolicy?: CRLSetPolicy | undefined;
     enableLogging?: boolean;
     rejectUnauthorized?: boolean;
   } = {},
 ) {
-  const { ca = TEST_CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSet, enableLogging = false, rejectUnauthorized = true } = options;
+  const { ca = TEST_CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSetPolicy, enableLogging = false, rejectUnauthorized = true } = options;
 
   return new HardenedHttpsAgent({
     ca,
     ctPolicy,
     ocspPolicy,
-    crlSet,
+    crlSetPolicy,
     enableLogging,
     rejectUnauthorized,
   });

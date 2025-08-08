@@ -1,4 +1,4 @@
-import { HardenedHttpsAgentOptions, type CertificateTransparencyPolicy, type OCSPPolicy } from './interfaces';
+import { HardenedHttpsAgentOptions, type CertificateTransparencyPolicy, type OCSPPolicy, type CRLSetPolicy } from './interfaces';
 import { type UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from './types/uni-ct-log-list-schema';
 import * as cfsslCaBundle from './resources/cfssl-ca-bundle.crt';
 import unifiedCtLogListJson from './resources/unified-log-list.json';
@@ -35,12 +35,19 @@ export const basicMixedOcspPolicy = (): OCSPPolicy => {
   };
 };
 
+export const basicCrlSetPolicy = (): CRLSetPolicy => {
+  return {
+    verifySignature: true,
+    updateStrategy: 'always',
+  };
+};
+
 export const defaultAgentOptions = (): HardenedHttpsAgentOptions => {
   return {
     ca: cfsslCaBundle,
     ctPolicy: basicCtPolicy(),
     ocspPolicy: basicMixedOcspPolicy(),
-    crlSet: 'downloadLatest',
+    crlSetPolicy: basicCrlSetPolicy(),
     enableLogging: false,
   };
 };

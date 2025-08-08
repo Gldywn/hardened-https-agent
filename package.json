@@ -43,7 +43,7 @@
     "tsx": "^4.20.3"
   },
   "dependencies": {
-    "@gldywn/crlset.js": "^1.1.3",
+    "@gldywn/crlset.js": "^1.2.0",
     "@gldywn/sct.js": "^2.0.0",
     "asn1js": "^3.0.6",
     "easy-ocsp": "https://github.com/Gldywn/easy-ocsp#be426ccc80968479c8a2b73fb3a6d22537665d0a",

@@ -25,12 +25,10 @@ export interface HardenedHttpsAgentOptions extends AgentOptions {
   ocspPolicy?: OCSPPolicy;
 
   /**
-   * Enables CRLSet-based revocation checking if provided.
-   * - If set to "downloadLatest", the agent will automatically download the latest CRLSet using the `downloadLatestCRLSetCrx` function from the library and will verify its signature internally.
-   *   In this case, signature verification ensures the CRLSet is an authentic Chrome component signed by Google. The agent checks that the CRX3 file is signed with the official Google key associated with the CRLSet component ID (hfnkpimlhhgieaddgfemjhofmfblmnib), and that the public key in the signature matches the expected component.
-   * - If a custom CRLSet object is provided, it will be used as-is for revocation checks. In this case, the user is responsible for constructing and trusting the CRLSet.
+   * Optional policy for CRLSet-based revocation checking.
+   * If provided, CRLSet checks are enabled.
    */
-  crlSet?: 'downloadLatest' | CRLSet;
+  crlSetPolicy?: CRLSetPolicy;
 
   /**
    * An optional boolean to enable or disable logging.
@@ -69,7 +67,7 @@ export interface CertificateTransparencyPolicy {
 export interface OCSPPolicy {
   /**
    * The validation strategy to use for OCSP checks.
-   * - 'mixed': (Default) First tries to validate using a stapled OCSP response. If stapling fails for any reason except a revoked certificate, it falls back to a direct OCSP check.
+   * - 'mixed': First tries to validate using a stapled OCSP response. If stapling fails for any reason except a revoked certificate, it falls back to a direct OCSP check.
    * - 'stapling': Enforces that the server provides a valid OCSP staple with its TLS handshake. This mode is highly performant and preserves privacy.
    * - 'direct': Performs a direct, live OCSP query to the CA's responder for each connection. This offers the highest security against replay attacks by using a unique nonce, but it incurs significant performance and privacy costs.
    */
@@ -77,11 +75,30 @@ export interface OCSPPolicy {
 
   /**
    * Determines the agent's behavior when an OCSP check fails.
-   * - true: (Default) "Hard-fail". The connection is immediately terminated if the OCSP check fails for any reason (e.g., network error, no staple provided in 'stapling' mode, responder is unavailable in 'live' mode, etc.).
+   * - true: "Hard-fail". The connection is immediately terminated if the OCSP check fails for any reason (e.g., network error, no staple provided in 'stapling' mode, responder is unavailable in 'live' mode, etc.).
    *   In 'mixed' mode, "hard-fail" is only enforced for the final direct OCSP check. If stapling fails for any reason except a revoked certificate, the agent falls back to a direct OCSP check, and only the result of that check determines whether the connection is terminated.
    * - false: "Soft-fail". The agent will attempt the OCSP check and allow the connection to proceed if the check itself fails (e.g., network error, responder unavailable, etc.), but will still block the connection if a valid OCSP response is received indicating the certificate is revoked. Failures will be logged if logging is enabled. Use with caution.
    *
-   * @default true
    */
   failHard: boolean;
+}
+
+export interface CRLSetPolicy {
+  /**
+   * If provided, this CRLSet instance will be used directly.
+   * When set, other properties in this policy are ignored.
+   */
+  crlSet?: CRLSet;
+
+  /**
+   * Whether to verify the signature of the downloaded CRLSet.
+   * Used only when `crlSet` is not provided.
+   */
+  verifySignature?: boolean;
+
+  /**
+   * Strategy for when to check for a new CRLSet.
+   * Used only when `crlSet` is not provided.
+   */
+  updateStrategy?: 'always' | 'on-expiry';
 }
