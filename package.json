@@ -19,8 +19,8 @@
     "format": "prettier --write .",
     "example:axios": "npm run build && tsx examples/axios.ts",
     "example:got": "npm run build && tsx examples/got.ts",
-    "example:https": "npm run build && tsx examples/https-native.ts",
-    "example:custom": "npm run build && tsx examples/custom-options.ts"
+    "example:https-native": "npm run build && tsx examples/https-native.ts",
+    "example:custom-options": "npm run build && tsx examples/custom-options.ts"
   },
   "repository": {
     "type": "git",

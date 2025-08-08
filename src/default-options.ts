@@ -1,9 +1,17 @@
-import { HardenedHttpsAgentOptions, type CertificateTransparencyPolicy, type OCSPPolicy, type CRLSetPolicy } from './interfaces';
+/* istanbul ignore file */
+
+import {
+  HardenedHttpsAgentOptions,
+  type CertificateTransparencyPolicy,
+  type OCSPPolicy,
+  type CRLSetPolicy,
+} from './interfaces';
 import { type UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from './types/uni-ct-log-list-schema';
-import * as cfsslCaBundle from './resources/cfssl-ca-bundle.crt';
+import * as _cfsslCaBundle from './resources/cfssl-ca-bundle.crt';
 import unifiedCtLogListJson from './resources/unified-log-list.json';
 
-export { cfsslCaBundle };
+export const cfsslCaBundle =
+  (_cfsslCaBundle as unknown as { default?: string }).default ?? (_cfsslCaBundle as unknown as string);
 export const unifiedCtLogList = unifiedCtLogListJson as UnifiedCTLogList;
 
 export const basicCtPolicy = (): CertificateTransparencyPolicy => {

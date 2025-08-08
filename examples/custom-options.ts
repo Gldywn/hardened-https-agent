@@ -1,6 +1,6 @@
 import axios from 'axios';
 import https from 'node:https';
-import { HardenedHttpsAgent, unifiedCtLogList, defaultAgentOptions } from '../dist';
+import { HardenedHttpsAgent, unifiedCtLogList, cfsslCaBundle } from '../dist';
 
 async function main() {
   // Customize standard agent options if required
@@ -16,7 +16,7 @@ async function main() {
   // Here we use values from the default options, but you can customize them as you want
   const agent = new HardenedHttpsAgent({
     ...httpsAgentOptions,
-    ca: defaultAgentOptions().ca,
+    ca: cfsslCaBundle,
     ctPolicy: {
       logList: unifiedCtLogList,
       minEmbeddedScts: 2,
@@ -36,9 +36,9 @@ async function main() {
   const client = axios.create({ httpsAgent: agent, timeout: 15000 });
   try {
     await client.get('https://example.com');
-    console.log('Congrats! You have successfully performed a more secure request with hardened-https-agent.');
+    console.log('\nCongrats! You have successfully performed a more secure request with hardened-https-agent.');
   } catch (error) {
-    console.error('An error occurred while performing the request', error);
+    console.error('\nAn error occurred while performing the request', error);
   }
 }
 

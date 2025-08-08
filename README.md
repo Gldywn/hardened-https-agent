@@ -36,7 +36,7 @@ It is a drop-in replacement that works with any library supporting the standard 
 | **Certificate Integrity**     |                                 |                             |
 | [Certificate Transparency (CT)](https://certificate.transparency.dev/) |               ❌                |             ✅              |
 
-> For a detailed technical explanation of the gaps in Node.js's default behavior, **see [Why a Hardened Agent?](./BACKGROUND.md)**
+See **[BACKGROUND.md: Why a Hardened Agent?](./BACKGROUND.md)** for a detailed technical explanation of the gaps in Node.js's default behavior.
 
 ## Use Cases
 
@@ -66,7 +66,118 @@ npm install hardened-https-agent
 
 ## Usage
 
-_Coming soon..._
+You can integrate this agent with HTTPS clients that support providing a Node.js `https.Agent` instance (e.g., axios, got, needle, etc.).
+
+### Basic Example: Axios with Default Options
+
+By simply using this setup, you immediately benefit from all the built-in security layers: CA validation using the Cloudflare bundle, certificate revocation checks via OCSP (stapling and direct), CRLSet-based revocation with signature verification (using the latest Google CRLSet), and enforcement that the presented certificate is properly published in Certificate Transparency logs. All of this is enabled out of the box—no extra configuration required.
+
+```typescript
+import axios from 'axios';
+import { HardenedHttpsAgent, defaultAgentOptions } from 'hardened-https-agent';
+
+const agent = new HardenedHttpsAgent({
+  ...defaultAgentOptions(),
+});
+
+const client = axios.create({ httpsAgent: agent, timeout: 15000 });
+await client.get('https://example.com');
+```
+
+**Additional real-world examples (axios, got, native https module, custom policies and more) are available in the [examples](./examples/) directory.**  
+If your preferred client is missing, feel free to open an issue to request an example or confirm compatibility.
+
+### Options
+
+| **Property**       | **Type**                                        | **Required / Variants**                                                                                                                                                                                                                 | **Helper(s)** |
+|--------------------|--------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| `ca`               | `string \| Buffer \| Array<string \| Buffer>` | Required. Custom trust store that replaces Node.js defaults. Accepts PEM string, `Buffer`, or an array of either.                                                                                                                       | `cfsslCaBundle`, `defaultAgentOptions().ca` |
+| `ctPolicy`         | `CertificateTransparencyPolicy`                 | Optional. Enables CT when present. Fields: `logList: UnifiedCTLogList`, `minEmbeddedScts?: number`, `minDistinctOperators?: number`.                                                                                                   | `basicCtPolicy()`, `unifiedCtLogList` |
+| `ocspPolicy`       | `OCSPPolicy`                                     | Optional. Enables OCSP when present. Fields: `mode: 'mixed' \| 'stapling' \| 'direct'`, `failHard: boolean`.                                                                                                                          | `basicStaplingOcspPolicy()`, `basicDirectOcspPolicy()` |
+| `crlSetPolicy`     | `CRLSetPolicy`                                   | Optional. Enables CRLSet when present. Fields: `crlSet?: CRLSet`, `verifySignature?: boolean`, `updateStrategy?: 'always' \| 'on-expiry'`.                                                                                             | `basicCrlSetPolicy()` |
+| `enableLogging`    | `boolean`                                        | Optional (default: `false`).                                                                                                                                                                                                            |  |
+| Standard HTTPS opts| `https.AgentOptions`                              | Optional. Any standard Node.js `https.Agent` options (e.g., `keepAlive`, `maxSockets`, `timeout`, `maxFreeSockets`, `maxCachedSessions`) can be merged alongside the hardened options.                                                 |  |
+
+*All options are thoroughly documented directly in the library via JSDoc comments for easy in-editor reference and autocomplete.*
+
+Import convenience presets and building blocks as needed:
+
+```typescript
+import {
+  defaultAgentOptions,
+  cfsslCaBundle,
+  unifiedCtLogList,
+  basicCtPolicy,
+  basicMixedOcspPolicy,
+  basicStaplingOcspPolicy,
+  basicDirectOcspPolicy,
+  basicCrlSetPolicy,
+} from 'hardened-https-agent';
+```
+
+### Customization (quick recipes)
+
+Bring your own CA bundle:
+
+```typescript
+new HardenedHttpsAgent({
+  ...defaultAgentOptions(),
+  ca: myPemStringOrBuffer,
+});
+```
+
+Tune standard agent behavior:
+
+```typescript
+new HardenedHttpsAgent({
+  ...defaultAgentOptions(),
+  keepAlive: true,
+  maxSockets: 50,
+});
+```
+
+Use a custom CT policy:
+
+```typescript
+new HardenedHttpsAgent({
+  ...defaultAgentOptions(),
+  ctPolicy: {
+    logList: unifiedCtLogList,
+    minEmbeddedScts: 3,
+    minDistinctOperators: 3,
+  },
+});
+```
+
+Use a custom OCSP policy:
+
+```typescript
+new HardenedHttpsAgent({
+  ...defaultAgentOptions(),
+  ocspPolicy: { mode: 'stapling', failHard: true },
+});
+```
+
+USe a custom CRLSet policy:
+
+```typescript
+new HardenedHttpsAgent({
+  ...defaultAgentOptions(),
+  crlSetPolicy: {
+    verifySignature: true,
+    updateStrategy: 'always',
+  },
+});
+```
+
+Enable detailed logs:
+
+```typescript
+new HardenedHttpsAgent({
+  ...defaultAgentOptions(),
+  enableLogging: true,
+});
+```
 
 ## Contributing
 

@@ -5,6 +5,7 @@ export {
   cfsslCaBundle,
   unifiedCtLogList,
   basicCtPolicy,
+  basicMixedOcspPolicy,
   basicStaplingOcspPolicy,
   basicDirectOcspPolicy,
   basicCrlSetPolicy,

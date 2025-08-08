@@ -15,8 +15,8 @@ async function main() {
 
   // Merge standard agent options with hardened defaults
   const agent = new HardenedHttpsAgent({
-    ...defaultAgentOptions(),
     ...httpsAgentOptions,
+    ...defaultAgentOptions(),
   });
 
   const client = got.extend({
@@ -27,9 +27,9 @@ async function main() {
 
   try {
     await client.get('https://example.com');
-    console.log('Congrats! You have successfully performed a more secure request with hardened-https-agent.');
+    console.log('\nCongrats! You have successfully performed a more secure request with hardened-https-agent.');
   } catch (error) {
-    console.error('An error occurred while performing the request', error);
+    console.error('\nAn error occurred while performing the request', error);
   }
 }
 
