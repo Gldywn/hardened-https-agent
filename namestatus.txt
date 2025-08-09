@@ -1,0 +1,2 @@
+M	src/resources/google-log-list.json
+M	src/resources/unified-log-list.json

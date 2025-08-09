@@ -1,0 +1,2 @@
+2	2	src/resources/google-log-list.json
+2	2	src/resources/unified-log-list.json
