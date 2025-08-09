@@ -1,4 +1,4 @@
-name: Refresh Resources
+name: Refresh resources
 on:
   schedule:
     - cron: '0 3 * * 1' # Every Monday at 03:00 UTC
@@ -47,6 +47,7 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
+          token: ${{ secrets.CREATE_PR_TOKEN || github.token }}
           commit-message: 'chore(resources): refresh embedded resources (CT log list, CFSSL CA bundle)'
           title: 'chore(resources): refresh embedded resources'
           branch: chore/refresh-resources
