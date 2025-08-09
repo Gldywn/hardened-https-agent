@@ -115,6 +115,10 @@ import {
 } from 'hardened-https-agent';
 ```
 
+### Embedded helper data and updates
+
+The default helpers such as `cfsslCaBundle` and `unifiedCtLogList` use embedded resources committed in this repository (CA bundle from Cloudflare CFSSL; unified CT log list merged from Google and Apple sources). These are refreshed in-repo via scripts and released periodically. Developers are responsible for updating the library to receive refreshed resources at a cadence appropriate for their environment. In the future, we plan to provide optional helpers to fetch updates at runtime while preserving explicit trust controls. These defaults are provided for convenience; all inputs are fully configurable, and you are free to supply your own sources or implement automatic update mechanisms that suit your trust model.
+
 ### Customization (quick recipes)
 
 Bring your own CA bundle:
@@ -189,7 +193,7 @@ Before you get started, please take a moment to review our **[CONTRIBUTING.md](.
 
 - [**@gldywn/sct.js**](https://github.com/Gldywn/sct.js): SCT.js is a low-level TypeScript library for Node.js that parses and verifies Signed Certificate Timestamps (SCTs).
 - [**@gldywn/crlset.js**](https://github.com/Gldywn/crlset.js): CRLSet.js is a lightweight CRLSet parser and verifier in TypeScript for Node.js. It fetches and parses the latest Chrome CRLSet in memory, with support for checking whether a certificate or its issuer has been revoked.
-- [**@timokoessler/easy-ocsp**](https://github.com/timokoessler/easy-ocsp): An easy-to-use OCSP client for Node.js
+- [**@timokoessler/easy-ocsp**](https://github.com/timokoessler/easy-ocsp): An easy-to-use OCSP client for Node.js.
 
 ## License
 

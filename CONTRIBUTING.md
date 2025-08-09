@@ -36,6 +36,19 @@ The repository includes pre-fetched test data. To update these fixtures, run:
 npm run test:update-test-data
 ```
 
+You can also run individual update steps:
+
+```sh
+# Fetch/update CT log lists for tests (writes to `test/testdata/`)
+npm run test:fetch-log-list
+
+# Fetch/update CFSSL CA bundle for tests (writes to `test/testdata/`)
+npm run test:fetch-ca-bundle
+
+# Refresh test certificate chains (writes to `test/testdata/`)
+npm run test:fetch-test-certs
+```
+
 ### Running Tests
 
 This project includes both unit and end-to-end tests. Unit tests are self-contained and run locally, while end-to-end tests perform live requests and may be unstable due to network conditions or remote server configuration changes.
@@ -57,6 +70,26 @@ npm run test:e2e
 ```
 
 Note: Due to their reliance on external network conditions, these tests are not executed in CI environments.
+
+## Scripts
+
+The repository provides scripts to refresh embedded resources and test fixtures. These ensure the defaults shipped by the library stay current and that tests exercise realistic inputs.
+
+- CA bundle (Cloudflare CFSSL):
+  - Default resources: `npm run res:fetch-ca-bundle` (writes to `src/resources/`)
+  - Test fixtures: `npm run test:fetch-ca-bundle` (writes to `test/testdata/`)
+
+- CT log lists (Google + Apple → unified list):
+  - Default resources: `npm run res:fetch-log-list` (writes to `src/resources/`)
+  - Test fixtures: `npm run test:fetch-log-list` (writes to `test/testdata/`)
+
+- Test certificates:
+  - `npm run test:fetch-test-certs` (writes to `test/testdata/`)
+
+Notes:
+- The scripts accept a `--for-test` flag internally (wired by the npm scripts) to switch the output directory from `src/resources/` to `test/testdata/`.
+- A convenience command is available to refresh all embedded resources at once: `npm run res:update-data`.
+- These resources are embedded so the library can work out of the box without requiring users to provide their own CA bundle or CT log list. You may still override them via options.
 
 ## Submitting Changes
 
