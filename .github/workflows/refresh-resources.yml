@@ -36,8 +36,7 @@ jobs:
       - name: Detect changes
         id: diff
         run: |
-          git add -A
-          if git diff --cached --quiet; then
+          if git diff --quiet -- src/resources/; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -64,8 +63,8 @@ jobs:
           echo >> PR_BODY.md
           echo "| File | Type | Status | + | - | Size (bytes) |" >> PR_BODY.md
           echo "|------|------|--------|---|---|--------------|" >> PR_BODY.md
-          git diff --cached --numstat > numstat.txt
-          git diff --cached --name-status > namestatus.txt
+          git diff --numstat -- src/resources/ > numstat.txt
+          git diff --name-status -- src/resources/ > namestatus.txt
           declare -A STATUS_MAP
           while IFS=$'\t' read -r STATUS ENTRY_PATH; do
             STATUS_MAP["$ENTRY_PATH"]="$STATUS"
@@ -75,13 +74,19 @@ jobs:
             if [[ "$PATH" == *.json ]]; then TYPE="CT log list (JSON)";
             elif [[ "$PATH" == *.crt ]]; then TYPE="CA bundle (PEM)";
             else TYPE="other"; fi
-            BLOB_ID=$(git rev-parse ":$PATH" 2>/dev/null || true)
-            if [[ -n "$BLOB_ID" ]]; then
-              SIZE=$(git cat-file -s "$BLOB_ID" 2>/dev/null || echo "n/a")
-            elif [[ -f "$PATH" ]]; then
-              SIZE=$(wc -c < "$PATH" 2>/dev/null || echo "n/a")
+            if [[ -f "$PATH" ]]; then
+              if command -v stat >/dev/null 2>&1; then
+                SIZE=$(stat -c %s "$PATH" 2>/dev/null || stat -f %z "$PATH" 2>/dev/null || echo "n/a")
+              else
+                SIZE=$(wc -c < "$PATH" 2>/dev/null || echo "n/a")
+              fi
             else
-              SIZE="n/a"
+              BLOB_ID=$(git rev-parse ":$PATH" 2>/dev/null || true)
+              if [[ -n "$BLOB_ID" ]]; then
+                SIZE=$(git cat-file -s "$BLOB_ID" 2>/dev/null || echo "n/a")
+              else
+                SIZE="n/a"
+              fi
             fi
             echo "| $PATH | $TYPE | $STATUS | $ADDED | $REMOVED | $SIZE |" >> PR_BODY.md
           done < numstat.txt
