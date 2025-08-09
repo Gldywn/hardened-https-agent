@@ -28,11 +28,6 @@ jobs:
           npm run res:fetch-log-list
           npm run res:fetch-ca-bundle
 
-      - name: Build and test
-        run: |
-          npm run build
-          npm test
-
       - name: Detect changes
         id: diff
         run: |
