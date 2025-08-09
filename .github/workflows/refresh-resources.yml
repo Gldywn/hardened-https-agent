@@ -1,0 +1,54 @@
+name: Refresh Resources
+on:
+  schedule:
+    - cron: '0 3 * * 1' # Every Monday at 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js from .nvmrc
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh embedded resources
+        run: |
+          npm run res:fetch-log-list
+          npm run res:fetch-ca-bundle
+
+      - name: Build and test
+        run: |
+          npm run build
+          npm test
+
+      - name: Detect changes
+        id: diff
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'chore(resources): refresh embedded resources (CT log list, CFSSL CA bundle)'
+          title: 'chore(resources): refresh embedded resources'
+          branch: chore/refresh-resources
+          labels: data-update, resources
+
