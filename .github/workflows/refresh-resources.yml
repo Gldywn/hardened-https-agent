@@ -51,12 +51,12 @@ jobs:
           echo >> PR_BODY.md
           echo "This pull request refreshes the embedded resources used by the default helpers:" >> PR_BODY.md
           echo "- Cloudflare CFSSL CA bundle (PEM)" >> PR_BODY.md
-          echo "- Unified Certificate Transparency (CT) log list (merged from Google + Apple)" >> PR_BODY.md
+          echo "- Unified Certificate Transparency (CT) log list _(merged from Google + Apple)_" >> PR_BODY.md
           echo >> PR_BODY.md
-          echo "Source references:" >> PR_BODY.md
-          echo "- Cloudflare CFSSL CA bundle: [ca-bundle.crt](https://raw.githubusercontent.com/cloudflare/cfssl_trust/master/ca-bundle.crt)" >> PR_BODY.md
-          echo "- Google CT reference: [log_list_schema.json](https://www.gstatic.com/ct/log_list/v3/log_list_schema.json)" >> PR_BODY.md
-          echo "- Apple CT log list: [current_log_list.json](https://valid.apple.com/ct/log_list/current_log_list.json)" >> PR_BODY.md
+          echo "### Source references" >> PR_BODY.md
+          echo "- Cloudflare CFSSL CA bundle: https://raw.githubusercontent.com/cloudflare/cfssl_trust/master/ca-bundle.crt" >> PR_BODY.md
+          echo "- Google CT reference: https://www.gstatic.com/ct/log_list/v3/log_list_schema.json" >> PR_BODY.md
+          echo "- Apple CT log list: https://valid.apple.com/ct/log_list/current_log_list.json" >> PR_BODY.md
           echo >> PR_BODY.md
           echo "Refresh time (UTC): ${DATE}" >> PR_BODY.md
           echo >> PR_BODY.md
@@ -75,8 +75,11 @@ jobs:
             if [[ "$PATH" == *.json ]]; then TYPE="CT log list (JSON)";
             elif [[ "$PATH" == *.crt ]]; then TYPE="CA bundle (PEM)";
             else TYPE="other"; fi
-            if [[ -f "$PATH" ]]; then
-              if command -v wc >/dev/null 2>&1; then SIZE=$(wc -c < "$PATH"); else SIZE="n/a"; fi
+            BLOB_ID=$(git rev-parse ":$PATH" 2>/dev/null || true)
+            if [[ -n "$BLOB_ID" ]]; then
+              SIZE=$(git cat-file -s "$BLOB_ID" 2>/dev/null || echo "n/a")
+            elif [[ -f "$PATH" ]]; then
+              SIZE=$(wc -c < "$PATH" 2>/dev/null || echo "n/a")
             else
               SIZE="n/a"
             fi
