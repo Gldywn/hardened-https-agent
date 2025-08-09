@@ -46,52 +46,20 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         run: |
           DATE=$(date -u +'%Y-%m-%d %H:%M:%SZ')
+          # Stage only resource files so we can compute blob sizes from the index
+          git add -- src/resources/
           echo "## Automated weekly refresh of embedded trust resources" > PR_BODY.md
           echo >> PR_BODY.md
           echo "This pull request refreshes the embedded resources used by the default helpers:" >> PR_BODY.md
-          echo "- Cloudflare CFSSL CA bundle (PEM)" >> PR_BODY.md
-          echo "- Unified Certificate Transparency (CT) log list _(merged from Google + Apple)_" >> PR_BODY.md
+          echo "- **Cloudflare CFSSL CA bundle (PEM)**: fetched from Cloudflare's open-source cfssl_trust bundle to provide a transparent, auditable root CA set for out-of-the-box verification without relying on system stores." >> PR_BODY.md
+          echo "- **Unified Certificate Transparency (CT) log list**: built by combining the official Google and Apple CT log lists to maximize coverage and operator diversity for CT validation." >> PR_BODY.md
           echo >> PR_BODY.md
           echo "### Source references" >> PR_BODY.md
           echo "- Cloudflare CFSSL CA bundle: https://raw.githubusercontent.com/cloudflare/cfssl_trust/master/ca-bundle.crt" >> PR_BODY.md
-          echo "- Google CT reference: https://www.gstatic.com/ct/log_list/v3/log_list_schema.json" >> PR_BODY.md
+          echo "- Google CT log list: https://www.gstatic.com/ct/log_list/v3/log_list_schema.json" >> PR_BODY.md
           echo "- Apple CT log list: https://valid.apple.com/ct/log_list/current_log_list.json" >> PR_BODY.md
           echo >> PR_BODY.md
-          echo "Refresh time (UTC): ${DATE}" >> PR_BODY.md
-          echo >> PR_BODY.md
-          echo "### Changed files" >> PR_BODY.md
-          echo >> PR_BODY.md
-          echo "| File | Type | Status | + | - | Size (bytes) |" >> PR_BODY.md
-          echo "|------|------|--------|---|---|--------------|" >> PR_BODY.md
-          git diff --numstat -- src/resources/ > numstat.txt
-          git diff --name-status -- src/resources/ > namestatus.txt
-          declare -A STATUS_MAP
-          while IFS=$'\t' read -r STATUS ENTRY_PATH; do
-            STATUS_MAP["$ENTRY_PATH"]="$STATUS"
-          done < namestatus.txt
-          while IFS=$'\t' read -r ADDED REMOVED PATH; do
-            STATUS="${STATUS_MAP[$PATH]:-M}"
-            if [[ "$PATH" == *.json ]]; then TYPE="CT log list (JSON)";
-            elif [[ "$PATH" == *.crt ]]; then TYPE="CA bundle (PEM)";
-            else TYPE="other"; fi
-            if [[ -f "$PATH" ]]; then
-              if command -v stat >/dev/null 2>&1; then
-                SIZE=$(stat -c %s "$PATH" 2>/dev/null || stat -f %z "$PATH" 2>/dev/null || echo "n/a")
-              else
-                SIZE=$(wc -c < "$PATH" 2>/dev/null || echo "n/a")
-              fi
-            else
-              BLOB_ID=$(git rev-parse ":$PATH" 2>/dev/null || true)
-              if [[ -n "$BLOB_ID" ]]; then
-                SIZE=$(git cat-file -s "$BLOB_ID" 2>/dev/null || echo "n/a")
-              else
-                SIZE="n/a"
-              fi
-            fi
-            echo "| $PATH | $TYPE | $STATUS | $ADDED | $REMOVED | $SIZE |" >> PR_BODY.md
-          done < numstat.txt
-          echo >> PR_BODY.md
-          echo "**Please review and merge to keep embedded trust data current.**" >> PR_BODY.md
+          echo "**Please review and merge to keep embedded trust data up to date.**" >> PR_BODY.md
 
       - name: Create PR
         if: steps.diff.outputs.changed == 'true'
@@ -101,5 +69,7 @@ jobs:
           commit-message: 'chore(resources): refresh embedded resources (CT log list, CFSSL CA bundle)'
           title: 'chore(resources): refresh embedded resources'
           branch: chore/refresh-resources
+          add-paths: |
+            src/resources/**
           body-path: PR_BODY.md
 
