@@ -51,5 +51,4 @@ jobs:
           commit-message: 'chore(resources): refresh embedded resources (CT log list, CFSSL CA bundle)'
           title: 'chore(resources): refresh embedded resources'
           branch: chore/refresh-resources
-          labels: data-update, resources
 
