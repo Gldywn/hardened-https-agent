@@ -43,6 +43,40 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Generate PR body
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          DATE=$(date -u +'%Y-%m-%d %H:%M:%SZ')
+          echo "## Automated weekly refresh of embedded trust resources" > PR_BODY.md
+          echo >> PR_BODY.md
+          echo "This pull request refreshes the embedded resources used by the default helpers:" >> PR_BODY.md
+          echo "- Cloudflare CFSSL CA bundle (PEM)" >> PR_BODY.md
+          echo "- Unified Certificate Transparency (CT) log list (merged from Google + Apple)" >> PR_BODY.md
+          echo >> PR_BODY.md
+          echo "Source references:" >> PR_BODY.md
+          echo "- Cloudflare CFSSL CA bundle: [ca-bundle.crt](https://raw.githubusercontent.com/cloudflare/cfssl_trust/master/ca-bundle.crt)" >> PR_BODY.md
+          echo "- Google CT reference: [log_list_schema.json](https://www.gstatic.com/ct/log_list/v3/log_list_schema.json)" >> PR_BODY.md
+          echo "- Apple CT log list: [current_log_list.json](https://valid.apple.com/ct/log_list/current_log_list.json)" >> PR_BODY.md
+          echo >> PR_BODY.md
+          echo "Refresh time (UTC): ${DATE}" >> PR_BODY.md
+          echo >> PR_BODY.md
+          echo "### Changed files" >> PR_BODY.md
+          echo >> PR_BODY.md
+          echo "| File | Type | Status | + | - | Size (bytes) |" >> PR_BODY.md
+          echo "|------|------|--------|---|---|--------------|" >> PR_BODY.md
+          git diff --cached --numstat > numstat.txt
+          git diff --cached --name-status > namestatus.txt
+          while IFS=$'\t' read -r ADDED REMOVED PATH; do \
+            STATUS=$(grep -P "\t${PATH//\//\\/}$" namestatus.txt | cut -f1); \
+            if [[ "$PATH" == *.json ]]; then TYPE="CT log list (JSON)"; \
+            elif [[ "$PATH" == *.crt ]]; then TYPE="CA bundle (PEM)"; \
+            else TYPE="other"; fi; \
+            if [[ -f "$PATH" ]]; then SIZE=$(wc -c < "$PATH"); else SIZE="n/a"; fi; \
+            echo "| $PATH | $TYPE | $STATUS | $ADDED | $REMOVED | $SIZE |" >> PR_BODY.md; \
+          done < numstat.txt
+          echo >> PR_BODY.md
+          echo "**Please review and merge to keep embedded trust data current.**" >> PR_BODY.md
+
       - name: Create PR
         if: steps.diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
@@ -51,4 +85,5 @@ jobs:
           commit-message: 'chore(resources): refresh embedded resources (CT log list, CFSSL CA bundle)'
           title: 'chore(resources): refresh embedded resources'
           branch: chore/refresh-resources
+          body-path: PR_BODY.md
 
