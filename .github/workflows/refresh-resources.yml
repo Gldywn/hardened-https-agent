@@ -66,13 +66,21 @@ jobs:
           echo "|------|------|--------|---|---|--------------|" >> PR_BODY.md
           git diff --cached --numstat > numstat.txt
           git diff --cached --name-status > namestatus.txt
-          while IFS=$'\t' read -r ADDED REMOVED PATH; do \
-            STATUS=$(grep -P "\t${PATH//\//\\/}$" namestatus.txt | cut -f1); \
-            if [[ "$PATH" == *.json ]]; then TYPE="CT log list (JSON)"; \
-            elif [[ "$PATH" == *.crt ]]; then TYPE="CA bundle (PEM)"; \
-            else TYPE="other"; fi; \
-            if [[ -f "$PATH" ]]; then SIZE=$(wc -c < "$PATH"); else SIZE="n/a"; fi; \
-            echo "| $PATH | $TYPE | $STATUS | $ADDED | $REMOVED | $SIZE |" >> PR_BODY.md; \
+          declare -A STATUS_MAP
+          while IFS=$'\t' read -r STATUS ENTRY_PATH; do
+            STATUS_MAP["$ENTRY_PATH"]="$STATUS"
+          done < namestatus.txt
+          while IFS=$'\t' read -r ADDED REMOVED PATH; do
+            STATUS="${STATUS_MAP[$PATH]:-M}"
+            if [[ "$PATH" == *.json ]]; then TYPE="CT log list (JSON)";
+            elif [[ "$PATH" == *.crt ]]; then TYPE="CA bundle (PEM)";
+            else TYPE="other"; fi
+            if [[ -f "$PATH" ]]; then
+              if command -v wc >/dev/null 2>&1; then SIZE=$(wc -c < "$PATH"); else SIZE="n/a"; fi
+            else
+              SIZE="n/a"
+            fi
+            echo "| $PATH | $TYPE | $STATUS | $ADDED | $REMOVED | $SIZE |" >> PR_BODY.md
           done < numstat.txt
           echo >> PR_BODY.md
           echo "**Please review and merge to keep embedded trust data current.**" >> PR_BODY.md
