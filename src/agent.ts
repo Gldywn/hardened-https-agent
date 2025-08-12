@@ -10,6 +10,7 @@ import {
   OCSPMixedValidator,
   CRLSetValidator,
 } from './validators';
+import { NODE_DEFAULT_CA_SENTINEL } from './options';
 
 /* istanbul ignore next */
 export class Logger {
@@ -43,9 +44,11 @@ export class HardenedHttpsAgent extends Agent {
   #validators: BaseValidator[];
 
   constructor(options: HardenedHttpsAgentOptions) {
-    super(options);
+    const useNodeDefaultCaBundle = (options as any)?.ca === NODE_DEFAULT_CA_SENTINEL;
+    const optionsForSuper = useNodeDefaultCaBundle ? (({ ca, ...rest }) => rest)(options as any) : options;
+    super(optionsForSuper);
     this.#options = options;
-    if (!this.#options.ca || (Array.isArray(this.#options.ca) && this.#options.ca.length === 0)) {
+    if (!useNodeDefaultCaBundle && (!this.#options.ca || (Array.isArray(this.#options.ca) && this.#options.ca.length === 0))) {
       throw new Error('The `ca` property cannot be empty.');
     }
 

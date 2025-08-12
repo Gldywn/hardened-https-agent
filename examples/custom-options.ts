@@ -1,6 +1,6 @@
 import axios from 'axios';
 import https from 'node:https';
-import { HardenedHttpsAgent, unifiedCtLogList, cfsslCaBundle } from '../dist';
+import { HardenedHttpsAgent, embeddedUnifiedCtLogList, embeddedCfsslCaBundle } from '../dist';
 
 async function main() {
   // Customize standard agent options if required
@@ -16,14 +16,14 @@ async function main() {
   // Here we use values from the default options, but you can customize them as you want
   const agent = new HardenedHttpsAgent({
     ...httpsAgentOptions,
-    ca: cfsslCaBundle,
+    ca: embeddedCfsslCaBundle, // or *your custom ca bundle* | useNodeDefaultCABundle()
     ctPolicy: {
-      logList: unifiedCtLogList,
+      logList: embeddedUnifiedCtLogList, // or *your custom log list*
       minEmbeddedScts: 2,
       minDistinctOperators: 2,
     },
     ocspPolicy: {
-      mode: 'mixed', // or 'stapling' or 'direct'
+      mode: 'mixed', // or 'stapling' | 'direct'
       failHard: true,
     },
     crlSetPolicy: {
