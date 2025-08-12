@@ -2,7 +2,30 @@
   "name": "hardened-https-agent",
   "version": "1.0.0",
   "description": "A security-first https.Agent for Node.js that adds critical layers of trust to your HTTPS requests. Enforce modern security policies with support for Certificate Transparency, advanced revocation checks (CRLSet, OCSP), and custom CAs.",
-  "main": "index.js",
+  "homepage": "https://github.com/Gldywn/hardened-https-agent#readme",
+  "bugs": {
+    "url": "https://github.com/Gldywn/hardened-https-agent/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gldywn/hardened-https-agent.git"
+  },
+  "license": "MIT",
+  "author": "Gldywn",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
   "scripts": {
     "test": "jest",
     "test:e2e": "jest --config jest.config.e2e.js",
@@ -22,16 +45,6 @@
     "example:https-native": "npm run build && tsx examples/https-native.ts",
     "example:custom-options": "npm run build && tsx examples/custom-options.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Gldywn/hardened-https-agent.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Gldywn/hardened-https-agent/issues"
-  },
-  "homepage": "https://github.com/Gldywn/hardened-https-agent#readme",
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/json-schema-merge-allof": "^0.6.5",

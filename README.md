@@ -100,13 +100,13 @@ If your preferred client is missing, feel free to open an issue to request an ex
 
 *All options are thoroughly documented directly in the library via JSDoc comments for easy in-editor reference and autocomplete.*
 
-Import convenience presets and building blocks as needed:
+Import convenience presets and building blocks as needed, to help you construct your custom HardenedHttpsAgent:
 
 ```typescript
 import {
   defaultAgentOptions,
-  cfsslCaBundle,
-  unifiedCtLogList,
+  embeddedCfsslCaBundle,
+  embeddedUnifiedCtLogList,
   basicCtPolicy,
   basicMixedOcspPolicy,
   basicStaplingOcspPolicy,
@@ -115,22 +115,30 @@ import {
 } from 'hardened-https-agent';
 ```
 
-### Embedded helper data and updates
+### Embedded resources ⚠️
 
-The default helpers such as `cfsslCaBundle` and `unifiedCtLogList` use embedded resources committed in this repository (CA bundle from Cloudflare CFSSL; unified CT log list merged from Google and Apple sources). These are refreshed in-repo via scripts and released periodically. Developers are responsible for updating the library to receive refreshed resources at a cadence appropriate for their environment. In the future, we plan to provide optional helpers to fetch updates at runtime while preserving explicit trust controls. These defaults are provided for convenience; all inputs are fully configurable, and you are free to supply your own sources or implement automatic update mechanisms that suit your trust model.
+The default helpers such as `embeddedCfsslCaBundle` and `embeddedUnifiedCtLogList` use embedded resources committed in this repository (CA bundle from Cloudflare CFSSL; unified CT log list merged from Google and Apple sources).
+
+- These embedded resources are refreshed via an automated weekly GitHub Action that fetches the latest upstream data and opens a pull request to update the repository. Updates are executed on GitHub’s infrastructure and are fully auditable in pull request diffs and timestamps.
+- If you choose to rely on embedded resources, you are responsible for updating the library in your project to receive the refreshed data at your desired cadence.
+- Alternatively, you can opt into Node's default CA bundle with `useNodeDefaultCABundle()` if that trust model better suits your environment.
+- You can also choose not to rely on embedded resources at all: provide your own CA bundle, your own unified CT log list, and configure every other property yourself. Everything is fully customizable.
 
 ### Customization (quick recipes)
 
 Bring your own CA bundle:
 
 ```typescript
-new HardenedHttpsAgent({
-  ...defaultAgentOptions(),
-  ca: myPemStringOrBuffer,
-});
+new HardenedHttpsAgent({ ...defaultAgentOptions(), ca: myPemStringOrBuffer });
 ```
 
-Tune standard agent behavior:
+Use Node default CA bundle:
+
+```typescript
+new HardenedHttpsAgent({ ...defaultAgentOptions(), ca: useNodeDefaultCABundle() });
+```
+
+Tune standard `https.Agent` behavior:
 
 ```typescript
 new HardenedHttpsAgent({
@@ -146,7 +154,7 @@ Use a custom CT policy:
 new HardenedHttpsAgent({
   ...defaultAgentOptions(),
   ctPolicy: {
-    logList: unifiedCtLogList,
+    logList: embeddedUnifiedCtLogList,
     minEmbeddedScts: 3,
     minDistinctOperators: 3,
   },
@@ -158,11 +166,14 @@ Use a custom OCSP policy:
 ```typescript
 new HardenedHttpsAgent({
   ...defaultAgentOptions(),
-  ocspPolicy: { mode: 'stapling', failHard: true },
+  ocspPolicy: {
+    mode: 'stapling',
+    failHard: true,
+  },
 });
 ```
 
-USe a custom CRLSet policy:
+Use a custom CRLSet policy:
 
 ```typescript
 new HardenedHttpsAgent({
@@ -177,10 +188,7 @@ new HardenedHttpsAgent({
 Enable detailed logs:
 
 ```typescript
-new HardenedHttpsAgent({
-  ...defaultAgentOptions(),
-  enableLogging: true,
-});
+new HardenedHttpsAgent({ ...defaultAgentOptions(), enableLogging: true });
 ```
 
 ## Contributing

@@ -46,7 +46,7 @@ jobs:
           echo "## Automated weekly refresh of embedded trust resources" > PR_BODY.md
           echo >> PR_BODY.md
           echo "This pull request refreshes the embedded resources used by the default helpers:" >> PR_BODY.md
-          echo "- **Cloudflare CFSSL CA bundle (PEM)**: fetched from Cloudflare's open-source cfssl_trust bundle to provide a transparent, auditable root CA set for out-of-the-box verification without relying on system stores." >> PR_BODY.md
+          echo "- **Cloudflare CFSSL CA bundle (PEM)**: fetched from Cloudflare's open-source cfssl_trust bundle to provide a transparent, auditable root CA set for out-of-the-box verification instead of Node's default bundled trust store." >> PR_BODY.md
           echo "- **Unified Certificate Transparency (CT) log list**: built by combining the official Google and Apple CT log lists to maximize coverage and operator diversity for CT validation." >> PR_BODY.md
           echo >> PR_BODY.md
           echo "### Source references" >> PR_BODY.md
@@ -61,7 +61,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.CREATE_PR_TOKEN || github.token }}
-          commit-message: 'chore(resources): refresh embedded resources (CT log list, CFSSL CA bundle)'
+          commit-message: 'chore(resources): refresh embedded resources'
           title: 'chore(resources): refresh embedded resources'
           branch: chore/refresh-resources
           add-paths: |
