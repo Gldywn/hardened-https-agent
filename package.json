@@ -1,6 +1,6 @@
 {
   "name": "hardened-https-agent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A security-first https.Agent for Node.js that adds critical layers of trust to your HTTPS requests. Enforce modern security policies with support for Certificate Transparency, advanced revocation checks (CRLSet, OCSP), and custom CAs.",
   "homepage": "https://github.com/Gldywn/hardened-https-agent#readme",
   "bugs": {
