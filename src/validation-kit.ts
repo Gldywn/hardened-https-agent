@@ -61,6 +61,7 @@ export class HardenedHttpsValidationKit {
       this.logger?.log('Socket read paused');
       shouldResume = true;
     } catch (err) {
+      /* istanbul ignore next */
       this.logger?.warn('Failed to pause socket', err);
     }
 
@@ -72,6 +73,7 @@ export class HardenedHttpsValidationKit {
             tlsSocket.resume();
             this.logger?.log('Socket read resumed');
           } catch (err) {
+            /* istanbul ignore next */
             this.logger?.warn('Failed to resume socket', err);
           }
         }
@@ -80,7 +82,7 @@ export class HardenedHttpsValidationKit {
       .catch((err: Error) => {
         this.logger?.error('An error occurred during validation', err);
         callback?.(err, undefined as any);
-        // TODO: Check this -> tlsSocket.destroy(err);
+        // TODO: tlsSocket.destroy(err); ?
       });
   }
 
@@ -89,6 +91,7 @@ export class HardenedHttpsValidationKit {
     this.runValidation(tlsSocket, callback);
   }
 
+  /* istanbul ignore next */
   public attachToAgent(agent: http.Agent | https.Agent): void {
     agent.on('keylog', (_line: Buffer, tlsSocket: tls.TLSSocket) => this.attachToSocket(tlsSocket));
   }

@@ -130,7 +130,7 @@ describe('Unified log list parsing', () => {
             },
             {
               // This one is valid but should be ignored because it's a test log
-              log_id: '7ku9t3XOYLrhQmkfq+GeZqMPfl+wctiDAMR7iXqo/cs=',
+              log_id: '8lv9u4YPZMsiRnlgr+HfZrNQgm+xdujEBNS8jYrp/dt=',
               key: dummyBase64Key,
               mmd: 86400,
               url: 'https://ct.googleapis.com/rocketeer/',
@@ -148,12 +148,22 @@ describe('Unified log list parsing', () => {
               log_type: 'prod',
               state: { usable: { timestamp: '2020-01-01T00:00:00Z' } },
             },
+            {
+              // This one is valid (readonly)
+              log_id: '8lv9u4YPZMsiRnlgr+HfZrNQgm+xdujEBNS8jYrp/dt=',
+              key: dummyBase64Key,
+              mmd: 86400,
+              url: 'https://ct.googleapis.com/rocketeer/',
+              description: 'Readonly Log',
+              log_type: 'prod',
+              state: { readonly: { timestamp: '2020-01-01T00:00:00Z' } },
+            },
           ],
         },
       ],
     };
     const logs = fromUnifiedCtLogList(list);
-    expect(logs.length).toBe(1);
+    expect(logs.length).toBe(2);
     expect(logs[0].description).toBe('Valid Log');
   });
 });

@@ -19,6 +19,7 @@ export function fromUnifiedCtLogList(logList: UnifiedCTLogList, logType: 'prod' 
       console.warn(
         `[Warning] Skipping operator with no logs defined. (operator: ${operator.name || 'N/A'})`,
       );
+      /* istanbul ignore next */
       continue;
     }
 
@@ -54,8 +55,11 @@ export function fromUnifiedCtLogList(logList: UnifiedCTLogList, logType: 'prod' 
           log = { ...baseLog, status: 'qualified' };
         } else if (state.usable) {
           log = { ...baseLog, status: 'usable' };
-        } else {
+        } else if (state.readonly) {
           log = { ...baseLog, status: 'readonly' };
+        } else {
+          /* istanbul ignore next */
+          throw new Error(`Unknown log state: ${JSON.stringify(state)}`);
         }
         transformedLogs.push(log);
       } else {

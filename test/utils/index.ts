@@ -71,7 +71,7 @@ export function getTestHardenedHttpsAgent(
     ctPolicy,
     ocspPolicy,
     crlSetPolicy,
-    enableLogging: true,
+    enableLogging,
     rejectUnauthorized,
   });
 }
