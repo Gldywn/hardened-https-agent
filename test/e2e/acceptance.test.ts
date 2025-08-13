@@ -8,10 +8,7 @@ import {
   type HardenedHttpsAgentOptions,
 } from '../../src';
 import { spoofedAxios } from '../utils/spoofedAxios';
-import { basicMixedOcspPolicy, defaultAgentOptions } from '../../src/default-options';
-
-// @ts-ignore
-import cfsslCaBundle from '../../src/resources/cfssl-ca-bundle.crt';
+import { basicMixedOcspPolicy, defaultAgentOptions, embeddedCfsslCaBundle } from '../../src/options';
 
 // Note: This test file is not completely stable because it relies on network.
 // If the remote server (e.g. google.com) updates its certificates and our local CA bundle becomes outdated,
@@ -75,7 +72,7 @@ describe('End-to-end policy validation on known acceptance scenarios', () => {
       console.log(`[E2E] Starting test: ${behaviorDescription} should successfully connect to: ${domains}`);
 
       const agent = new HardenedHttpsAgent({
-        ca: cfsslCaBundle,
+        ca: embeddedCfsslCaBundle,
         ...agentOptions,
         enableLogging: true,
       });

@@ -1,6 +1,6 @@
 import * as tls from 'tls';
-import { Logger } from '../agent';
-import { HardenedHttpsAgentOptions } from '../interfaces';
+import { Logger } from '../logger';
+import { HardenedHttpsValidationKitOptions } from '../interfaces';
 
 export class WrappedError extends Error {
   public cause?: unknown;
@@ -21,18 +21,18 @@ export class WrappedError extends Error {
  * to logging and other shared agent methods.
  */
 export abstract class BaseValidator {
-  private logger: Logger;
+  private logger: Logger | undefined;
 
-  constructor(logger: Logger) {
+  constructor(logger?: Logger) {
     this.logger = logger;
   }
 
   protected log(message: string, ...args: any[]): void {
-    this.logger.log(`[${this.constructor.name}] ${message}`, ...args);
+    this.logger?.log(`[${this.constructor.name}] ${message}`, ...args);
   }
 
   protected warn(message: string, ...args: any[]): void {
-    this.logger.warn(`[${this.constructor.name}] ${message}`, ...args);
+    this.logger?.warn(`[${this.constructor.name}] ${message}`, ...args);
   }
 
   protected wrapError(error: Error): WrappedError {
@@ -51,12 +51,12 @@ export abstract class BaseValidator {
    * Checks if this validation should run based on the agent's options.
    * This must be implemented by all concrete validator classes.
    */
-  abstract shouldRun(options: HardenedHttpsAgentOptions): boolean;
+  abstract shouldRun(options: HardenedHttpsValidationKitOptions): boolean;
 
   /**
    * Runs the validation logic for this validator.
    * Returns a Promise that resolves if validation passes, or rejects if it fails.
    * This must be implemented by all concrete validator classes.
    */
-  abstract validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void>;
+  abstract validate(socket: tls.TLSSocket, options: HardenedHttpsValidationKitOptions): Promise<void>;
 }

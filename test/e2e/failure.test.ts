@@ -7,7 +7,8 @@ import {
   basicDirectOcspPolicy,
   basicMixedOcspPolicy,
   basicStaplingOcspPolicy,
-} from '../../src/default-options';
+  embeddedCfsslCaBundle,
+} from '../../src/options';
 
 // @ts-ignore
 import cfsslCaBundle from '../../src/resources/cfssl-ca-bundle.crt';
@@ -75,6 +76,13 @@ const SCENARIOS: FailureScenario[] = [
     agentOptions: { ocspPolicy: basicMixedOcspPolicy() },
   },
   {
+    domain: 'https://revoked.grc.com/',
+    behaviorDescription: 'OCSP Direct',
+    failureDescription: 'a revoked certificate',
+    expectedError: /\[OCSPDirectValidator\] Certificate is revoked\. Status: revoked\./,
+    agentOptions: { ocspPolicy: basicDirectOcspPolicy() },
+  },
+  {
     domain: 'https://no-sct.badssl.com/',
     behaviorDescription: 'Certificate Transparency',
     failureDescription: 'a certificate without any SCTs',
@@ -106,7 +114,7 @@ describe('End-to-end policy validation on known failure scenarios', () => {
       await delay(1500); // Avoid network congestion and rate limiting
 
       const agent = new HardenedHttpsAgent({
-        ca: cfsslCaBundle(),
+        ca: embeddedCfsslCaBundle,
         ...agentOptions,
         enableLogging: true,
       });

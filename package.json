@@ -28,7 +28,7 @@
   },
   "scripts": {
     "test": "jest",
-    "test:e2e": "jest --config jest.config.e2e.js",
+    "test:e2e": "jest --config jest.config.e2e.js --detectOpenHandles",
     "test:update-test-data": "npm run test:fetch-test-certs && npm run test:fetch-log-list && npm run test:fetch-ca-bundle",
     "test:fetch-test-certs": "tsx scripts/fetch-test-certs.ts",
     "test:fetch-log-list": "tsx scripts/fetch-log-list.ts --for-test",
@@ -43,7 +43,8 @@
     "example:axios": "npm run build && tsx examples/axios.ts",
     "example:got": "npm run build && tsx examples/got.ts",
     "example:https-native": "npm run build && tsx examples/https-native.ts",
-    "example:custom-options": "npm run build && tsx examples/custom-options.ts"
+    "example:custom-options": "npm run build && tsx examples/custom-options.ts",
+    "example:validation-kit": "npm run build && tsx examples/validation-kit.ts"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
@@ -53,9 +54,12 @@
     "ajv-formats": "^3.0.1",
     "axios": "^1.10.0",
     "got": "^14.4.4",
+    "https-proxy-agent": "^7.0.6",
     "jest": "^30.0.4",
     "json-schema-merge-allof": "^0.8.1",
     "json-schema-to-typescript": "^15.0.4",
+    "node-forge": "^1.3.1",
+    "selfsigned": "^3.0.1",
     "ts-jest": "^29.4.0",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3"

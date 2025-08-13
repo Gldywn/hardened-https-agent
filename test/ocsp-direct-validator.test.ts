@@ -12,7 +12,7 @@ jest.mock('../src/validators/ocsp-stapling');
 
 const mockGetCertStatus = easyOcsp.getCertStatus as jest.Mock;
 
-describe('OCSP direct validation', () => {
+describe('OCSPDirectValidator', () => {
   afterEach(() => {
     jest.restoreAllMocks();
     mockGetCertStatus.mockClear();
@@ -43,7 +43,7 @@ describe('OCSP direct validation', () => {
 
   it('should pass when the certificate status is "good"', (done) => {
     mockGetCertStatus.mockResolvedValue({ status: 'good' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
@@ -62,7 +62,7 @@ describe('OCSP direct validation', () => {
   it('should fail when getCertStatus throws and policy is failHard', (done) => {
     const ocspError = new Error('OCSP request failed');
     mockGetCertStatus.mockRejectedValue(ocspError);
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
@@ -79,7 +79,7 @@ describe('OCSP direct validation', () => {
   it('should pass when getCertStatus throws and policy is failSoft', (done) => {
     const ocspError = new Error('OCSP request failed');
     mockGetCertStatus.mockRejectedValue(ocspError);
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
@@ -94,7 +94,7 @@ describe('OCSP direct validation', () => {
 
   it('should fail if the OCSP status is "revoked" when policy is failHard', (done) => {
     mockGetCertStatus.mockResolvedValue({ status: 'revoked' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
 
@@ -109,7 +109,7 @@ describe('OCSP direct validation', () => {
 
   it('should fail if the OCSP status is "revoked" when policy is failSoft', (done) => {
     mockGetCertStatus.mockResolvedValue({ status: 'revoked' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
 
@@ -124,9 +124,11 @@ describe('OCSP direct validation', () => {
 
   it('should fail when the issuer certificate is missing', (done) => {
     const mockSocket = createMockSocket({
-      ...peerCertificate,
-      issuerCertificate: undefined,
-    } as unknown as tls.DetailedPeerCertificate);
+      peerCertificate: {
+        ...peerCertificate,
+        issuerCertificate: undefined,
+      } as unknown as tls.DetailedPeerCertificate,
+    });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
 
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
@@ -140,7 +142,7 @@ describe('OCSP direct validation', () => {
   });
 
   it('should not run when ocspPolicy is not defined', (done) => {
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const ocspValidatorSpy = jest.spyOn(OCSPDirectValidator.prototype, 'validate');
 
@@ -156,7 +158,7 @@ describe('OCSP direct validation', () => {
   });
 
   it("should not run when ocspPolicy mode is not 'direct'", (done) => {
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const ocspValidatorSpy = jest.spyOn(OCSPDirectValidator.prototype, 'validate');
 

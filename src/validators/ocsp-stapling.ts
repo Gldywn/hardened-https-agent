@@ -1,5 +1,5 @@
 import * as tls from 'tls';
-import { HardenedHttpsAgentOptions } from '../interfaces';
+import { HardenedHttpsValidationKitOptions } from '../interfaces';
 import { OCSPBaseValidator } from './ocsp-base';
 
 export class OCSPStaplingValidator extends OCSPBaseValidator {
@@ -17,7 +17,7 @@ export class OCSPStaplingValidator extends OCSPBaseValidator {
   /**
    * This validator should only run if the ocspPolicy mode is 'stapling'.
    */
-  public shouldRun(options: HardenedHttpsAgentOptions): boolean {
+  public shouldRun(options: HardenedHttpsValidationKitOptions): boolean {
     return options.ocspPolicy?.mode === 'stapling';
   }
 
@@ -25,7 +25,7 @@ export class OCSPStaplingValidator extends OCSPBaseValidator {
    * Waits for the 'OCSPResponse' event on the TLS socket and validates the stapled OCSP response.
    * If no OCSP staple is received, applies the OCSP stapling policy to determine whether to fail or allow the connection.
    */
-  public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
+  public validate(socket: tls.TLSSocket, options: HardenedHttpsValidationKitOptions): Promise<void> {
     const { failHard } = options.ocspPolicy!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {

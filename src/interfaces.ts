@@ -38,6 +38,12 @@ export interface HardenedHttpsAgentOptions extends AgentOptions {
   enableLogging?: boolean;
 }
 
+// A minimal subset of options required for validation behavior only
+export type HardenedHttpsValidationKitOptions = Pick<
+  HardenedHttpsAgentOptions,
+  'ctPolicy' | 'ocspPolicy' | 'crlSetPolicy' | 'enableLogging'
+>;
+
 export interface CertificateTransparencyPolicy {
   /**
    * The complete Certificate Transparency log list object.

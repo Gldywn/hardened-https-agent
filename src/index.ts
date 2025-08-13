@@ -1,6 +1,12 @@
 export { HardenedHttpsAgent } from './agent';
-export type { HardenedHttpsAgentOptions, CertificateTransparencyPolicy, OCSPPolicy, CRLSetPolicy } from './interfaces';
- 
+export type {
+  HardenedHttpsAgentOptions,
+  CertificateTransparencyPolicy,
+  OCSPPolicy,
+  CRLSetPolicy,
+  HardenedHttpsValidationKitOptions,
+} from './interfaces';
+
 export {
   useNodeDefaultCABundle,
   embeddedCfsslCaBundle,
@@ -12,3 +18,5 @@ export {
   basicCrlSetPolicy,
   defaultAgentOptions,
 } from './options';
+
+export { HardenedHttpsValidationKit } from './validation-kit';

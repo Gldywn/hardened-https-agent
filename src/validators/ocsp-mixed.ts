@@ -1,5 +1,5 @@
 import * as tls from 'tls';
-import { HardenedHttpsAgentOptions } from '../interfaces';
+import { HardenedHttpsValidationKitOptions } from '../interfaces';
 import { OCSPBaseValidator, CertificateRevokedError } from './ocsp-base';
 
 export class OCSPMixedValidator extends OCSPBaseValidator {
@@ -17,7 +17,7 @@ export class OCSPMixedValidator extends OCSPBaseValidator {
   /**
    * This validator should only run if the ocspPolicy mode is 'mixed'.
    */
-  public shouldRun(options: HardenedHttpsAgentOptions): boolean {
+  public shouldRun(options: HardenedHttpsValidationKitOptions): boolean {
     return options.ocspPolicy?.mode === 'mixed';
   }
 
@@ -27,7 +27,7 @@ export class OCSPMixedValidator extends OCSPBaseValidator {
    * 2. If stapling fails for any reason except a revoked certificate, it falls back to a direct OCSP check.
    * 3. The `failHard` policy is enforced only for the result of the final direct check.
    */
-  public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
+  public validate(socket: tls.TLSSocket, options: HardenedHttpsValidationKitOptions): Promise<void> {
     const { failHard } = options.ocspPolicy!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {
