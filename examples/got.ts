@@ -1,4 +1,3 @@
-
 import got from 'got';
 import { HardenedHttpsAgent, defaultAgentOptions } from '../dist';
 import https from 'node:https';
@@ -17,6 +16,7 @@ async function main() {
   const agent = new HardenedHttpsAgent({
     ...httpsAgentOptions,
     ...defaultAgentOptions(),
+    enableLogging: true, // Enable logging to see the validation process (disabled with defaultAgentOptions())
   });
 
   const client = got.extend({
@@ -26,13 +26,12 @@ async function main() {
   });
 
   try {
+    console.log('\n> Performing request...');
     await client.get('https://example.com');
-    console.log('\nCongrats! You have successfully performed a more secure request with hardened-https-agent.');
+    console.log('> Congrats! You have successfully performed a more secure request with hardened-https-agent.');
   } catch (error) {
-    console.error('\nAn error occurred while performing the request', error);
+    console.error('> An error occurred while performing the request', error);
   }
 }
 
 main();
-
-

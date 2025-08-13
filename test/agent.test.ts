@@ -2,59 +2,42 @@ import { Duplex } from 'node:stream';
 import tls, { TLSSocket } from 'node:tls';
 import { HardenedHttpsAgent } from '../src/agent';
 import { HardenedHttpsAgentOptions } from '../src/interfaces';
-import { CTValidator, OCSPStaplingValidator } from '../src/validators';
+import { HardenedHttpsValidationKit } from '../src/validation-kit';
+import { createMockSocket } from './utils';
 
-jest.mock('../src/validators/ct');
-jest.mock('../src/validators/ocsp-stapling');
+jest.mock('../src/validation-kit');
 jest.mock('node:tls', () => ({
   ...jest.requireActual('node:tls'),
   connect: jest.fn(),
 }));
 
-const MockedCTValidator = CTValidator as jest.MockedClass<typeof CTValidator>;
-const MockedOCSPStaplingValidator = OCSPStaplingValidator as jest.MockedClass<typeof OCSPStaplingValidator>;
+const MockedValidationKit = HardenedHttpsValidationKit as jest.MockedClass<typeof HardenedHttpsValidationKit>;
 const mockedTlsConnect = tls.connect as jest.Mock;
 
-type MockValidator = {
-  shouldRun: jest.Mock<boolean, [HardenedHttpsAgentOptions]>;
-  onBeforeConnect: jest.Mock<tls.ConnectionOptions, [tls.ConnectionOptions]>;
-  validate: jest.Mock<Promise<void>, [TLSSocket, HardenedHttpsAgentOptions]>;
-  constructor: { name: string };
-};
-
-const createMockValidator = (name: string): MockValidator => ({
-  shouldRun: jest.fn().mockReturnValue(false),
-  onBeforeConnect: jest.fn((opts) => opts),
-  validate: jest.fn().mockResolvedValue(undefined),
-  constructor: { name },
-});
-
 describe('HardenedHttpsAgent', () => {
-  let mockSocket: jest.Mocked<TLSSocket>;
-  let mockCtValidator: MockValidator;
-  let mockOcspValidator: MockValidator;
+  let mockSocket: TLSSocket;
+  let mockValidationKit: jest.Mocked<HardenedHttpsValidationKit>;
 
   const baseOptions: HardenedHttpsAgentOptions = {
     ca: 'a-valid-ca',
-    enableLogging: false,
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    const duplex = new Duplex({ read() {}, write() {} });
-    mockSocket = Object.assign(duplex, {
-      on: jest.fn(),
-      once: jest.fn(),
-      destroy: jest.fn(),
-    }) as unknown as jest.Mocked<TLSSocket>;
+    mockSocket = createMockSocket();
     mockedTlsConnect.mockReturnValue(mockSocket);
 
-    mockCtValidator = createMockValidator('CTValidator');
-    mockOcspValidator = createMockValidator('OCSPStaplingValidator');
-
-    MockedCTValidator.mockImplementation(() => mockCtValidator as any);
-    MockedOCSPStaplingValidator.mockImplementation(() => mockOcspValidator as any);
+    // Set up a default mock implementation for the validation kit
+    MockedValidationKit.mockImplementation(() => {
+      const kit = {
+        applyBeforeConnect: jest.fn((opts) => opts),
+        attachToSocket: jest.fn(),
+      };
+      // Assign the mock instance to our variable so we can assert calls on it
+      mockValidationKit = kit as unknown as jest.Mocked<HardenedHttpsValidationKit>;
+      return kit as any;
+    });
   });
 
   test('should throw an error if "ca" property is not provided', () => {
@@ -65,114 +48,42 @@ describe('HardenedHttpsAgent', () => {
     expect(() => new HardenedHttpsAgent({ ca: [] })).toThrow('The `ca` property cannot be empty.');
   });
 
-  test('should check all validators to see if they should run', () => {
+  test('should instantiate ValidationKit with the correct options', () => {
+    new HardenedHttpsAgent(baseOptions);
+    expect(MockedValidationKit).toHaveBeenCalledWith(
+      {
+        ctPolicy: baseOptions.ctPolicy,
+        ocspPolicy: baseOptions.ocspPolicy,
+        crlSetPolicy: baseOptions.crlSetPolicy,
+        enableLogging: baseOptions.enableLogging,
+      },
+      undefined, // LogSink instance
+    );
+  });
+
+  test('should call applyBeforeConnect on the validation kit', () => {
+    const agent = new HardenedHttpsAgent(baseOptions);
+    const connOpts = { host: 'example.com' };
+    agent.createConnection(connOpts, jest.fn());
+
+    expect(mockValidationKit.applyBeforeConnect).toHaveBeenCalledWith(connOpts);
+  });
+
+  test('should call attachToSocket on the validation kit', () => {
     const agent = new HardenedHttpsAgent(baseOptions);
     agent.createConnection({}, jest.fn());
 
-    expect(mockCtValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
-    expect(mockOcspValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
+    expect(mockValidationKit.attachToSocket).toHaveBeenCalledWith(mockSocket, expect.any(Function));
   });
 
-  test('should only run validation for validators where shouldRun returns true', () => {
-    mockCtValidator.shouldRun.mockReturnValue(true);
-    mockOcspValidator.shouldRun.mockReturnValue(false);
-
+  test('should use the connection options returned by applyBeforeConnect', () => {
     const agent = new HardenedHttpsAgent(baseOptions);
-    agent.createConnection({}, jest.fn());
+    const initialOpts = { host: 'initial' };
+    const modifiedOpts = { host: 'modified' };
+    mockValidationKit.applyBeforeConnect.mockReturnValue(modifiedOpts);
 
-    expect(mockCtValidator.validate).toHaveBeenCalled();
-    expect(mockOcspValidator.validate).not.toHaveBeenCalled();
-  });
-
-  test('should run validation for all validators when all shouldRun return true', () => {
-    mockCtValidator.shouldRun.mockReturnValue(true);
-    mockOcspValidator.shouldRun.mockReturnValue(true);
-
-    const agent = new HardenedHttpsAgent(baseOptions);
-    agent.createConnection({}, jest.fn());
-
-    expect(mockCtValidator.validate).toHaveBeenCalled();
-    expect(mockOcspValidator.validate).toHaveBeenCalled();
-  });
-
-  test('should proceed with native TLS validation if no validators are active', (done) => {
-    mockCtValidator.shouldRun.mockReturnValue(false);
-    mockOcspValidator.shouldRun.mockReturnValue(false);
-
-    const agent = new HardenedHttpsAgent(baseOptions);
-    const callback = jest.fn((err, stream) => {
-      expect(err).toBeNull();
-      expect(stream).toBe(mockSocket);
-      done();
-    });
-
-    agent.createConnection({}, callback);
-
-    expect(mockCtValidator.validate).not.toHaveBeenCalled();
-    expect(mockOcspValidator.validate).not.toHaveBeenCalled();
-    expect(mockSocket.once).toHaveBeenCalledWith('secureConnect', expect.any(Function));
-
-    // Simulate the 'secureConnect' event to trigger the callback
-    const secureConnectCallback = mockSocket.once.mock.calls[0][1];
-    secureConnectCallback(Buffer.from(''));
-  });
-
-  test('should release the socket when all active validators pass successfully', async () => {
-    mockCtValidator.shouldRun.mockReturnValue(true);
-    mockOcspValidator.shouldRun.mockReturnValue(true);
-
-    const ctPromise = Promise.resolve();
-    const ocspPromise = Promise.resolve();
-    mockCtValidator.validate.mockReturnValue(ctPromise);
-    mockOcspValidator.validate.mockReturnValue(ocspPromise);
-
-    const agent = new HardenedHttpsAgent(baseOptions);
-    const callback = jest.fn();
-
-    agent.createConnection({}, callback);
-
-    // Wait for all validation promises to resolve
-    await Promise.all([ctPromise, ocspPromise]);
-    // Allow the promise chain in the agent to resolve
-    await new Promise(process.nextTick);
-
-    expect(callback).toHaveBeenCalledWith(null, mockSocket);
-  });
-
-  test('should destroy the socket if any active validator fails', async () => {
-    const validationError = new Error('Validation failed');
-    mockCtValidator.shouldRun.mockReturnValue(true);
-    mockCtValidator.validate.mockRejectedValue(validationError);
-
-    const agent = new HardenedHttpsAgent(baseOptions);
-    const callback = jest.fn();
-
-    agent.createConnection({}, callback);
-
-    // Allow promise rejection to propagate
-    await new Promise(process.nextTick);
-
-    expect(mockSocket.destroy).toHaveBeenCalledWith(validationError);
-    expect(callback).toHaveBeenCalledWith(validationError, undefined);
-  });
-
-  test('should pass modified options from one validator to the next', () => {
-    const initialConnOpts = { host: 'example.com' };
-    const ctModifiedOpts = { ...initialConnOpts, ctOption: true };
-    const ocspModifiedOpts = { ...ctModifiedOpts, ocspOption: true };
-
-    mockCtValidator.shouldRun.mockReturnValue(true);
-    mockOcspValidator.shouldRun.mockReturnValue(true);
-
-    mockCtValidator.onBeforeConnect.mockReturnValue(ctModifiedOpts);
-    mockOcspValidator.onBeforeConnect.mockReturnValue(ocspModifiedOpts);
-
-    const agent = new HardenedHttpsAgent(baseOptions);
-    agent.createConnection(initialConnOpts, jest.fn());
-
-    expect(mockCtValidator.onBeforeConnect).toHaveBeenCalledWith(initialConnOpts);
-    expect(mockOcspValidator.onBeforeConnect).toHaveBeenCalledWith(ctModifiedOpts);
-    expect(mockedTlsConnect).toHaveBeenCalledWith(ocspModifiedOpts);
+    agent.createConnection(initialOpts, jest.fn());
+    expect(mockedTlsConnect).toHaveBeenCalledWith(modifiedOpts);
   });
 
   test('should handle socket errors during connection setup', (done) => {
@@ -187,12 +98,7 @@ describe('HardenedHttpsAgent', () => {
 
     agent.createConnection({}, callback);
 
-    // Find the error handler. Using .find() is safer than assuming the order of .on() calls.
-    const onErrorCallback = (mockSocket.on as jest.Mock).mock.calls.find((call: any[]) => call[0] === 'error')?.[1];
-    if (onErrorCallback) {
-      onErrorCallback(connectionError);
-    } else {
-      done(new Error('onError callback was not registered on the socket.'));
-    }
+    // Simulate the error event on the next tick
+    process.nextTick(() => mockSocket.emit('error', connectionError));
   });
 });

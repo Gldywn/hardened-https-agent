@@ -15,9 +15,11 @@ async function main() {
   const agent = new HardenedHttpsAgent({
     ...httpsAgentOptions,
     ...defaultAgentOptions(),
+    enableLogging: true, // Enable logging to see the validation process (disabled with defaultAgentOptions())
   });
 
   try {
+    console.log('\n> Performing request...');
     await new Promise<void>((resolve, reject) => {
       const req = https.request(
         'https://example.com',
@@ -35,10 +37,9 @@ async function main() {
       req.on('error', reject);
       req.end();
     });
-
-    console.log('\nCongrats! You have successfully performed a more secure request with hardened-https-agent.');
+    console.log('> Congrats! You have successfully performed a more secure request with hardened-https-agent.');
   } catch (error) {
-    console.error('\nAn error occurred while performing the request', error);
+    console.error('> An error occurred while performing the request', error);
   }
 }
 

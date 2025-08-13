@@ -4,20 +4,32 @@ import { fromBER } from 'asn1js';
 import * as tls from 'node:tls';
 import { Duplex } from 'stream';
 
-export function createMockSocket(peerCertificate: tls.DetailedPeerCertificate): tls.TLSSocket {
+export function createMockSocket(
+  {
+    peerCertificate,
+    servername,
+  }: {
+    peerCertificate?: tls.DetailedPeerCertificate;
+    servername?: string;
+  } = {},
+): tls.TLSSocket {
   const socket = new Duplex({
     read() {},
-    write(_, __, cb) {
-      cb();
+    write(_chunk, _encoding, callback) {
+      callback();
     },
   });
 
-  // Add TLSSocket properties to the mock without interfering with EventEmitter behavior
-  const mockTlsSocket = socket as any;
-  mockTlsSocket.destroy = jest.fn();
-  mockTlsSocket.getPeerCertificate = jest.fn().mockReturnValue(peerCertificate);
+  const tlsSocket = socket as unknown as tls.TLSSocket;
 
-  return socket as unknown as tls.TLSSocket;
+  jest.spyOn(socket, 'emit');
+  tlsSocket.setKeepAlive = jest.fn();
+  jest.spyOn(socket, 'pause');
+  jest.spyOn(socket, 'resume');
+  jest.spyOn(socket, 'destroy');
+  if (peerCertificate) tlsSocket.getPeerCertificate = jest.fn().mockReturnValue(peerCertificate);
+
+  return tlsSocket;
 }
 
 export const createMockPeerCertificate = (pkiCert: Certificate): tls.PeerCertificate => {

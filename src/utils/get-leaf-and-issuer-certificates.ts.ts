@@ -7,6 +7,7 @@ export function getLeafAndIssuerCertificates(socket: tls.TLSSocket): {
   const certChain = socket.getPeerCertificate(true);
 
   if (!certChain) {
+    /* istanbul ignore next */
     throw new Error('Could not get peer certificate chain.');
   }
 

@@ -1,12 +1,12 @@
 import * as tls from 'tls';
-import { HardenedHttpsAgentOptions } from '../interfaces';
+import { HardenedHttpsValidationKitOptions } from '../interfaces';
 import { OCSPBaseValidator } from './ocsp-base';
 
 export class OCSPDirectValidator extends OCSPBaseValidator {
   /**
    * This validator should only run if the ocspPolicy mode is 'direct'.
    */
-  public shouldRun(options: HardenedHttpsAgentOptions): boolean {
+  public shouldRun(options: HardenedHttpsValidationKitOptions): boolean {
     return options.ocspPolicy?.mode === 'direct';
   }
 
@@ -14,7 +14,7 @@ export class OCSPDirectValidator extends OCSPBaseValidator {
    * Performs a direct OCSP request to check the revocation status of the server's certificate.
    * If the check fails, the connection is aborted if `failHard` is true.
    */
-  public validate(socket: tls.TLSSocket, options: HardenedHttpsAgentOptions): Promise<void> {
+  public validate(socket: tls.TLSSocket, options: HardenedHttpsValidationKitOptions): Promise<void> {
     const { failHard } = options.ocspPolicy!; // Safe due to shouldRun check
 
     return new Promise((resolve, reject) => {

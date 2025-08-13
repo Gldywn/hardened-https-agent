@@ -12,19 +12,21 @@ async function main() {
     maxCachedSessions: 500,
   };
 
-  // Merge standard agent options with hardened defaultss
+  // Merge standard agent options with hardened defaults
   const agent = new HardenedHttpsAgent({
     ...httpsAgentOptions,
     ...defaultAgentOptions(),
+    enableLogging: true, // Enable logging to see the validation process (disabled with defaultAgentOptions())
   });
 
   const client = axios.create({ httpsAgent: agent, timeout: 15000 });
 
   try {
+    console.log('\n> Performing request...');
     await client.get('https://example.com');
-    console.log('\nCongrats! You have successfully performed a more secure request with hardened-https-agent.');
+    console.log('> Congrats! You have successfully performed a more secure request with hardened-https-agent.');
   } catch (error) {
-    console.error('\nAn error occurred while performing the request', error);
+    console.error('> An error occurred while performing the request', error);
   }
 }
 

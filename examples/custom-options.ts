@@ -14,31 +14,35 @@ async function main() {
 
   // Merge standard agent options with hardened defaults and some custom policies
   // Here we use values from the default options, but you can customize them as you want
-  const agent = new HardenedHttpsAgent({
-    ...httpsAgentOptions,
-    ca: embeddedCfsslCaBundle, // or *your custom ca bundle* | useNodeDefaultCABundle()
-    ctPolicy: {
-      logList: embeddedUnifiedCtLogList, // or *your custom log list*
-      minEmbeddedScts: 2,
-      minDistinctOperators: 2,
+  const agent = new HardenedHttpsAgent(
+    {
+      ...httpsAgentOptions,
+      ca: embeddedCfsslCaBundle, // or *your custom ca bundle* | useNodeDefaultCABundle()
+      ctPolicy: {
+        logList: embeddedUnifiedCtLogList, // or *your custom log list*
+        minEmbeddedScts: 2,
+        minDistinctOperators: 2,
+      },
+      ocspPolicy: {
+        mode: 'mixed', // or 'stapling' | 'direct'
+        failHard: true,
+      },
+      crlSetPolicy: {
+        verifySignature: true,
+        updateStrategy: 'always', // or 'on-expiry'
+      },
+      enableLogging: true, // Enable logging to see the validation process (disabled with defaultAgentOptions())
     },
-    ocspPolicy: {
-      mode: 'mixed', // or 'stapling' | 'direct'
-      failHard: true,
-    },
-    crlSetPolicy: {
-      verifySignature: true,
-      updateStrategy: 'always', // or 'on-expiry'
-    },
-    enableLogging: true,
-  });
+    console, // or your own `LogSink` (default is `console`)
+  );
 
   const client = axios.create({ httpsAgent: agent, timeout: 15000 });
   try {
+    console.log('\n> Performing request...');
     await client.get('https://example.com');
-    console.log('\nCongrats! You have successfully performed a more secure request with hardened-https-agent.');
+    console.log('> Congrats! You have successfully performed a more secure request with hardened-https-agent.');
   } catch (error) {
-    console.error('\nAn error occurred while performing the request', error);
+    console.error('> An error occurred while performing the request', error);
   }
 }
 

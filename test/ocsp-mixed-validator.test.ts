@@ -12,7 +12,7 @@ jest.mock('../src/validators/ocsp-direct');
 const mockParseOCSPResponse = easyOcsp.parseOCSPResponse as jest.Mock;
 const mockGetCertStatus = easyOcsp.getCertStatus as jest.Mock;
 
-describe('OCSP mixed validation', () => {
+describe('OCSPMixedValidator', () => {
   afterEach(() => {
     jest.restoreAllMocks();
     mockParseOCSPResponse.mockClear();
@@ -30,7 +30,7 @@ describe('OCSP mixed validation', () => {
 
   it('should pass if a valid OCSP staple is provided', (done) => {
     mockParseOCSPResponse.mockResolvedValue({ status: 'good' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
 
@@ -48,7 +48,7 @@ describe('OCSP mixed validation', () => {
 
   it('should fail if the stapled response shows a revoked certificate', (done) => {
     mockParseOCSPResponse.mockResolvedValue({ status: 'revoked' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
 
@@ -64,7 +64,7 @@ describe('OCSP mixed validation', () => {
 
   it('should pass on fallback if no staple is provided and direct check is good', (done) => {
     mockGetCertStatus.mockResolvedValue({ status: 'good' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
 
@@ -82,7 +82,7 @@ describe('OCSP mixed validation', () => {
   it('should pass on fallback if stapling fails and direct check is good', (done) => {
     mockParseOCSPResponse.mockRejectedValue(new Error('Invalid staple format'));
     mockGetCertStatus.mockResolvedValue({ status: 'good' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
 
@@ -100,7 +100,7 @@ describe('OCSP mixed validation', () => {
 
   it('should fail on fallback if no staple is provided and direct check fails with failHard', (done) => {
     mockGetCertStatus.mockRejectedValue(new Error('Direct OCSP check failed'));
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
 
@@ -116,7 +116,7 @@ describe('OCSP mixed validation', () => {
 
   it('should pass on fallback if no staple is provided and direct check fails with failSoft', (done) => {
     mockGetCertStatus.mockRejectedValue(new Error('Direct OCSP check failed'));
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
 
@@ -132,7 +132,7 @@ describe('OCSP mixed validation', () => {
 
   it('should fail on fallback if direct check shows revoked certificate', (done) => {
     mockGetCertStatus.mockResolvedValue({ status: 'revoked' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
 
@@ -148,7 +148,7 @@ describe('OCSP mixed validation', () => {
   it('should fail on fallback if stapling fails and direct check also fails with failHard', (done) => {
     mockParseOCSPResponse.mockRejectedValue(new Error('Invalid staple format'));
     mockGetCertStatus.mockRejectedValue(new Error('Direct OCSP check failed'));
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failHardPolicy });
 
@@ -167,7 +167,7 @@ describe('OCSP mixed validation', () => {
   it('should fail on fallback if stapling fails and direct check finds a revoked certificate', (done) => {
     mockParseOCSPResponse.mockRejectedValue(new Error('Invalid staple format'));
     mockGetCertStatus.mockResolvedValue({ status: 'revoked' });
-    const mockSocket = createMockSocket(peerCertificate);
+    const mockSocket = createMockSocket({ peerCertificate });
     jest.spyOn(tls, 'connect').mockReturnValue(mockSocket);
     const agent = getTestHardenedHttpsAgent({ ocspPolicy: failSoftPolicy });
 
