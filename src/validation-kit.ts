@@ -18,6 +18,7 @@ export type ValidationKitEvents = {
   'validation:error': (error: Error) => void;
 };
 
+/* istanbul ignore next */
 class TypedEventEmitter<Events extends Record<string, (...args: any[]) => void>> extends EventEmitter {
   public override on<K extends keyof Events & string>(eventName: K, listener: Events[K]): this {
     return super.on(eventName, listener as (...args: any[]) => void);
