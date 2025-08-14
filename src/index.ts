@@ -8,7 +8,7 @@ export type {
 } from './interfaces';
 
 export {
-  useNodeDefaultCABundle,
+  useNodeDefaultCaBundle,
   embeddedCfsslCaBundle,
   embeddedUnifiedCtLogList,
   basicCtPolicy,

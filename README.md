@@ -185,7 +185,7 @@ The options below are used to configure the security policies of the `HardenedHt
 
 | **Property**        | **Type**                                      | **Required / Variants**                                                                                                                                                                | **Helper(s)**                                          |
 | ------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| `ca`                | `string \| Buffer \| Array<string \| Buffer>` | Required. Custom trust store that replaces Node.js defaults. Accepts PEM string, `Buffer`, or an array of either.                                                                      | `embeddedCfsslCaBundle`, `useNodeDefaultCABundle()`    |
+| `ca`                | `string \| Buffer \| Array<string \| Buffer>` | Required. Custom trust store that replaces Node.js defaults. Accepts PEM string, `Buffer`, or an array of either.                                                                      | `embeddedCfsslCaBundle`, `useNodeDefaultCaBundle()`    |
 | `ctPolicy`          | `CertificateTransparencyPolicy`               | Optional. Enables CT when present. Fields: `logList: UnifiedCTLogList`, `minEmbeddedScts?: number`, `minDistinctOperators?: number`.                                                   | `basicCtPolicy()`, `embeddedUnifiedCtLogList`          |
 | `ocspPolicy`        | `OCSPPolicy`                                  | Optional. Enables OCSP when present. Fields: `mode: 'mixed' \| 'stapling' \| 'direct'`, `failHard: boolean`.                                                                           | `basicStaplingOcspPolicy()`, `basicDirectOcspPolicy()` |
 | `crlSetPolicy`      | `CRLSetPolicy`                                | Optional. Enables CRLSet when present. Fields: `crlSet?: CRLSet`, `verifySignature?: boolean`, `updateStrategy?: 'always' \| 'on-expiry'`.                                             | `basicCrlSetPolicy()`                                  |
@@ -199,7 +199,7 @@ Import convenience presets and building blocks as needed, to help you construct 
 ```typescript
 import {
   defaultAgentOptions,
-  useNodeDefaultCABundle,
+  useNodeDefaultCaBundle,
   embeddedCfsslCaBundle,
   embeddedUnifiedCtLogList,
   basicCtPolicy,
@@ -216,7 +216,7 @@ The default helpers such as `embeddedCfsslCaBundle` and `embeddedUnifiedCtLogLis
 
 - These embedded resources are refreshed via an automated weekly GitHub Action that fetches the latest upstream data and opens a pull request to update the repository. Updates are executed on GitHub’s infrastructure and are fully auditable in pull request diffs and timestamps.
 - If you choose to rely on embedded resources, you are responsible for updating the library in your project to receive the refreshed data at your desired cadence.
-- Alternatively, you can opt into Node's default CA bundle with `useNodeDefaultCABundle()` if that trust model better suits your environment.
+- Alternatively, you can opt into Node's default CA bundle with `useNodeDefaultCaBundle()` if that trust model better suits your environment.
 - You can also choose not to rely on embedded resources at all: provide your own CA bundle, your own unified CT log list, and configure every other property yourself. Everything is fully customizable.
 
 ### `HardenedHttpsAgent` customization (quick recipes)
@@ -230,7 +230,7 @@ new HardenedHttpsAgent({ ...defaultAgentOptions(), ca: myPemStringOrBuffer });
 Use Node default CA bundle:
 
 ```typescript
-new HardenedHttpsAgent({ ...defaultAgentOptions(), ca: useNodeDefaultCABundle() });
+new HardenedHttpsAgent({ ...defaultAgentOptions(), ca: useNodeDefaultCaBundle() });
 ```
 
 Tune standard `https.Agent` behavior:

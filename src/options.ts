@@ -30,7 +30,7 @@ export const NODE_DEFAULT_CA_SENTINEL = '__USE_NODE_DEFAULT_CA_BUNDLE__';
  * bundled Mozilla store, not necessarily the OS store, unless `--use-system-ca` or a
  * platform-specific build enables it.
  */
-export function useNodeDefaultCABundle(): string {
+export function useNodeDefaultCaBundle(): string {
   return NODE_DEFAULT_CA_SENTINEL;
 }
 
