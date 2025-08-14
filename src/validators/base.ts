@@ -1,6 +1,6 @@
 import * as tls from 'tls';
 import { Logger } from '../logger';
-import { HardenedHttpsValidationKitOptions } from '../interfaces';
+import { ValidatorsOptions } from '../interfaces';
 
 export class WrappedError extends Error {
   public cause?: unknown;
@@ -56,12 +56,12 @@ export abstract class BaseValidator {
    * Checks if this validation should run based on the agent's options.
    * This must be implemented by all concrete validator classes.
    */
-  abstract shouldRun(options: HardenedHttpsValidationKitOptions): boolean;
+  abstract shouldRun(options: ValidatorsOptions): boolean;
 
   /**
    * Runs the validation logic for this validator.
    * Returns a Promise that resolves if validation passes, or rejects if it fails.
    * This must be implemented by all concrete validator classes.
    */
-  abstract validate(socket: tls.TLSSocket, options: HardenedHttpsValidationKitOptions): Promise<void>;
+  abstract validate(socket: tls.TLSSocket, options: ValidatorsOptions): Promise<void>;
 }

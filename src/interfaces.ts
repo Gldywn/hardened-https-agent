@@ -43,6 +43,9 @@ export type HardenedHttpsValidationKitOptions = Pick<
   'ctPolicy' | 'ocspPolicy' | 'crlSetPolicy' | 'loggerOptions'
 >;
 
+// Options passed down to the validators to perform their checks
+export type ValidatorsOptions  = Omit<HardenedHttpsValidationKitOptions, 'loggerOptions'>;
+
 export interface CertificateTransparencyPolicy {
   /**
    * The complete Certificate Transparency log list object.

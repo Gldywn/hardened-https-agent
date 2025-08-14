@@ -2,7 +2,7 @@ import http from 'node:http';
 import https from 'node:https';
 import tls from 'node:tls';
 import { Logger } from './logger';
-import type { HardenedHttpsValidationKitOptions } from './interfaces';
+import type { HardenedHttpsValidationKitOptions, ValidatorsOptions } from './interfaces';
 import { BaseValidator } from './validators/base';
 import {
   CTValidator,
@@ -13,15 +13,15 @@ import {
 } from './validators';
 
 export class HardenedHttpsValidationKit {
-  private readonly options: Omit<HardenedHttpsValidationKitOptions, 'loggerOptions'>;
   private readonly logger: Logger | undefined;
+  private readonly validatorsOpts: ValidatorsOptions;
   private readonly validators: BaseValidator[];
   private readonly validatedSockets: WeakSet<tls.TLSSocket> = new WeakSet();
 
   constructor({ loggerOptions, ...options }: HardenedHttpsValidationKitOptions) {
-    this.options = options;
     if (loggerOptions) this.logger = new Logger(this.constructor.name, loggerOptions);
-
+    
+    this.validatorsOpts = options;
     this.validators = [
       new CTValidator(this.logger),
       new OCSPStaplingValidator(this.logger),
@@ -32,7 +32,7 @@ export class HardenedHttpsValidationKit {
   }
 
   private getActiveValidators(): BaseValidator[] {
-    return this.validators.filter((v) => v.shouldRun(this.options));
+    return this.validators.filter((v) => v.shouldRun(this.validatorsOpts));
   }
 
   public applyBeforeConnect<T extends tls.ConnectionOptions>(options: T): T {
@@ -67,7 +67,7 @@ export class HardenedHttpsValidationKit {
       this.logger?.warn('Failed to pause socket', err);
     }
 
-    Promise.all(active.map((v) => v.validate(tlsSocket, this.options)))
+    Promise.all(active.map((v) => v.validate(tlsSocket, this.validatorsOpts)))
       .then(() => {
         this.logger?.info('All enabled validators passed.');
         if (shouldResume) {
