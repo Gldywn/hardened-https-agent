@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-import { delay } from '../utils';
+import { delay, spoofedAxios } from '../utils';
 import {
   basicCtPolicy,
   basicDirectOcspPolicy,
@@ -7,7 +7,6 @@ import {
   HardenedHttpsAgent,
   type HardenedHttpsAgentOptions,
 } from '../../src';
-import { spoofedAxios } from '../utils/spoofedAxios';
 import { basicMixedOcspPolicy, defaultAgentOptions, embeddedCfsslCaBundle } from '../../src/options';
 
 // Note: This test file is not completely stable because it relies on network.

@@ -1,6 +1,6 @@
-import tls from 'node:tls';
-import https from 'node:https';
 import http from 'node:http';
+import https from 'node:https';
+import tls from 'node:tls';
 import { Logger, LogSink } from './logger';
 import type { HardenedHttpsValidationKitOptions } from './interfaces';
 import { BaseValidator } from './validators/base';
@@ -11,15 +11,37 @@ import {
   OCSPMixedValidator,
   CRLSetValidator,
 } from './validators';
-import { Duplex } from 'node:stream';
+import { EventEmitter } from 'node:events';
 
-export class HardenedHttpsValidationKit {
+export type ValidationKitEvents = {
+  'validation:success': (tlsSocket: tls.TLSSocket) => void;
+  'validation:error': (error: Error) => void;
+};
+
+/* istanbul ignore next */
+class TypedEventEmitter<Events extends Record<string, (...args: any[]) => void>> extends EventEmitter {
+  public override on<K extends keyof Events & string>(eventName: K, listener: Events[K]): this {
+    return super.on(eventName, listener as (...args: any[]) => void);
+  }
+  public override once<K extends keyof Events & string>(eventName: K, listener: Events[K]): this {
+    return super.once(eventName, listener as (...args: any[]) => void);
+  }
+  public override off<K extends keyof Events & string>(eventName: K, listener: Events[K]): this {
+    return super.off(eventName, listener as (...args: any[]) => void);
+  }
+  public override emit<K extends keyof Events & string>(eventName: K, ...args: Parameters<Events[K]>): boolean {
+    return super.emit(eventName, ...args);
+  }
+}
+
+export class HardenedHttpsValidationKit extends TypedEventEmitter<ValidationKitEvents> {
   private readonly options: HardenedHttpsValidationKitOptions;
   private readonly logger: Logger | undefined;
   private readonly validators: BaseValidator[];
   private readonly validatedSockets: WeakSet<tls.TLSSocket> = new WeakSet();
 
   constructor(options: HardenedHttpsValidationKitOptions, sink?: LogSink) {
+    super();
     this.options = options;
     if (options.enableLogging) this.logger = new Logger(this.constructor.name, sink);
 
@@ -47,12 +69,15 @@ export class HardenedHttpsValidationKit {
     return finalOptions as T;
   }
 
-  private runValidation(tlsSocket: tls.TLSSocket, callback?: (err: Error | null, stream: Duplex) => void): void {
+  private runValidation(tlsSocket: tls.TLSSocket): void {
     if (this.validatedSockets.has(tlsSocket)) return;
     this.validatedSockets.add(tlsSocket);
 
     const active = this.getActiveValidators();
-    if (active.length === 0) return callback?.(null, tlsSocket);
+    if (active.length === 0) {
+      tlsSocket.emit('hardened:validation:success');
+      return;
+    }
 
     let shouldResume = false;
     try {
@@ -77,18 +102,18 @@ export class HardenedHttpsValidationKit {
             this.logger?.warn('Failed to resume socket', err);
           }
         }
-        callback?.(null, tlsSocket);
+        tlsSocket.emit('hardened:validation:success');
       })
       .catch((err: Error) => {
         this.logger?.error('An error occurred during validation', err);
-        callback?.(err, undefined as any);
-        // TODO: tlsSocket.destroy(err); ?
+        tlsSocket.emit('hardened:validation:error', err);
+        tlsSocket.destroy(err); // Destroy the socket to prevent further use (and force error propagation to eventual attached agent)
       });
   }
 
-  public attachToSocket(tlsSocket: tls.TLSSocket, callback?: (err: Error | null, stream: Duplex) => void): void {
+  public attachToSocket(tlsSocket: tls.TLSSocket): void {
     if (this.validatedSockets.has(tlsSocket)) return;
-    this.runValidation(tlsSocket, callback);
+    this.runValidation(tlsSocket);
   }
 
   /* istanbul ignore next */

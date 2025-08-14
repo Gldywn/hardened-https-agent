@@ -17,7 +17,7 @@ async function main() {
   const agent = new HardenedHttpsAgent(
     {
       ...httpsAgentOptions,
-      ca: embeddedCfsslCaBundle, // or *your custom ca bundle* | useNodeDefaultCABundle()
+      ca: embeddedCfsslCaBundle, // or *your custom ca bundle* | useNodeDefaultCaBundle()
       ctPolicy: {
         logList: embeddedUnifiedCtLogList, // or *your custom log list*
         minEmbeddedScts: 2,

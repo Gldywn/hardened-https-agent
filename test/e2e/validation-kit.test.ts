@@ -1,7 +1,7 @@
 import https from 'node:https';
 import tls from 'node:tls';
 import { HardenedHttpsValidationKit } from '../../src/validation-kit';
-import { getCa, startTlsServer } from '../utils/server';
+import { getCa, startTlsServer } from '../utils';
 import { basicCtPolicy } from '../../src/options';
 
 jest.mock('../../src/validators/ct', () => ({

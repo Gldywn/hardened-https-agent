@@ -1,11 +1,8 @@
 import type { CertificateTransparencyPolicy } from '../src/interfaces';
 import * as tls from 'node:tls';
-import { loadTestCertsChain, getTestHardenedHttpsAgent, TEST_CT_POLICY } from './utils';
-import { TEST_CERT_HOSTS } from '../scripts/constants';
+import { loadTestCertsChain, getTestHardenedHttpsAgent, TEST_CT_POLICY, createMockSocket, createMockPeerCertificate } from './utils';
 import { SCT_EXTENSION_OID_V1 } from '@gldywn/sct.js';
-import { createMockSocket, createMockPeerCertificate, delay } from './utils';
 import { CTValidator } from '../src/validators';
-import { WrappedError } from '../src/validators/base';
 
 jest.mock('node:tls');
 

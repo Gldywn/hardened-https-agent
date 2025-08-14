@@ -120,30 +120,34 @@ describe('HardenedHttpsValidationKit', () => {
     mockOcspStaplingValidator.validate.mockResolvedValue(undefined);
 
     const kit = new HardenedHttpsValidationKit(baseOptions);
-    kit.attachToSocket(mockSocket, (err) => {
-      expect(err).toBeNull();
+    mockSocket.on('hardened:validation:success', () => {
+      expect(mockSocket.pause).toHaveBeenCalled();
       expect(mockSocket.resume).toHaveBeenCalled();
-      
       done();
     });
-
-    expect(mockSocket.pause).toHaveBeenCalled();
-    expect(mockSocket.resume).not.toHaveBeenCalled();
+    kit.attachToSocket(mockSocket);
   });
 
   test('should destroy the socket if any active validator fails', (done) => {
+    // Mock the socket.destroy method to avoid unhandled error propagation
+    mockSocket.destroy = jest.fn();
+
     const validationError = new Error('Validation failed');
     mockCtValidator.shouldRun.mockReturnValue(true);
     mockCtValidator.validate.mockRejectedValue(validationError);
 
     const kit = new HardenedHttpsValidationKit(baseOptions);
-    kit.attachToSocket(mockSocket, (err) => {
-      expect(err).toBe(validationError);
-      // TODO: Check this -> expect(mockSocket.destroy).toHaveBeenCalledWith(validationError);
-      expect(mockSocket.resume).not.toHaveBeenCalled();
-      
-      done();
+    mockSocket.on('hardened:validation:error', (err) => {
+      // Check on the next tick to allow the socket to be destroyed
+      process.nextTick(() => {
+        expect(err).toBe(validationError);
+        expect(mockSocket.resume).not.toHaveBeenCalled();
+        expect(mockSocket.destroy).toHaveBeenCalledWith(validationError);
+
+        done();
+      });
     });
+    kit.attachToSocket(mockSocket);
   });
 
   test('should pass modified options from one validator to the next during onBeforeConnect', () => {

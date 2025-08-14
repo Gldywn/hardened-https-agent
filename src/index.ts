@@ -8,7 +8,7 @@ export type {
 } from './interfaces';
 
 export {
-  useNodeDefaultCABundle,
+  useNodeDefaultCaBundle,
   embeddedCfsslCaBundle,
   embeddedUnifiedCtLogList,
   basicCtPolicy,
@@ -19,4 +19,4 @@ export {
   defaultAgentOptions,
 } from './options';
 
-export { HardenedHttpsValidationKit } from './validation-kit';
+export { HardenedHttpsValidationKit, type ValidationKitEvents } from './validation-kit';
