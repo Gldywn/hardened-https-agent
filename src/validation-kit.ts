@@ -20,7 +20,7 @@ export class HardenedHttpsValidationKit {
 
   constructor({ loggerOptions, ...options }: HardenedHttpsValidationKitOptions) {
     if (loggerOptions) this.logger = new Logger(this.constructor.name, loggerOptions);
-    
+
     this.validatorsOpts = options;
     this.validators = [
       new CTValidator(this.logger),
@@ -52,9 +52,14 @@ export class HardenedHttpsValidationKit {
 
     const active = this.getActiveValidators();
     if (active.length === 0) {
+      this.logger?.info('No validators enabled, skipping validation...');
       tlsSocket.emit('hardened:validation:success');
       return;
     }
+
+    this.logger?.info(
+      `Running validation with ${active.length} enabled validator(s): ${active.map((v) => v.constructor.name).join(', ')}...`,
+    );
 
     let shouldResume = false;
     try {

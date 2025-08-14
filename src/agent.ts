@@ -33,7 +33,7 @@ export class HardenedHttpsAgent extends Agent {
     options: tls.ConnectionOptions,
     callback: (err: Error | null, stream: Duplex) => void,
   ): Duplex {
-    this.#logger?.debug('Initiating new TLS connection...');
+    this.#logger?.info('Initiating new TLS connection...');
 
     // Allow validators to modify the connection options
     const finalOptions = this.#kit.applyBeforeConnect(options);
@@ -42,11 +42,12 @@ export class HardenedHttpsAgent extends Agent {
     const tlsSocket = tls.connect(finalOptions);
     // Handle validation success
     tlsSocket.on('hardened:validation:success', () => {
+      this.#logger?.info('TLS connection established and validated.');
       callback(null, tlsSocket);
     });
     // Handle socket errors
     tlsSocket.on('error', (err: Error) => {
-      this.#logger?.error('A socket error occurred during connection setup.', err);
+      this.#logger?.error('An error occurred during TLS connection setup', err);
       callback(err, undefined as any);
     });
 
