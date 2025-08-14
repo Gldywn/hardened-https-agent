@@ -44,15 +44,19 @@ export class HardenedHttpsAgent extends Agent {
     const finalOptions = this.#kit.applyBeforeConnect(options);
 
     // Create the socket
-    const socket = tls.connect(finalOptions);
+    const tlsSocket = tls.connect(finalOptions);
+    // Handle validation success
+    tlsSocket.on('hardened:validation:success', () => {
+      callback(null, tlsSocket);
+    });
     // Handle socket errors
-    socket.on('error', (err: Error) => {
+    tlsSocket.on('error', (err: Error) => {
       this.#logger?.error('A socket error occurred during connection setup.', err);
       callback(err, undefined as any);
     });
 
     // Attach the validation kit to the socket
-    this.#kit.attachToSocket(socket);
+    this.#kit.attachToSocket(tlsSocket);
 
     return undefined as any;
   }

@@ -75,7 +75,7 @@ export class HardenedHttpsValidationKit extends TypedEventEmitter<ValidationKitE
 
     const active = this.getActiveValidators();
     if (active.length === 0) {
-      this.emit('validation:success', tlsSocket);
+      tlsSocket.emit('hardened:validation:success');
       return;
     }
 
@@ -102,12 +102,12 @@ export class HardenedHttpsValidationKit extends TypedEventEmitter<ValidationKitE
             this.logger?.warn('Failed to resume socket', err);
           }
         }
-        this.emit('validation:success', tlsSocket);
+        tlsSocket.emit('hardened:validation:success');
       })
       .catch((err: Error) => {
         this.logger?.error('An error occurred during validation', err);
+        tlsSocket.emit('hardened:validation:error', err);
         tlsSocket.destroy(err); // Destroy the socket to prevent further use (and force error propagation to eventual attached agent)
-        this.emit('validation:error', err);
       });
   }
 

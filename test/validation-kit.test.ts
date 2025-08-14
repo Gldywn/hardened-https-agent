@@ -120,8 +120,7 @@ describe('HardenedHttpsValidationKit', () => {
     mockOcspStaplingValidator.validate.mockResolvedValue(undefined);
 
     const kit = new HardenedHttpsValidationKit(baseOptions);
-    kit.once('validation:success', (tlsSocket)  => {
-      expect(tlsSocket).toBe(mockSocket);
+    mockSocket.on('hardened:validation:success', () => {
       expect(mockSocket.pause).toHaveBeenCalled();
       expect(mockSocket.resume).toHaveBeenCalled();
       done();
@@ -138,12 +137,15 @@ describe('HardenedHttpsValidationKit', () => {
     mockCtValidator.validate.mockRejectedValue(validationError);
 
     const kit = new HardenedHttpsValidationKit(baseOptions);
-    kit.once('validation:error', (err) => {
-      expect(err).toBe(validationError);
-      expect(mockSocket.destroy).toHaveBeenCalledWith(validationError);
-      expect(mockSocket.resume).not.toHaveBeenCalled();
-      
-      done();
+    mockSocket.on('hardened:validation:error', (err) => {
+      // Check on the next tick to allow the socket to be destroyed
+      process.nextTick(() => {
+        expect(err).toBe(validationError);
+        expect(mockSocket.resume).not.toHaveBeenCalled();
+        expect(mockSocket.destroy).toHaveBeenCalledWith(validationError);
+
+        done();
+      });
     });
     kit.attachToSocket(mockSocket);
   });
