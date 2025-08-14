@@ -36,12 +36,19 @@ export interface HardenedHttpsAgentOptions extends AgentOptions {
    * @default false
    */
   enableLogging?: boolean;
+
+  /**
+   * An optional function to receive structured log objects.
+   *
+   * @default console
+   */
+  logAdapter?: LogAdapter;
 }
 
 // A minimal subset of options required for validation behavior only
 export type HardenedHttpsValidationKitOptions = Pick<
   HardenedHttpsAgentOptions,
-  'ctPolicy' | 'ocspPolicy' | 'crlSetPolicy' | 'enableLogging'
+  'ctPolicy' | 'ocspPolicy' | 'crlSetPolicy' | 'enableLogging' | 'logAdapter'
 >;
 
 export interface CertificateTransparencyPolicy {
@@ -108,3 +115,19 @@ export interface CRLSetPolicy {
    */
   updateStrategy?: 'always' | 'on-expiry';
 }
+
+export enum LogLevel {
+  debug,
+  info,
+  warn,
+  error,
+}
+
+export interface LogObject {
+  level: LogLevel;
+  name: string;
+  message: string;
+  args?: unknown[];
+}
+
+export type LogAdapter = (log: LogObject) => void;
