@@ -1,4 +1,6 @@
 export { HardenedHttpsAgent } from './agent';
+export { HardenedHttpsValidationKit } from './validation-kit';
+
 export type {
   HardenedHttpsAgentOptions,
   CertificateTransparencyPolicy,
@@ -19,4 +21,5 @@ export {
   defaultAgentOptions,
 } from './options';
 
-export { HardenedHttpsValidationKit, type ValidationKitEvents } from './validation-kit';
+export { createTemplateFormatter } from './logger';
+export type { LogSink, BindableLogSink, LogFormatter, LogLevel } from './logger';

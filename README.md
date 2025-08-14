@@ -133,7 +133,6 @@ import { HardenedHttpsValidationKit, defaultAgentOptions } from 'hardened-https-
 // Create a validation kit with hardened defaults
 const kit = new HardenedHttpsValidationKit({
   ...defaultAgentOptions(),
-  enableLogging: true,
 });
 
 // Define your HTTPS proxy agent options as usual
@@ -181,7 +180,7 @@ this.#kit.attachToSocket(socket, callback);
 
 ### `HardenedHttpsAgent` & `HardenedHttpsValidationKit` Options
 
-The options below are used to configure the security policies of the `HardenedHttpsAgent`. When using the `HardenedHttpsValidationKit`, only a subset of these options are available (`ctPolicy`, `ocspPolicy`, `crlSetPolicy`, and `enableLogging`).
+The options below are used to configure the security policies of the `HardenedHttpsAgent`. When using the `HardenedHttpsValidationKit`, only a subset of these options are available (`ctPolicy`, `ocspPolicy`, `crlSetPolicy`, and `loggerOptions`).
 
 | **Property**        | **Type**                                      | **Required / Variants**                                                                                                                                                                | **Helper(s)**                                          |
 | ------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
@@ -189,7 +188,7 @@ The options below are used to configure the security policies of the `HardenedHt
 | `ctPolicy`          | `CertificateTransparencyPolicy`               | Optional. Enables CT when present. Fields: `logList: UnifiedCTLogList`, `minEmbeddedScts?: number`, `minDistinctOperators?: number`.                                                   | `basicCtPolicy()`, `embeddedUnifiedCtLogList`          |
 | `ocspPolicy`        | `OCSPPolicy`                                  | Optional. Enables OCSP when present. Fields: `mode: 'mixed' \| 'stapling' \| 'direct'`, `failHard: boolean`.                                                                           | `basicStaplingOcspPolicy()`, `basicDirectOcspPolicy()` |
 | `crlSetPolicy`      | `CRLSetPolicy`                                | Optional. Enables CRLSet when present. Fields: `crlSet?: CRLSet`, `verifySignature?: boolean`, `updateStrategy?: 'always' \| 'on-expiry'`.                                             | `basicCrlSetPolicy()`                                  |
-| `enableLogging`     | `boolean`                                     | Optional (default: `false`).                                                                                                                                                           |                                                        |
+| `loggerOptions`     | `LoggerOptions`                               | Optional logging configuration (level, sink, formatter, template).                                                                                                                     | `defaultLoggerOptions()`                               |
 | Standard HTTPS opts | `https.AgentOptions`                          | Optional. Any standard Node.js `https.Agent` options (e.g., `keepAlive`, `maxSockets`, `timeout`, `maxFreeSockets`, `maxCachedSessions`) can be merged alongside the hardened options. |                                                        |
 
 _All options are thoroughly documented directly in the library via JSDoc comments for easy in-editor reference and autocomplete._
@@ -283,7 +282,7 @@ new HardenedHttpsAgent({
 Enable detailed logs:
 
 ```typescript
-new HardenedHttpsAgent({ ...defaultAgentOptions(), enableLogging: true });
+new HardenedHttpsAgent({ ...defaultAgentOptions(), loggerOptions: { level: 'debug' } });
 ```
 
 ## Contributing

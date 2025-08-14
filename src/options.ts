@@ -9,6 +9,7 @@ import {
 import { type UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from './types/uni-ct-log-list-schema';
 import * as _cfsslCaBundle from './resources/cfssl-ca-bundle.crt';
 import unifiedCtLogListJson from './resources/unified-log-list.json';
+import { LoggerOptions } from './logger';
 
 export const NODE_DEFAULT_CA_SENTINEL = '__USE_NODE_DEFAULT_CA_BUNDLE__';
 
@@ -74,12 +75,18 @@ export const basicCrlSetPolicy = (): CRLSetPolicy => {
   };
 };
 
+export const defaultLoggerOptions = (): LoggerOptions => {
+  return {
+    level: 'info',
+  };
+};
+
 export const defaultAgentOptions = (): HardenedHttpsAgentOptions => {
   return {
     ca: embeddedCfsslCaBundle,
     ctPolicy: basicCtPolicy(),
     ocspPolicy: basicMixedOcspPolicy(),
     crlSetPolicy: basicCrlSetPolicy(),
-    enableLogging: false,
+    loggerOptions: undefined,
   };
 };

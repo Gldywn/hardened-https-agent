@@ -61,18 +61,16 @@ export function getTestHardenedHttpsAgent(
     ctPolicy?: CertificateTransparencyPolicy | undefined;
     ocspPolicy?: OCSPPolicy | undefined;
     crlSetPolicy?: CRLSetPolicy | undefined;
-    enableLogging?: boolean;
     rejectUnauthorized?: boolean;
   } = {},
 ) {
-  const { ca = TEST_CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSetPolicy, enableLogging = false, rejectUnauthorized = true } = options;
+  const { ca = TEST_CFSSL_CA_BUNDLE, ctPolicy, ocspPolicy, crlSetPolicy, rejectUnauthorized = true } = options;
 
   return new HardenedHttpsAgent({
     ca,
     ctPolicy,
     ocspPolicy,
     crlSetPolicy,
-    enableLogging,
     rejectUnauthorized,
   });
 }

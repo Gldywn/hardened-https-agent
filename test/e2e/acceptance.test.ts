@@ -73,7 +73,9 @@ describe('End-to-end policy validation on known acceptance scenarios', () => {
       const agent = new HardenedHttpsAgent({
         ca: embeddedCfsslCaBundle,
         ...agentOptions,
-        enableLogging: true,
+        loggerOptions: {
+          level: 'debug',
+        }
       });
 
       const config: AxiosRequestConfig = {

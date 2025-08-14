@@ -32,12 +32,12 @@ export class OCSPStaplingValidator extends OCSPBaseValidator {
       let ocspReceived = false;
 
       socket.once('OCSPResponse', async (response: Buffer) => {
-        this.log('OCSP stapling response received, performing validation...');
+        this.debug('OCSP stapling response received, performing validation...');
         ocspReceived = true;
 
         try {
           await this._validateStapledResponse(response, socket);
-          this.log(`Certificate is not revoked.`);
+          this.debug(`Certificate is not revoked.`);
           resolve();
         } catch (err: any) {
           this._handleOCSPError(err, failHard, reject, resolve);

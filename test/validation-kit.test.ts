@@ -45,7 +45,9 @@ describe('HardenedHttpsValidationKit', () => {
   let mockCrlSetValidator: MockValidator;
 
   const baseOptions: HardenedHttpsValidationKitOptions = {
-    enableLogging: false,
+    loggerOptions: {
+      level: 'silent',
+    }
   };
 
   beforeEach(() => {
@@ -70,11 +72,13 @@ describe('HardenedHttpsValidationKit', () => {
     const kit = new HardenedHttpsValidationKit(baseOptions);
     kit.attachToSocket(mockSocket);
 
-    expect(mockCtValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
-    expect(mockOcspStaplingValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
-    expect(mockOcspDirectValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
-    expect(mockOcspMixedValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
-    expect(mockCrlSetValidator.shouldRun).toHaveBeenCalledWith(baseOptions);
+    const baseOptionsWithoutLoggerOptions = { ...baseOptions, loggerOptions: undefined };
+
+    expect(mockCtValidator.shouldRun).toHaveBeenCalledWith(baseOptionsWithoutLoggerOptions);
+    expect(mockOcspStaplingValidator.shouldRun).toHaveBeenCalledWith(baseOptionsWithoutLoggerOptions);
+    expect(mockOcspDirectValidator.shouldRun).toHaveBeenCalledWith(baseOptionsWithoutLoggerOptions);
+    expect(mockOcspMixedValidator.shouldRun).toHaveBeenCalledWith(baseOptionsWithoutLoggerOptions);
+    expect(mockCrlSetValidator.shouldRun).toHaveBeenCalledWith(baseOptionsWithoutLoggerOptions);
   });
 
   test('should only run validation for validators where shouldRun returns true', () => {

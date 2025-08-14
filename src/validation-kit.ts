@@ -1,8 +1,8 @@
 import http from 'node:http';
 import https from 'node:https';
 import tls from 'node:tls';
-import { Logger, LogSink } from './logger';
-import type { HardenedHttpsValidationKitOptions } from './interfaces';
+import { Logger } from './logger';
+import type { HardenedHttpsValidationKitOptions, ValidatorsOptions } from './interfaces';
 import { BaseValidator } from './validators/base';
 import {
   CTValidator,
@@ -13,15 +13,15 @@ import {
 } from './validators';
 
 export class HardenedHttpsValidationKit {
-  private readonly options: HardenedHttpsValidationKitOptions;
   private readonly logger: Logger | undefined;
+  private readonly validatorsOpts: ValidatorsOptions;
   private readonly validators: BaseValidator[];
   private readonly validatedSockets: WeakSet<tls.TLSSocket> = new WeakSet();
 
-  constructor(options: HardenedHttpsValidationKitOptions, sink?: LogSink) {
-    this.options = options;
-    if (options.enableLogging) this.logger = new Logger(this.constructor.name, sink);
+  constructor({ loggerOptions, ...options }: HardenedHttpsValidationKitOptions) {
+    if (loggerOptions) this.logger = new Logger(this.constructor.name, loggerOptions);
 
+    this.validatorsOpts = options;
     this.validators = [
       new CTValidator(this.logger),
       new OCSPStaplingValidator(this.logger),
@@ -32,7 +32,7 @@ export class HardenedHttpsValidationKit {
   }
 
   private getActiveValidators(): BaseValidator[] {
-    return this.validators.filter((v) => v.shouldRun(this.options));
+    return this.validators.filter((v) => v.shouldRun(this.validatorsOpts));
   }
 
   public applyBeforeConnect<T extends tls.ConnectionOptions>(options: T): T {
@@ -52,28 +52,33 @@ export class HardenedHttpsValidationKit {
 
     const active = this.getActiveValidators();
     if (active.length === 0) {
+      this.logger?.info('No validators enabled, skipping validation...');
       tlsSocket.emit('hardened:validation:success');
       return;
     }
+
+    this.logger?.info(
+      `Running validation with ${active.length} enabled validator(s): ${active.map((v) => v.constructor.name).join(', ')}...`,
+    );
 
     let shouldResume = false;
     try {
       // TODO: Check if best to pause the socket right after `secureConnect` event
       tlsSocket.pause();
-      this.logger?.log('Socket read paused');
+      this.logger?.debug('Socket read paused');
       shouldResume = true;
     } catch (err) {
       /* istanbul ignore next */
       this.logger?.warn('Failed to pause socket', err);
     }
 
-    Promise.all(active.map((v) => v.validate(tlsSocket, this.options)))
+    Promise.all(active.map((v) => v.validate(tlsSocket, this.validatorsOpts)))
       .then(() => {
-        this.logger?.log('All enabled validators passed.');
+        this.logger?.info('All enabled validators passed.');
         if (shouldResume) {
           try {
             tlsSocket.resume();
-            this.logger?.log('Socket read resumed');
+            this.logger?.debug('Socket read resumed');
           } catch (err) {
             /* istanbul ignore next */
             this.logger?.warn('Failed to resume socket', err);

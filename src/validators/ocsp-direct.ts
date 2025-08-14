@@ -19,11 +19,11 @@ export class OCSPDirectValidator extends OCSPBaseValidator {
 
     return new Promise((resolve, reject) => {
       socket.once('secureConnect', async () => {
-        this.log('Secure connection established, performing direct OCSP validation...');
+        this.debug('Secure connection established, performing direct OCSP validation...');
 
         try {
           await this._performDirectOCSPCheck(socket);
-          this.log(`Certificate is not revoked.`);
+          this.debug(`Certificate is not revoked.`);
           resolve();
         } catch (err: any) {
           this._handleOCSPError(err, failHard, reject, resolve);

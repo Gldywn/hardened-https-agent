@@ -24,7 +24,7 @@ export class CRLSetValidator extends BaseValidator {
 
     return new Promise((resolve, reject) => {
       socket.once('secureConnect', async () => {
-        this.log('Secure connection established, performing validation...');
+        this.debug('Secure connection established, performing validation...');
 
         try {
           const { leafCert, issuerCert } = getLeafAndIssuerCertificates(socket);
@@ -41,12 +41,12 @@ export class CRLSetValidator extends BaseValidator {
           if (policy.crlSet) {
             crlSet = policy.crlSet;
           } else {
-            this.log('Downloading latest CRLSet...');
+            this.debug('Downloading latest CRLSet...');
             crlSet = await loadLatestCRLSet({
               verifySignature: policy.verifySignature,
               updateStrategy: policy.updateStrategy,
             });
-            this.log('Latest CRLSet downloaded successfully.');
+            this.debug('Latest CRLSet downloaded successfully.');
           }
 
           const revocationStatus = crlSet.check(issuerSpkiHash, leafSerialNumber);
@@ -60,7 +60,7 @@ export class CRLSetValidator extends BaseValidator {
             );
           }
 
-          this.log(`Certificate is not revoked according to CRLSet ${crlSet.sequence}.`);
+          this.debug(`Certificate is not revoked according to CRLSet ${crlSet.sequence}.`);
           resolve();
         } catch (err: any) {
           reject(this.wrapError(err));

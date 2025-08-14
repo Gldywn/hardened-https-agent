@@ -54,9 +54,8 @@ describe('HardenedHttpsAgent', () => {
         ctPolicy: baseOptions.ctPolicy,
         ocspPolicy: baseOptions.ocspPolicy,
         crlSetPolicy: baseOptions.crlSetPolicy,
-        enableLogging: baseOptions.enableLogging,
-      },
-      undefined, // LogSink instance
+        loggerOptions: baseOptions.loggerOptions,
+      }
     );
   });
 

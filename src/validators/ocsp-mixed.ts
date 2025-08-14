@@ -37,11 +37,11 @@ export class OCSPMixedValidator extends OCSPBaseValidator {
       // First, try to validate a stapled response.
       socket.once('OCSPResponse', async (response: Buffer) => {
         staplingAttempted = true;
-        this.log('OCSP stapling response received, performing validation...');
+        this.debug('OCSP stapling response received, performing validation...');
 
         try {
           await this._validateStapledResponse(response, socket);
-          this.log('OCSP stapling validation succeeded. Certificate is not revoked.');
+          this.debug('OCSP stapling validation succeeded. Certificate is not revoked.');
           validationComplete = true;
           resolve();
         } catch (err: any) {
@@ -63,11 +63,11 @@ export class OCSPMixedValidator extends OCSPBaseValidator {
         const fallbackLogMessage = staplingAttempted
           ? 'Falling back to direct OCSP check after failed stapling attempt.'
           : 'No OCSP staple received. Falling back to direct OCSP check.';
-        this.log(fallbackLogMessage);
+        this.debug(fallbackLogMessage);
 
         try {
           await this._performDirectOCSPCheck(socket);
-          this.log('Direct OCSP validation succeeded. Certificate is not revoked.');
+          this.debug('Direct OCSP validation succeeded. Certificate is not revoked.');
           resolve();
         } catch (err: any) {
           this._handleOCSPError(err, failHard, reject, resolve);
