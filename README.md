@@ -161,21 +161,30 @@ const req = https.request(
 
 For maximum control, you can apply validation directly to a `tls.TLSSocket`. This is the same method the `HardenedHttpsAgent` uses internally. You can view its source code in [`src/agent.ts`](./src/agent.ts) for a real-world implementation.
 
-The process involves calling `tls.connect` with the modified options and then immediately attaching the kit to the newly created socket.
+The process involves calling `tls.connect` with the modified options and then immediately attaching the kit to the newly created socket. After attaching, the socket will emit a custom `hardened:validation:success` event; once this fires, the socket is safe to use (e.g., in `createConnection` flows or other custom integrations). If validation fails, the socket emits `hardened:validation:error` and is forcibly destroyed to prevent use, so you can simply handle the failure via the standard `error` event as well.
 
 ```typescript
 // Assume `kit` is an initialized HardenedHttpsValidationKit
 // and `options` are your initial tls.connect options.
 
 // Allow validators to modify the connection options
-const finalOptions = kit.applyBeforeConnect(options);
+const finalOptions = this.#kit.applyBeforeConnect(options);
 
 // Create the socket
-const socket = tls.connect(finalOptions);
+const tlsSocket = tls.connect(finalOptions);
+// Handle validation success
+tlsSocket.on('hardened:validation:success', () => {
+  this.#logger?.info('TLS connection established and validated.');
+  callback(null, tlsSocket);
+});
+// Handle socket errors
+tlsSocket.on('error', (err: Error) => {
+  this.#logger?.error('An error occurred during TLS connection setup', err);
+  callback(err, undefined as any);
+});
 
 // Attach the validation kit to the socket
-// The socket will be passed back to the callback from the validation kit
-this.#kit.attachToSocket(socket, callback);
+this.#kit.attachToSocket(tlsSocket);
 ```
 
 ### `HardenedHttpsAgent` & `HardenedHttpsValidationKit` Options
