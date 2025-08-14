@@ -55,24 +55,10 @@ export class Logger {
   }
 
   private prepare(level: LogLevel, message: any, args: any[]) {
-    if (this.formatter) {
-      const { message: formatted, args: formattedArgs } = this.formatter(level, this.name, message, args);
-      return { outMessage: formatted, outArgs: formattedArgs };
-    }
+    if (!this.formatter) throw new Error('No formatter set');
 
-    // Backward-compatible default formatting
-    switch (level) {
-      case 'debug':
-        return { outMessage: `[Debug] ${this.name}: ${message}`, outArgs: args };
-      case 'info':
-        return { outMessage: `[Info] ${this.name}: ${message}`, outArgs: args };
-      case 'warn':
-        return { outMessage: `[Warning] ${this.name}: ${message}`, outArgs: args };
-      case 'error':
-        return { outMessage: `[Error] ${this.name}: ${message}`, outArgs: args };
-      default:
-        return { outMessage: `[Unknown] ${this.name}: ${message}`, outArgs: args };
-    }
+    const { message: formatted, args: formattedArgs } = this.formatter(level, this.name, message, args);
+    return { outMessage: formatted, outArgs: formattedArgs };
   }
 
   private shouldLog(level: LogLevel): boolean {
