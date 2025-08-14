@@ -23,7 +23,7 @@ export class CTValidator extends BaseValidator {
   public validate(socket: tls.TLSSocket, options: HardenedHttpsValidationKitOptions): Promise<void> {
     return new Promise((resolve, reject) => {
       socket.once('secureConnect', () => {
-        this.log('Secure connection established, performing validation...');
+        this.debug('Secure connection established, performing validation...');
 
         try {
           const ctError = this.validateCertificateTransparency(socket, options.ctPolicy!);
@@ -109,13 +109,13 @@ export class CTValidator extends BaseValidator {
         scts.push(sctData);
         offset += sctLen;
       }
-      this.log(`Found ${scts.length} embedded SCT(s).`);
+      this.debug(`Found ${scts.length} embedded SCT(s).`);
 
       const trustedLogs = fromUnifiedCtLogList(policy.logList);
       if (trustedLogs.length === 0) {
         return makeError(new Error('Empty trusted CT log list.'));
       }
-      this.log(`Found ${trustedLogs.length} trusted CT logs.`);
+      this.debug(`Found ${trustedLogs.length} trusted CT logs.`);
 
       let signedEntry: Buffer;
       try {
@@ -136,7 +136,7 @@ export class CTValidator extends BaseValidator {
         }
       }
 
-      this.log(`Successfully validated ${validScts.length} out of ${scts.length} embedded SCT(s).`);
+      this.debug(`Successfully validated ${validScts.length} out of ${scts.length} embedded SCT(s).`);
       return { totalScts: scts.length, validScts };
     } catch (error) /* istanbul ignore next */ {
       return makeError(new Error('Failed to parse SCT list from certificate.', { cause: error }));
@@ -169,7 +169,7 @@ export class CTValidator extends BaseValidator {
 
     // If we have any valid SCTs and all policy requirements are met, we're compliant
     if (validScts.length > 0) {
-      this.log(
+      this.debug(
         `Certificate is CT compliant with ${validScts.length} valid embedded SCT(s) from ${new Set(validScts.map((sct) => sct.logOperator)).size} distinct operator(s).`,
       );
       return undefined;

@@ -1,6 +1,7 @@
 import type { AgentOptions } from 'node:https';
 import type { UnifiedCertificateTransparencyLogList as UnifiedCTLogList } from './types/uni-ct-log-list-schema';
 import type { CRLSet } from '@gldywn/crlset.js';
+import { LoggerOptions } from './logger';
 
 export interface HardenedHttpsAgentOptions extends AgentOptions {
   /**
@@ -31,17 +32,15 @@ export interface HardenedHttpsAgentOptions extends AgentOptions {
   crlSetPolicy?: CRLSetPolicy;
 
   /**
-   * An optional boolean to enable or disable logging.
-   *
-   * @default false
+   * Optional logger options.
    */
-  enableLogging?: boolean;
+  loggerOptions?: LoggerOptions;
 }
 
 // A minimal subset of options required for validation behavior only
 export type HardenedHttpsValidationKitOptions = Pick<
   HardenedHttpsAgentOptions,
-  'ctPolicy' | 'ocspPolicy' | 'crlSetPolicy' | 'enableLogging'
+  'ctPolicy' | 'ocspPolicy' | 'crlSetPolicy' | 'loggerOptions'
 >;
 
 export interface CertificateTransparencyPolicy {

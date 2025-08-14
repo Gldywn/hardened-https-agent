@@ -7,7 +7,9 @@ async function main() {
   // Create a validation kit with hardened defaults
   const kit = new HardenedHttpsValidationKit({
     ...defaultAgentOptions(),
-    enableLogging: true,
+    loggerOptions: {
+      level: 'debug',
+    }
   });
 
   // Define your HTTPS proxy agent options as usual

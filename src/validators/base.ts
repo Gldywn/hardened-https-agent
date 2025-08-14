@@ -20,6 +20,7 @@ export class WrappedError extends Error {
  * It handles the injection of the agent context, which provides access
  * to logging and other shared agent methods.
  */
+/* istanbul ignore next */
 export abstract class BaseValidator {
   private logger: Logger | undefined;
 
@@ -27,8 +28,12 @@ export abstract class BaseValidator {
     this.logger = logger;
   }
 
-  protected log(message: string, ...args: any[]): void {
-    this.logger?.log(`[${this.constructor.name}] ${message}`, ...args);
+  protected debug(message: string, ...args: any[]): void {
+    this.logger?.debug(`[${this.constructor.name}] ${message}`, ...args);
+  }
+
+  protected info(message: string, ...args: any[]): void {
+    this.logger?.info(`[${this.constructor.name}] ${message}`, ...args);
   }
 
   protected warn(message: string, ...args: any[]): void {

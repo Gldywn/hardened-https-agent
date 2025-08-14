@@ -26,7 +26,6 @@ describe('End-to-end HardenedHttpsValidationKit integration', () => {
   test('should allow ValidationKit to be attached to a standard https.Agent', (done) => {
     const kit = new HardenedHttpsValidationKit({
       ctPolicy: basicCtPolicy(),
-      enableLogging: false,
     });
     const agent = new https.Agent({
       ca: getCa(),
@@ -58,7 +57,6 @@ describe('End-to-end HardenedHttpsValidationKit integration', () => {
   test('should allow ValidationKit to be attached directly to a TLSSocket', (done) => {
     const kit = new HardenedHttpsValidationKit({
       ctPolicy: basicCtPolicy(),
-      enableLogging: false,
     });
 
     const socket = tls.connect({

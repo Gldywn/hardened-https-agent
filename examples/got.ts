@@ -16,7 +16,9 @@ async function main() {
   const agent = new HardenedHttpsAgent({
     ...httpsAgentOptions,
     ...defaultAgentOptions(),
-    enableLogging: true, // Enable logging to see the validation process (disabled with defaultAgentOptions())
+    loggerOptions: {
+      level: 'debug',
+    }
   });
 
   const client = got.extend({

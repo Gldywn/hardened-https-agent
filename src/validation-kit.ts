@@ -1,7 +1,7 @@
 import http from 'node:http';
 import https from 'node:https';
 import tls from 'node:tls';
-import { Logger, LogSink } from './logger';
+import { Logger } from './logger';
 import type { HardenedHttpsValidationKitOptions } from './interfaces';
 import { BaseValidator } from './validators/base';
 import {
@@ -13,14 +13,14 @@ import {
 } from './validators';
 
 export class HardenedHttpsValidationKit {
-  private readonly options: HardenedHttpsValidationKitOptions;
+  private readonly options: Omit<HardenedHttpsValidationKitOptions, 'loggerOptions'>;
   private readonly logger: Logger | undefined;
   private readonly validators: BaseValidator[];
   private readonly validatedSockets: WeakSet<tls.TLSSocket> = new WeakSet();
 
-  constructor(options: HardenedHttpsValidationKitOptions, sink?: LogSink) {
+  constructor({ loggerOptions, ...options }: HardenedHttpsValidationKitOptions) {
     this.options = options;
-    if (options.enableLogging) this.logger = new Logger(this.constructor.name, sink);
+    if (loggerOptions) this.logger = new Logger(this.constructor.name, loggerOptions);
 
     this.validators = [
       new CTValidator(this.logger),
@@ -60,7 +60,7 @@ export class HardenedHttpsValidationKit {
     try {
       // TODO: Check if best to pause the socket right after `secureConnect` event
       tlsSocket.pause();
-      this.logger?.log('Socket read paused');
+      this.logger?.debug('Socket read paused');
       shouldResume = true;
     } catch (err) {
       /* istanbul ignore next */
@@ -69,11 +69,11 @@ export class HardenedHttpsValidationKit {
 
     Promise.all(active.map((v) => v.validate(tlsSocket, this.options)))
       .then(() => {
-        this.logger?.log('All enabled validators passed.');
+        this.logger?.info('All enabled validators passed.');
         if (shouldResume) {
           try {
             tlsSocket.resume();
-            this.logger?.log('Socket read resumed');
+            this.logger?.debug('Socket read resumed');
           } catch (err) {
             /* istanbul ignore next */
             this.logger?.warn('Failed to resume socket', err);
