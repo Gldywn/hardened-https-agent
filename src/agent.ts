@@ -35,11 +35,6 @@ export class HardenedHttpsAgent extends Agent {
   ): Duplex {
     this.#logger?.log('Initiating new TLS connection...');
 
-    // Handle validation success
-    this.#kit.once('validation:success', (tlsSocket) => {
-      callback(null, tlsSocket);
-    });
-
     // Allow validators to modify the connection options
     const finalOptions = this.#kit.applyBeforeConnect(options);
 

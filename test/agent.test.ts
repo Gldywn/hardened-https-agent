@@ -32,7 +32,6 @@ describe('HardenedHttpsAgent', () => {
       const kit = {
         applyBeforeConnect: jest.fn((opts) => opts),
         attachToSocket: jest.fn(),
-        once: jest.fn(),
       };
       // Assign the mock instance to our variable so we can assert calls on it
       mockValidationKit = kit as unknown as jest.Mocked<HardenedHttpsValidationKit>;

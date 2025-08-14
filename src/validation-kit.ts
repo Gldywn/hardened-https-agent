@@ -11,37 +11,14 @@ import {
   OCSPMixedValidator,
   CRLSetValidator,
 } from './validators';
-import { EventEmitter } from 'node:events';
 
-export type ValidationKitEvents = {
-  'validation:success': (tlsSocket: tls.TLSSocket) => void;
-  'validation:error': (error: Error) => void;
-};
-
-/* istanbul ignore next */
-class TypedEventEmitter<Events extends Record<string, (...args: any[]) => void>> extends EventEmitter {
-  public override on<K extends keyof Events & string>(eventName: K, listener: Events[K]): this {
-    return super.on(eventName, listener as (...args: any[]) => void);
-  }
-  public override once<K extends keyof Events & string>(eventName: K, listener: Events[K]): this {
-    return super.once(eventName, listener as (...args: any[]) => void);
-  }
-  public override off<K extends keyof Events & string>(eventName: K, listener: Events[K]): this {
-    return super.off(eventName, listener as (...args: any[]) => void);
-  }
-  public override emit<K extends keyof Events & string>(eventName: K, ...args: Parameters<Events[K]>): boolean {
-    return super.emit(eventName, ...args);
-  }
-}
-
-export class HardenedHttpsValidationKit extends TypedEventEmitter<ValidationKitEvents> {
+export class HardenedHttpsValidationKit {
   private readonly options: HardenedHttpsValidationKitOptions;
   private readonly logger: Logger | undefined;
   private readonly validators: BaseValidator[];
   private readonly validatedSockets: WeakSet<tls.TLSSocket> = new WeakSet();
 
   constructor(options: HardenedHttpsValidationKitOptions, sink?: LogSink) {
-    super();
     this.options = options;
     if (options.enableLogging) this.logger = new Logger(this.constructor.name, sink);
 

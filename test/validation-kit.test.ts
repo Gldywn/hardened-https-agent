@@ -138,7 +138,7 @@ describe('HardenedHttpsValidationKit', () => {
 
     const kit = new HardenedHttpsValidationKit(baseOptions);
     mockSocket.on('hardened:validation:error', (err) => {
-      // Check on the next tick to allow the socket to be destroyed
+      // Check on the next tick to allow the `destroy` method to be called by the kit
       process.nextTick(() => {
         expect(err).toBe(validationError);
         expect(mockSocket.resume).not.toHaveBeenCalled();
