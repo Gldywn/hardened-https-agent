@@ -1,6 +1,5 @@
 import { type AxiosRequestConfig } from 'axios';
-import { delay } from '../utils';
-import { spoofedAxios } from '../utils/spoofedAxios';
+import { delay, spoofedAxios } from '../utils';
 import { HardenedHttpsAgent, type HardenedHttpsAgentOptions } from '../../src';
 import {
   basicCtPolicy,

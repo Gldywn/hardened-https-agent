@@ -4,9 +4,10 @@ import { Certificate } from 'pkijs';
 import { fromBER } from 'asn1js';
 import { getTestDataDir } from '../../scripts/utils';
 import { HardenedHttpsAgent, CertificateTransparencyPolicy, OCSPPolicy, CRLSetPolicy } from '../../src';
-import { CRLSet } from '@gldywn/crlset.js';
 
 export { createMockSocket, createMockPeerCertificate } from './createMock';
+export { startTlsServer, getCa } from './server';
+export { spoofedAxios } from './spoofedAxios';
 
 const TEST_DATA_DIR = getTestDataDir();
 

@@ -1,7 +1,7 @@
 import https from 'node:https';
 import axios from 'axios';
 import { HardenedHttpsAgent } from '../../src/agent';
-import { getCa, startTlsServer } from '../utils/server';
+import { getCa, startTlsServer } from '../utils';
 
 describe('End-to-end HardenedHttpsAgent integration', () => {
   let server: ReturnType<typeof startTlsServer>;

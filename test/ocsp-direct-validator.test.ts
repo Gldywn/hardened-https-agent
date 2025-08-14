@@ -1,10 +1,8 @@
 import type { OCSPPolicy } from '../src/interfaces';
 import * as tls from 'node:tls';
-import { loadTestCertsChain, getTestHardenedHttpsAgent } from './utils';
-import { createMockSocket, createMockPeerCertificate } from './utils/createMock';
+import { loadTestCertsChain, getTestHardenedHttpsAgent, createMockSocket, createMockPeerCertificate } from './utils';
 import * as easyOcsp from 'easy-ocsp';
 import { OCSPDirectValidator } from '../src/validators';
-import { WrappedError } from '../src/validators/base';
 
 jest.mock('node:tls');
 jest.mock('easy-ocsp');
