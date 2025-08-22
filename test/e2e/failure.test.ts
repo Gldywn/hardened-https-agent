@@ -116,7 +116,7 @@ describe('End-to-end policy validation on known failure scenarios', () => {
         ca: embeddedCfsslCaBundle,
         ...agentOptions,
         loggerOptions: {
-          level: 'debug',
+          level: 'silent',
         }
       });
 

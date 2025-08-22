@@ -74,7 +74,7 @@ describe('End-to-end policy validation on known acceptance scenarios', () => {
         ca: embeddedCfsslCaBundle,
         ...agentOptions,
         loggerOptions: {
-          level: 'debug',
+          level: 'silent',
         }
       });
 
