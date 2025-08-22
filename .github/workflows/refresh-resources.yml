@@ -25,8 +25,8 @@ jobs:
 
       - name: Refresh embedded resources
         run: |
-          npm run res:fetch-log-list
-          npm run res:fetch-ca-bundle
+          npm run res:fetch-log-list -- --force-bump
+          npm run res:fetch-ca-bundle 
 
       - name: Detect changes
         id: diff
