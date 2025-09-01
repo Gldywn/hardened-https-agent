@@ -1,9 +1,9 @@
 {
-  "unified_version": "1e8bf6a5ab9994ed61d680c16164a31f127a9f26f631d7eb1c1383eb6aac3042",
-  "unified_generated_at": "2025-08-22T13:17:05.984Z",
+  "unified_version": "d6dfba94113febc255077d2df47fa423df17d5a59a83efe62eadcb390a4c3b60",
+  "unified_generated_at": "2025-09-01T03:32:26.383Z",
   "unified_sources": {
     "google": {
-      "sha256": "f000d558bea0971472ccda93f29cc175bd256c97820d3ec2c5445d9e43284178"
+      "sha256": "359d490995ed4261ed511761f0d7b6290aeb4a866825215b1f70f199662c54cd"
     },
     "apple": {
       "sha256": "9494ae6a70d32010428464d97b1d8aa4be289756868f91f9f1c48b808785072d"
@@ -878,6 +878,22 @@
         "ct@geomys.org"
       ],
       "logs": [
+        {
+          "description": "Bogus RFC6962 log to avoid breaking misbehaving CT libraries",
+          "log_id": "0vxlL6X5tzi4N1X6XrFfC0UlP06Po7m2T9TeVmLRhwg=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELzNWh+BsAk0HnEEE7Zk1bAhdH1SM5udo1+CTF6LGcL6AVVIXSuOF95/Wg0qLZV491QbrNRg06mM6KwEzDXXtqg==",
+          "url": "https://ct.example.com/bogus/ipng/",
+          "mmd": 86400,
+          "state": {
+            "retired": {
+              "timestamp": "2025-06-21T07:00:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2020-01-01T08:00:00Z",
+            "end_exclusive": "2020-01-02T08:00:00Z"
+          }
+        },
         {
           "description": "Bogus placeholder log to unbreak misbehaving CT libraries",
           "log_id": "LtakTeuPDIZGZ3acTt0EH4QjZ1X6OqymNNCTXfzVmnA=",
