@@ -1,9 +1,9 @@
 {
-  "unified_version": "d6dfba94113febc255077d2df47fa423df17d5a59a83efe62eadcb390a4c3b60",
-  "unified_generated_at": "2025-09-01T03:32:26.383Z",
+  "unified_version": "3502d0ad8f172b31620a586901220447a9f957313cf17c7c59ecdfc689a3d909",
+  "unified_generated_at": "2025-09-15T03:23:49.438Z",
   "unified_sources": {
     "google": {
-      "sha256": "359d490995ed4261ed511761f0d7b6290aeb4a866825215b1f70f199662c54cd"
+      "sha256": "a353546286ee41d26471875c6f737ccb7498c2058763f6f1464ac0511b24c462"
     },
     "apple": {
       "sha256": "9494ae6a70d32010428464d97b1d8aa4be289756868f91f9f1c48b808785072d"
@@ -180,21 +180,20 @@
           "url": "https://ct.cloudflare.com/logs/nimbus2021/"
         },
         {
-          "description": "Cloudflare 'Nimbus2027' log",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYjd/jE0EoAhNBbfcNhrTb7F0x10KZK8r2SDjx1GdjJ75hJrHx2OCQ+BXRjXi+czoREN1u0j9cWl8d6OoPMPogQ==",
+          "description": "Cloudflare 'Nimbus2027'",
           "log_id": "TGPcmOWcHauI9h6KPd6uj6tEozd7X5uUw/uhnPzBviY=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYjd/jE0EoAhNBbfcNhrTb7F0x10KZK8r2SDjx1GdjJ75hJrHx2OCQ+BXRjXi+czoREN1u0j9cWl8d6OoPMPogQ==",
+          "url": "https://ct.cloudflare.com/logs/nimbus2027/",
           "mmd": 86400,
           "state": {
             "qualified": {
-              "timestamp": "2025-08-20T02:34:00Z",
-              "version": "428"
+              "timestamp": "2025-09-05T00:00:00Z"
             }
           },
           "temporal_interval": {
-            "end_exclusive": "2028-01-01T00:00:00Z",
-            "start_inclusive": "2027-01-01T00:00:00Z"
-          },
-          "url": "https://ct.cloudflare.com/logs/nimbus2027/"
+            "start_inclusive": "2027-01-01T00:00:00Z",
+            "end_exclusive": "2028-01-01T00:00:00Z"
+          }
         },
         {
           "description": "Cloudflare 'Nimbus 2020' log",
@@ -879,22 +878,6 @@
       ],
       "logs": [
         {
-          "description": "Bogus RFC6962 log to avoid breaking misbehaving CT libraries",
-          "log_id": "0vxlL6X5tzi4N1X6XrFfC0UlP06Po7m2T9TeVmLRhwg=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELzNWh+BsAk0HnEEE7Zk1bAhdH1SM5udo1+CTF6LGcL6AVVIXSuOF95/Wg0qLZV491QbrNRg06mM6KwEzDXXtqg==",
-          "url": "https://ct.example.com/bogus/ipng/",
-          "mmd": 86400,
-          "state": {
-            "retired": {
-              "timestamp": "2025-06-21T07:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2020-01-01T08:00:00Z",
-            "end_exclusive": "2020-01-02T08:00:00Z"
-          }
-        },
-        {
           "description": "Bogus placeholder log to unbreak misbehaving CT libraries",
           "log_id": "LtakTeuPDIZGZ3acTt0EH4QjZ1X6OqymNNCTXfzVmnA=",
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEj4lCAxWCY6SzIthkqZhwiUVzcK62i6Fc+/YS0WHaN6jjO1ITUFuu8beOiU9PdeNmdalZcC3iWovAfApvXS33Nw==",
@@ -920,8 +903,8 @@
           "monitoring_url": "https://tuscolo2025h2.skylight.geomys.org/",
           "mmd": 60,
           "state": {
-            "qualified": {
-              "timestamp": "2025-06-13T02:40:00Z"
+            "usable": {
+              "timestamp": "2025-08-31T07:00:00Z"
             }
           },
           "temporal_interval": {
@@ -937,8 +920,8 @@
           "monitoring_url": "https://tuscolo2026h1.skylight.geomys.org/",
           "mmd": 60,
           "state": {
-            "qualified": {
-              "timestamp": "2025-06-13T02:40:00Z"
+            "usable": {
+              "timestamp": "2025-08-31T07:00:00Z"
             }
           },
           "temporal_interval": {
@@ -954,8 +937,8 @@
           "monitoring_url": "https://tuscolo2026h2.skylight.geomys.org/",
           "mmd": 60,
           "state": {
-            "qualified": {
-              "timestamp": "2025-06-13T02:40:00Z"
+            "usable": {
+              "timestamp": "2025-08-31T07:00:00Z"
             }
           },
           "temporal_interval": {
@@ -1597,6 +1580,31 @@
       ]
     },
     {
+      "name": "IPng Networks",
+      "email": [
+        "ct-ops@ipng.ch"
+      ],
+      "logs": [
+        {
+          "description": "Bogus RFC6962 log to avoid breaking misbehaving CT libraries",
+          "log_id": "0vxlL6X5tzi4N1X6XrFfC0UlP06Po7m2T9TeVmLRhwg=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELzNWh+BsAk0HnEEE7Zk1bAhdH1SM5udo1+CTF6LGcL6AVVIXSuOF95/Wg0qLZV491QbrNRg06mM6KwEzDXXtqg==",
+          "url": "https://ct.example.com/bogus/ipng/",
+          "mmd": 86400,
+          "state": {
+            "retired": {
+              "timestamp": "2025-06-21T07:00:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2020-01-01T08:00:00Z",
+            "end_exclusive": "2020-01-02T08:00:00Z"
+          }
+        }
+      ],
+      "tiled_logs": []
+    },
+    {
       "email": [
         "atecnica@izenpe.net"
       ],
@@ -2115,8 +2123,12 @@
           "url": "https://mammoth2025h2.ct.sectigo.com/",
           "mmd": 86400,
           "state": {
-            "usable": {
-              "timestamp": "2023-11-26T12:00:00Z"
+            "readonly": {
+              "timestamp": "2025-08-29T20:40:00Z",
+              "final_tree_head": {
+                "sha256_root_hash": "aLJ1GqZiobxICL7qQFPCZzdkjU/TKvnA/CIVqU+LDy4=",
+                "tree_size": 865235446
+              }
             }
           },
           "temporal_interval": {
