@@ -1833,9 +1833,9 @@
           "log_id": "DR28iUTp9QBVQtctPhRMzEMIKrbqHpTf1wZlfS6G8wE=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:45:57Z",
-              "version": "352"
+            "usable": {
+              "timestamp": "2025-09-15T22:32:10Z",
+              "version": "429"
             }
           },
           "temporal_interval": {
@@ -1850,9 +1850,9 @@
           "log_id": "0W6ppWgHfmY1oD83pd28A6U8QRIU1IgY9ekxsyPLlQQ=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:46:10Z",
-              "version": "353"
+            "usable": {
+              "timestamp": "2025-09-15T22:32:30Z",
+              "version": "430"
             }
           },
           "temporal_interval": {
@@ -1867,9 +1867,9 @@
           "log_id": "r2eIO1ewTt2Pptl+9i6o64EKx3Fg8CReVdYML+eFhzo=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:46:23Z",
-              "version": "354"
+            "usable": {
+              "timestamp": "2025-09-15T22:32:45Z",
+              "version": "431"
             }
           },
           "temporal_interval": {
@@ -1884,9 +1884,9 @@
           "log_id": "YEyar3p/d18B1Ab8kg3ImesLHH34yVIb+voXdzuXi8k=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:46:36Z",
-              "version": "355"
+            "usable": {
+              "timestamp": "2025-09-15T22:33:00Z",
+              "version": "432"
             }
           },
           "temporal_interval": {
@@ -1901,9 +1901,9 @@
           "log_id": "okkM3NuOM6QAMhdg1tTVGiA2GR6nfZaL4mqKAPb///c=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:46:48Z",
-              "version": "356"
+            "usable": {
+              "timestamp": "2025-09-15T22:33:16Z",
+              "version": "433"
             }
           },
           "temporal_interval": {
@@ -1918,9 +1918,9 @@
           "log_id": "XKV30pt/i69Bntjsq/tty67DhTcC1XRvF02tPJNKqWo=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:47:00Z",
-              "version": "357"
+            "usable": {
+              "timestamp": "2025-09-15T22:33:32Z",
+              "version": "434"
             }
           },
           "temporal_interval": {
@@ -1935,9 +1935,9 @@
           "log_id": "FoMtq/CpJQ8P8DqlRf/Iv8gj0IdL9gQpJ/jnHzMT9fo=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:47:13Z",
-              "version": "358"
+            "usable": {
+              "timestamp": "2025-09-15T22:33:45Z",
+              "version": "435"
             }
           },
           "temporal_interval": {
@@ -1952,9 +1952,9 @@
           "log_id": "yKPEf8ezrbk1awE/anoSbeM6TkOlxkb5l605dZkdz5o=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:47:26Z",
-              "version": "359"
+            "usable": {
+              "timestamp": "2025-09-15T22:33:59Z",
+              "version": "436"
             }
           },
           "temporal_interval": {
@@ -1969,9 +1969,9 @@
           "log_id": "HJ9oLOn68EVpUPgbloqH3dsyENhM5siy44JSSsTPWZ8=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:47:37Z",
-              "version": "360"
+            "usable": {
+              "timestamp": "2025-09-15T22:34:18Z",
+              "version": "437"
             }
           },
           "temporal_interval": {
@@ -1986,9 +1986,9 @@
           "log_id": "A4AqwmL24F4D+Lxve5hRMk/Xaj31t1lRdeIi+46b1fY=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-03-25T00:47:49Z",
-              "version": "361"
+            "usable": {
+              "timestamp": "2025-09-15T22:34:35Z",
+              "version": "438"
             }
           },
           "temporal_interval": {
@@ -2776,5 +2776,5 @@
       ]
     }
   ],
-  "version": "428"
+  "version": "438"
 }
