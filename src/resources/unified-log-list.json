@@ -1,12 +1,12 @@
 {
-  "unified_version": "dddd8d449b17928ede4b1c7c8172c30ea4411901b4f3cd52435987d1560bd3a1",
-  "unified_generated_at": "2025-11-17T03:29:40.326Z",
+  "unified_version": "bd4cfbc4b60dc65b0ba7abb630104b6249d4fcb4e47d35611bcb698e87274e73",
+  "unified_generated_at": "2025-11-24T03:34:40.692Z",
   "unified_sources": {
     "google": {
-      "sha256": "bc7cc261b5eb54d6b83608195f195443f06a9b49a226b6d0785bbfdccde1b1b9"
+      "sha256": "13ff20407e2123ea3159e6c9b5765b2ecac27b9a2579f3e2510bf53f7ee9ee1a"
     },
     "apple": {
-      "sha256": "149597e71a83f481ed9f2703aefd35a3bd3d3ea606f6bf39a7a974a0ee65dade"
+      "sha256": "66555697b85c8106f28126434efdb70b0f20223758720151d8680135e9a28fe2"
     }
   },
   "operators": [
@@ -186,8 +186,8 @@
           "url": "https://ct.cloudflare.com/logs/nimbus2027/",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-09-05T00:00:00Z"
+            "usable": {
+              "timestamp": "2025-11-15T00:00:00Z"
             }
           },
           "temporal_interval": {
@@ -1551,9 +1551,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2025h2.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:11:54Z",
-              "version": "414"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:10Z",
+              "version": "460"
             }
           },
           "submission_url": "https://gouda2025h2.log.ct.ipng.ch/",
@@ -1570,9 +1570,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2026h1.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:12:07Z",
-              "version": "415"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:10Z",
+              "version": "461"
             }
           },
           "submission_url": "https://gouda2026h1.log.ct.ipng.ch/",
@@ -1589,9 +1589,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2026h2.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:12:20Z",
-              "version": "416"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:11Z",
+              "version": "462"
             }
           },
           "submission_url": "https://gouda2026h2.log.ct.ipng.ch/",
@@ -1608,9 +1608,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2027h1.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:12:32Z",
-              "version": "417"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:11Z",
+              "version": "463"
             }
           },
           "submission_url": "https://gouda2027h1.log.ct.ipng.ch/",
