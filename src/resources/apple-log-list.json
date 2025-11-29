@@ -210,9 +210,9 @@
           "log_id": "TGPcmOWcHauI9h6KPd6uj6tEozd7X5uUw/uhnPzBviY=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:34:00Z",
-              "version": "428"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:04Z",
+              "version": "439"
             }
           },
           "temporal_interval": {
@@ -231,9 +231,9 @@
           "mmd": 60,
           "monitoring_url": "https://raio2025h2b.ct.cloudflare.com/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:05:19Z",
-              "version": "408"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:05Z",
+              "version": "440"
             }
           },
           "submission_url": "https://ct.cloudflare.com/logs/raio2025h2b/",
@@ -250,9 +250,9 @@
           "mmd": 60,
           "monitoring_url": "https://raio2026h1a.ct.cloudflare.com/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:05:37Z",
-              "version": "409"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:05Z",
+              "version": "441"
             }
           },
           "submission_url": "https://ct.cloudflare.com/logs/raio2026h1a/",
@@ -269,9 +269,9 @@
           "mmd": 60,
           "monitoring_url": "https://raio2026h2a.ct.cloudflare.com/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:10:16Z",
-              "version": "410"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:05Z",
+              "version": "442"
             }
           },
           "submission_url": "https://ct.cloudflare.com/logs/raio2026h2a/",
@@ -288,9 +288,9 @@
           "mmd": 60,
           "monitoring_url": "https://raio2027h1a.ct.cloudflare.com/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:10:31Z",
-              "version": "411"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:05Z",
+              "version": "443"
             }
           },
           "submission_url": "https://ct.cloudflare.com/logs/raio2027h1a/",
@@ -932,9 +932,9 @@
           "log_id": "RMK9DOkUDmSlyUoBkwpaobs1lw4A7hEWiWgqHETXtWY=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:11:03Z",
-              "version": "412"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:06Z",
+              "version": "444"
             }
           },
           "temporal_interval": {
@@ -949,9 +949,9 @@
           "log_id": "1tWNqdAXU/NqSqDHV0kCr+vH3CzTjNn3ZMgMiRkenwI=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:11:17Z",
-              "version": "413"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:06Z",
+              "version": "445"
             }
           },
           "temporal_interval": {
@@ -2203,9 +2203,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.sycamore.ct.letsencrypt.org/2025h2d/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:13:00Z",
-              "version": "418"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:06Z",
+              "version": "446"
             }
           },
           "submission_url": "https://log.sycamore.ct.letsencrypt.org/2025h2d/",
@@ -2222,9 +2222,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.sycamore.ct.letsencrypt.org/2026h1/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:13:16Z",
-              "version": "419"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:06Z",
+              "version": "447"
             }
           },
           "submission_url": "https://log.sycamore.ct.letsencrypt.org/2026h1/",
@@ -2241,9 +2241,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.sycamore.ct.letsencrypt.org/2026h2/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:13:29Z",
-              "version": "420"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:07Z",
+              "version": "448"
             }
           },
           "submission_url": "https://log.sycamore.ct.letsencrypt.org/2026h2/",
@@ -2260,9 +2260,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.sycamore.ct.letsencrypt.org/2027h1/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:13:44Z",
-              "version": "421"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:07Z",
+              "version": "449"
             }
           },
           "submission_url": "https://log.sycamore.ct.letsencrypt.org/2027h1/",
@@ -2298,9 +2298,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.willow.ct.letsencrypt.org/2026h1/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:17:36Z",
-              "version": "424"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:07Z",
+              "version": "450"
             }
           },
           "submission_url": "https://log.willow.ct.letsencrypt.org/2026h1/",
@@ -2317,9 +2317,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.willow.ct.letsencrypt.org/2026h2/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:17:51Z",
-              "version": "425"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:08Z",
+              "version": "451"
             }
           },
           "submission_url": "https://log.willow.ct.letsencrypt.org/2026h2/",
@@ -2336,9 +2336,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.willow.ct.letsencrypt.org/2027h1/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:18:10Z",
-              "version": "426"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:08Z",
+              "version": "452"
             }
           },
           "submission_url": "https://log.willow.ct.letsencrypt.org/2027h1/",
@@ -2374,9 +2374,9 @@
           "mmd": 60,
           "monitoring_url": "https://mon.willow.ct.letsencrypt.org/2025h2d/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:17:19Z",
-              "version": "423"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:08Z",
+              "version": "453"
             }
           },
           "submission_url": "https://log.willow.ct.letsencrypt.org/2025h2d/",
@@ -2552,9 +2552,9 @@
           "log_id": "7drrgVxjITRJtHvlB3kFq9DZMUfCesUUazvFjkPptsc=",
           "mmd": 86400,
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:19:30Z",
-              "version": "427"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:08Z",
+              "version": "454"
             }
           },
           "temporal_interval": {
@@ -2581,9 +2581,9 @@
           "mmd": 86400,
           "monitoring_url": "https://tuscolo2025h2.skylight.geomys.org/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-06-13T02:40:00Z",
-              "version": "369"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:09Z",
+              "version": "455"
             }
           },
           "submission_url": "https://tuscolo2025h2.sunlight.geomys.org/",
@@ -2600,9 +2600,9 @@
           "mmd": 86400,
           "monitoring_url": "https://tuscolo2026h1.skylight.geomys.org/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-06-13T02:40:00Z",
-              "version": "371"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:09Z",
+              "version": "456"
             }
           },
           "submission_url": "https://tuscolo2026h1.sunlight.geomys.org/",
@@ -2619,9 +2619,9 @@
           "mmd": 86400,
           "monitoring_url": "https://tuscolo2026h2.skylight.geomys.org/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-06-13T02:40:00Z",
-              "version": "373"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:09Z",
+              "version": "457"
             }
           },
           "submission_url": "https://tuscolo2026h2.sunlight.geomys.org/",
@@ -2638,9 +2638,9 @@
           "mmd": 86400,
           "monitoring_url": "https://tuscolo2027h1.skylight.geomys.org/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-07-29T21:00:00Z",
-              "version": "383"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:09Z",
+              "version": "458"
             }
           },
           "submission_url": "https://tuscolo2027h1.sunlight.geomys.org/",
@@ -2657,9 +2657,9 @@
           "mmd": 86400,
           "monitoring_url": "https://tuscolo2027h2.skylight.geomys.org/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-07-29T21:00:00Z",
-              "version": "384"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:10Z",
+              "version": "459"
             }
           },
           "submission_url": "https://tuscolo2027h2.sunlight.geomys.org/",
@@ -2685,9 +2685,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2025h2.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:11:54Z",
-              "version": "414"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:10Z",
+              "version": "460"
             }
           },
           "submission_url": "https://gouda2025h2.log.ct.ipng.ch/",
@@ -2704,9 +2704,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2026h1.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:12:07Z",
-              "version": "415"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:10Z",
+              "version": "461"
             }
           },
           "submission_url": "https://gouda2026h1.log.ct.ipng.ch/",
@@ -2723,9 +2723,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2026h2.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:12:20Z",
-              "version": "416"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:11Z",
+              "version": "462"
             }
           },
           "submission_url": "https://gouda2026h2.log.ct.ipng.ch/",
@@ -2742,9 +2742,9 @@
           "mmd": 86400,
           "monitoring_url": "https://gouda2027h1.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-08-20T02:12:32Z",
-              "version": "417"
+            "usable": {
+              "timestamp": "2025-11-17T21:04:11Z",
+              "version": "463"
             }
           },
           "submission_url": "https://gouda2027h1.log.ct.ipng.ch/",
@@ -2776,5 +2776,5 @@
       ]
     }
   ],
-  "version": "438"
+  "version": "463"
 }
