@@ -1,9 +1,9 @@
 {
-  "unified_version": "2ceca72cf49e4594769f45731ae72badb609a47309425379b271a293fb76dd30",
-  "unified_generated_at": "2026-02-16T03:55:38.265Z",
+  "unified_version": "88b61eddbb0df20e76a0b7c57960811fabf00656f2052e71ed69a3093597f259",
+  "unified_generated_at": "2026-03-09T03:51:33.332Z",
   "unified_sources": {
     "google": {
-      "sha256": "ec2ac8cf6b2883cd01f02a5960ba0583b284b8092b78a6ee6b5dd52d56df355f"
+      "sha256": "3a497f22b7b05597e71eed00f48451b6f3f657325b866254d6b14bef8a30f5ec"
     },
     "apple": {
       "sha256": "b3048adc74aec39bf960be3efc3347ae1f4f97b25b6baad4f2e2389a0e7719ad"
@@ -1974,12 +1974,8 @@
           "url": "https://oak.ct.letsencrypt.org/2026h1/",
           "mmd": 86400,
           "state": {
-            "readonly": {
-              "timestamp": "2025-12-12T22:30:00Z",
-              "final_tree_head": {
-                "sha256_root_hash": "deSRNfTNPgd9wfzoXIznvi+QUTxuK0R+daC6JGKGK3Q=",
-                "tree_size": 598614696
-              }
+            "retired": {
+              "timestamp": "2026-02-28T00:00:00Z"
             }
           },
           "temporal_interval": {
@@ -2062,12 +2058,8 @@
           "url": "https://oak.ct.letsencrypt.org/2026h2/",
           "mmd": 86400,
           "state": {
-            "readonly": {
-              "timestamp": "2025-12-12T22:30:00Z",
-              "final_tree_head": {
-                "sha256_root_hash": "uTgg1k3DUbSFFdXewyyxbsQuCc9RupplMphTwtXqvf4=",
-                "tree_size": 130815692
-              }
+            "retired": {
+              "timestamp": "2026-02-28T00:00:00Z"
             }
           },
           "temporal_interval": {
