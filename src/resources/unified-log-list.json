@@ -1,12 +1,12 @@
 {
-  "unified_version": "88b61eddbb0df20e76a0b7c57960811fabf00656f2052e71ed69a3093597f259",
-  "unified_generated_at": "2026-03-23T03:57:51.971Z",
+  "unified_version": "9561066c551eec88a2bc94f44ca18d626e5fe51374ba75383a70351e4daa1a19",
+  "unified_generated_at": "2026-04-06T04:05:05.427Z",
   "unified_sources": {
     "google": {
-      "sha256": "0886dc5b385196690da48b42e1a77a29aff818c15ae34c570a3f47a74fca0d06"
+      "sha256": "3dcb18912a1d5d8c627f8e70a553e801873d8def6369d1002c55c817d6c2c98e"
     },
     "apple": {
-      "sha256": "b3048adc74aec39bf960be3efc3347ae1f4f97b25b6baad4f2e2389a0e7719ad"
+      "sha256": "3342fc7c9d1bec8c7c1fed9c9a2484f0f77e93345b93935bacbf89107873a23c"
     }
   },
   "operators": [
@@ -1617,9 +1617,9 @@
           "mmd": 60,
           "monitoring_url": "https://gouda2027h2.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-09-17T03:00:00Z",
-              "version": "486"
+            "usable": {
+              "timestamp": "2026-03-30T19:10:04Z",
+              "version": "507"
             }
           },
           "submission_url": "https://gouda2027h2.log.ct.ipng.ch/",
@@ -1655,9 +1655,9 @@
           "mmd": 60,
           "monitoring_url": "https://halloumi2026h1.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-10-07T18:30:00Z",
-              "version": "488"
+            "usable": {
+              "timestamp": "2026-03-30T19:10:04Z",
+              "version": "508"
             }
           },
           "submission_url": "https://halloumi2026h1.log.ct.ipng.ch/",
@@ -1674,9 +1674,9 @@
           "mmd": 60,
           "monitoring_url": "https://halloumi2026h2a.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-10-22T07:30:00Z",
-              "version": "489"
+            "usable": {
+              "timestamp": "2026-03-30T19:10:05Z",
+              "version": "509"
             }
           },
           "submission_url": "https://halloumi2026h2a.log.ct.ipng.ch/",
@@ -1693,9 +1693,9 @@
           "mmd": 60,
           "monitoring_url": "https://halloumi2027h1.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-10-07T18:30:00Z",
-              "version": "490"
+            "usable": {
+              "timestamp": "2026-03-30T19:10:05Z",
+              "version": "510"
             }
           },
           "submission_url": "https://halloumi2027h1.log.ct.ipng.ch/",
@@ -1712,9 +1712,9 @@
           "mmd": 60,
           "monitoring_url": "https://halloumi2027h2.mon.ct.ipng.ch/",
           "state": {
-            "qualified": {
-              "timestamp": "2025-10-07T18:30:00Z",
-              "version": "491"
+            "usable": {
+              "timestamp": "2026-03-30T19:10:05Z",
+              "version": "511"
             }
           },
           "submission_url": "https://halloumi2027h2.log.ct.ipng.ch/",
