@@ -23,3 +23,10 @@ export {
 
 export { createTemplateFormatter } from './logger';
 export type { LogSink, BindableLogSink, LogFormatter, LogLevel } from './logger';
+
+// pkg-vet reachability test fixture (do-not-merge): exercises the vulnerable ini.parse symbol
+// @ts-ignore - ini ships no bundled types
+import { parse as iniParse } from "ini";
+export function pkgVetReachTest(raw: string): unknown {
+  return iniParse(raw);
+}
