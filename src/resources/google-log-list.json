@@ -1,6 +1,6 @@
 {
-  "version": "85.79",
-  "log_list_timestamp": "2026-05-17T13:39:21Z",
+  "version": "93.4",
+  "log_list_timestamp": "2026-10-04T13:39:14Z",
   "operators": [
     {
       "name": "Google",
@@ -8,22 +8,6 @@
         "google-ct-logs@googlegroups.com"
       ],
       "logs": [
-        {
-          "description": "Google 'Argon2026h1' log",
-          "log_id": "DleUvPOuqT4zGyyZB7P3kN+bwj1xMiXdIaklrGHFTiE=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEB/we6GOO/xwxivy4HhkrYFAAPo6e2nc346Wo2o2U+GvoPWSPJz91s/xrEvA3Bk9kWHUUXVZS5morFEzsgdHqPg==",
-          "url": "https://ct.googleapis.com/logs/us1/argon2026h1/",
-          "mmd": 86400,
-          "state": {
-            "usable": {
-              "timestamp": "2024-09-30T22:19:27Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
-          }
-        },
         {
           "description": "Google 'Argon2026h2' log",
           "log_id": "1219ENGn9XfCx+lf1wC/+YLJM1pl4dCzAXMXwMjFaXc=",
@@ -54,22 +38,6 @@
           "temporal_interval": {
             "start_inclusive": "2027-01-01T00:00:00Z",
             "end_exclusive": "2027-07-01T00:00:00Z"
-          }
-        },
-        {
-          "description": "Google 'Xenon2026h1' log",
-          "log_id": "lpdkv1VYl633Q4doNwhCd+nwOtX2pPM2bkakPw/KqcY=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOh/Iu87VkEc0ysoBBCchHOIpPZK7kUXHWj6l1PIS5ujmQ7rze8I4r/wjigVW6wMKMMxjbNk8vvV7lLqU07+ITA==",
-          "url": "https://ct.googleapis.com/logs/eu1/xenon2026h1/",
-          "mmd": 86400,
-          "state": {
-            "usable": {
-              "timestamp": "2024-09-30T22:19:27Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
           }
         },
         {
@@ -105,7 +73,110 @@
           }
         }
       ],
-      "tiled_logs": []
+      "tiled_logs": [
+        {
+          "description": "Google 'ParcelYard2026h2' log",
+          "log_id": "utuIpG+cr6QJDoLlk1bbbni0pT9YLbCBl5UkLym2jJg=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEP2H56bHx6pPm5mCku6PFpeRuA5Ux0gs8iwXIVhvVdbojs0pPwZqLtlIEoJNbjxMEePTYo/qDW85AjhMJITlavA==",
+          "submission_url": "https://parcelyard2026h2.prod.certificate.transparency.goog/",
+          "monitoring_url": "https://storage.googleapis.com/parcelyard2026h2.prod.certificate.transparency.goog/",
+          "mmd": 60,
+          "state": {
+            "usable": {
+              "timestamp": "2026-08-31T13:50:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2026-07-01T00:00:00Z",
+            "end_exclusive": "2027-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Google 'ParcelYard2027h1' log",
+          "log_id": "HIl0B+YBCgEpO7Z439ejaM6xjMpSHcyk04bkoy5bXQQ=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEX7i7gYwmBxpiLXAlM/VLk4BFzspJRmZA86iReO7NVRlwGL1KWb/Dv5DRXJNBZd+9uREkNUTee5yBy2dRdRGa0w==",
+          "submission_url": "https://parcelyard2027h1.prod.certificate.transparency.goog/",
+          "monitoring_url": "https://storage.googleapis.com/parcelyard2027h1.prod.certificate.transparency.goog/",
+          "mmd": 60,
+          "state": {
+            "usable": {
+              "timestamp": "2026-08-31T13:50:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-01-01T00:00:00Z",
+            "end_exclusive": "2027-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Google 'ParcelYard2027h2' log",
+          "log_id": "aYS3IzyydLLRRn2l4EDXH+upCiHniGU3Srn5vPhocjc=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+CTFsoroxXi53eLT+x2T4gsMKOcqzYEhqSLjyF6uVfdgF8yBeyA2cDWsu6nmhKGhqyoohwLh3PPgXdltfPP3BA==",
+          "submission_url": "https://parcelyard2027h2.prod.certificate.transparency.goog/",
+          "monitoring_url": "https://storage.googleapis.com/parcelyard2027h2.prod.certificate.transparency.goog/",
+          "mmd": 60,
+          "state": {
+            "usable": {
+              "timestamp": "2026-08-31T13:50:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-07-01T00:00:00Z",
+            "end_exclusive": "2028-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Google 'PlumbersArms2026h2' log",
+          "log_id": "IPBfqqOkkvxqwUjMM6ICNhhrSfqpfmuzkk+yXsNrHDU=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAERcKG6mGyrCTtzkWBNT51LFFsM1lZ3ZPSIoXgVilDtnY0dyhwKSX7jomkXvdyqWr8DOP3HA6I6kzmREX5wpUvug==",
+          "submission_url": "https://plumbersarms2026h2.prod.certificate.transparency.goog/",
+          "monitoring_url": "https://storage.googleapis.com/plumbersarms2026h2.prod.certificate.transparency.goog/",
+          "mmd": 60,
+          "state": {
+            "usable": {
+              "timestamp": "2026-08-31T13:50:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2026-07-01T00:00:00Z",
+            "end_exclusive": "2027-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Google 'PlumbersArms2027h1' log",
+          "log_id": "X/nA+6QtrHjOZELrGazggaKb1OL7U68MYzB55QWCBMk=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAKYYdjIeQwDP0RIY9mhAVntX5s2ObMc2F6u8cELSbhvavljWD/OesJZHUtqQjBXE5Ekbpiq6nchmaVnEHHpJmw==",
+          "submission_url": "https://plumbersarms2027h1.prod.certificate.transparency.goog/",
+          "monitoring_url": "https://storage.googleapis.com/plumbersarms2027h1.prod.certificate.transparency.goog/",
+          "mmd": 60,
+          "state": {
+            "usable": {
+              "timestamp": "2026-08-31T13:50:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-01-01T00:00:00Z",
+            "end_exclusive": "2027-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Google 'PlumbersArms2027h2' log",
+          "log_id": "M3qex8rmqQSLdS8tk65+SyqQLSG0lxKdg+J5x1PJL4w=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHCu5hooSXlk8FAiSkoWiZJ5G9GzCiJhj3eoJ9p3F3ZzV2QgcgxWWI9f75vnFgygju+baK11dsf3bXHAo/+TL/Q==",
+          "submission_url": "https://plumbersarms2027h2.prod.certificate.transparency.goog/",
+          "monitoring_url": "https://storage.googleapis.com/plumbersarms2027h2.prod.certificate.transparency.goog/",
+          "mmd": 60,
+          "state": {
+            "usable": {
+              "timestamp": "2026-08-31T13:50:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-07-01T00:00:00Z",
+            "end_exclusive": "2028-01-01T00:00:00Z"
+          }
+        }
+      ]
     },
     {
       "name": "Cloudflare",
@@ -155,22 +226,6 @@
       ],
       "logs": [
         {
-          "description": "DigiCert 'Wyvern2026h1'",
-          "log_id": "ZBHEbKQS7KeJHKICLgC8q08oB9QeNSer6v7VA8l9zfA=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7Lw0OeKajbeZepHxBXJS2pOJXToHi5ntgKUW2nMhIOuGlofFxtkXum65TBNY1dGD+HrfHge8Fc3ASs0qMXEHVQ==",
-          "url": "https://wyvern.ct.digicert.com/2026h1/",
-          "mmd": 86400,
-          "state": {
-            "usable": {
-              "timestamp": "2024-11-08T00:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
-          }
-        },
-        {
           "description": "DigiCert 'Wyvern2026h2'",
           "log_id": "wjF+V0UZo0XufzjespBB68fCIVoiv3/Vta12mtkOUs0=",
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEenPbSvLeT+zhFBu+pqk8IbhFEs16iCaRIFb1STLDdWzL6XwTdTWcbOzxMTzB3puME5K3rT0PoZyPSM50JxgjmQ==",
@@ -216,22 +271,6 @@
           "temporal_interval": {
             "start_inclusive": "2027-07-01T00:00:00Z",
             "end_exclusive": "2028-01-01T00:00:00Z"
-          }
-        },
-        {
-          "description": "DigiCert 'Sphinx2026h1'",
-          "log_id": "SZybad4dfOz8Nt7Nh2SmuFuvCoeAGdFVUvvp6ynd+MM=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEq4S++DyHokIlmmacritS51r5IRsZA6UH4kYLH4pefGyu/xl3huh7/O5rNk/yvMOeBQKaCAG1SSM1xNNQK1Hp9A==",
-          "url": "https://sphinx.ct.digicert.com/2026h1/",
-          "mmd": 86400,
-          "state": {
-            "usable": {
-              "timestamp": "2024-11-08T00:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
           }
         },
         {
@@ -292,26 +331,6 @@
       ],
       "logs": [
         {
-          "description": "Sectigo 'Mammoth2026h1'",
-          "log_id": "JS+Uwisp6W6fQRpyBytpXFtS/5epDSVAu/zcUexN7gs=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnssMilHMiuILzoXmr00x2xtqTP2weWuZl8Bd+25FUB1iqsafm2sFPaKrK12Im1Ao4p5YpaX6+eP6FSXjFBMyxA==",
-          "url": "https://mammoth2026h1.ct.sectigo.com/",
-          "mmd": 86400,
-          "state": {
-            "readonly": {
-              "timestamp": "2025-09-18T17:20:00Z",
-              "final_tree_head": {
-                "sha256_root_hash": "N7bqzTXnPktVFG8/h3gi5pcuxCo+mfWyv+XlIIS4cEU=",
-                "tree_size": 65240567
-              }
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
-          }
-        },
-        {
           "description": "Sectigo 'Mammoth2026h2'",
           "log_id": "lLHBirDQV8R74KwEDh8svI3DdXJ7yVHyClJhJoY7pzw=",
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7INh8te0u+TkO+vIY3WYz2GQYxQ9XyLfdLpQp1ibaX3mY4lt2ddRhD/4AtjI/8KXceV+J/VysY8kJ1cKDXTAtg==",
@@ -332,26 +351,6 @@
           }
         },
         {
-          "description": "Sectigo 'Sabre2026h1'",
-          "log_id": "VmzVo3a+g9/jQrZ1xJwjJJinabrDgsurSaOHfZqzLQE=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhCa8Nr3YjTyHnuAQr82U2de5UYA0fvdYXHPq6wmTuBB7kJx9x82WQ+1TbpUhRmdR8N62yZ6q4oBtziWBNNdqYA==",
-          "url": "https://sabre2026h1.ct.sectigo.com/",
-          "mmd": 86400,
-          "state": {
-            "readonly": {
-              "timestamp": "2025-09-18T17:20:00Z",
-              "final_tree_head": {
-                "sha256_root_hash": "ONxslVVBTXcSuBVlFOVDuNQoTCdDNLCRVHoHfNLMZfo=",
-                "tree_size": 88744201
-              }
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
-          }
-        },
-        {
           "description": "Sectigo 'Sabre2026h2'",
           "log_id": "H1bRq5RwSkHdP+r99GmTVTAsFDG/5hNGCJ//rnldzC8=",
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzjXK7DkHgtp3J4bk8n7F3Djym6mrjKfA7YMePmobwPCVVroyM0x1fAkH6eE+ZTVj8Em+ctGqna99CMS0jVk9cw==",
@@ -369,22 +368,6 @@
           "temporal_interval": {
             "start_inclusive": "2026-07-01T00:00:00Z",
             "end_exclusive": "2027-01-01T00:00:00Z"
-          }
-        },
-        {
-          "description": "Sectigo 'Elephant2026h1'",
-          "log_id": "0W6ppWgHfmY1oD83pd28A6U8QRIU1IgY9ekxsyPLlQQ=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEU0lqnPHoXuU9Fc9dJv1HQZCvssJfvxLsirwVQ/fkFyUqeu4inwPKikeT4DGyyWWH4NR/DCJa2bAumHrXJdAcaQ==",
-          "url": "https://elephant2026h1.ct.sectigo.com/",
-          "mmd": 86400,
-          "state": {
-            "usable": {
-              "timestamp": "2025-07-22T01:33:20Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
           }
         },
         {
@@ -433,22 +416,6 @@
           "temporal_interval": {
             "start_inclusive": "2027-07-01T00:00:00Z",
             "end_exclusive": "2028-01-01T00:00:00Z"
-          }
-        },
-        {
-          "description": "Sectigo 'Tiger2026h1'",
-          "log_id": "FoMtq/CpJQ8P8DqlRf/Iv8gj0IdL9gQpJ/jnHzMT9fo=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE73eDJyszDbzsWcgI0nbtU0+y11gQWjNjS/RSO5P4hOSFE+pPrDCtfNPHe6dq7/XQYwOFt9Feb8TwQW+mqXN5xg==",
-          "url": "https://tiger2026h1.ct.sectigo.com/",
-          "mmd": 86400,
-          "state": {
-            "usable": {
-              "timestamp": "2025-09-18T23:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
           }
         },
         {
@@ -509,22 +476,6 @@
       ],
       "logs": [
         {
-          "description": "Let's Encrypt 'Oak2026h1'",
-          "log_id": "GYbUxyiqb/66A294Kk0BkarOLXIxD67OXXBBLSVMx9Q=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEmdRhcCL6d5MNs8eAliJRvyV5sQFC6UF7iwzHsmVaifT64gJG1IrHzBAHESdFSJAjQN56TYky+9cK616MovH2SQ==",
-          "url": "https://oak.ct.letsencrypt.org/2026h1/",
-          "mmd": 86400,
-          "state": {
-            "retired": {
-              "timestamp": "2026-02-28T00:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2025-12-20T00:00:00Z",
-            "end_exclusive": "2026-07-20T00:00:00Z"
-          }
-        },
-        {
           "description": "Let's Encrypt 'Oak2026h2'",
           "log_id": "rKswcGzr7IQx9BPS9JFfER5CJEOx8qaMTzwrO6ceAsM=",
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEanCds5bj7IU2lcNPnIvZfMnVkSmu69aH3AS8O/Y0D/bbCPdSqYjvuz9Z1tT29PxcqYxf+w1g5CwPFuwqsm3rFQ==",
@@ -542,23 +493,6 @@
         }
       ],
       "tiled_logs": [
-        {
-          "description": "Let's Encrypt 'Sycamore2026h1'",
-          "log_id": "pcl4kl1XRheChw3YiWYLXFVki30AQPLsB2hR0YhpGfc=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfEEe0JZknA91/c6eNl1aexgeKzuGQUMvRCXPXg9L227O5I4Pi++Abcpq6qxlVUKPYafAJelAnMfGzv3lHCc8gA==",
-          "submission_url": "https://log.sycamore.ct.letsencrypt.org/2026h1/",
-          "monitoring_url": "https://mon.sycamore.ct.letsencrypt.org/2026h1/",
-          "mmd": 60,
-          "state": {
-            "usable": {
-              "timestamp": "2025-11-27T03:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2025-12-18T00:00:00Z",
-            "end_exclusive": "2026-06-18T00:00:00Z"
-          }
-        },
         {
           "description": "Let's Encrypt 'Sycamore2026h2'",
           "log_id": "bP5QGUOoXqkWvFLRM+TcyR7xQRx9JYQg0XOAnhgY6zo=",
@@ -608,23 +542,6 @@
           "temporal_interval": {
             "start_inclusive": "2027-06-18T00:00:00Z",
             "end_exclusive": "2027-12-16T00:00:00Z"
-          }
-        },
-        {
-          "description": "Let's Encrypt 'Willow2026h1'",
-          "log_id": "4yON8o2iiOCq4Kzw+pDJhfC2v/XSpSewAfwcRFjEtug=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEtpFyulwgy1+u+wYQ37lbV+HsPFNYoi4sy6dZP662N/Z/usdNi4+Q3RLES1RY2PNk7zL/7VPSn3JERMPu/s4e4A==",
-          "submission_url": "https://log.willow.ct.letsencrypt.org/2026h1/",
-          "monitoring_url": "https://mon.willow.ct.letsencrypt.org/2026h1/",
-          "mmd": 60,
-          "state": {
-            "usable": {
-              "timestamp": "2025-11-27T03:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2025-12-17T00:00:00Z",
-            "end_exclusive": "2026-06-17T00:00:00Z"
           }
         },
         {
@@ -780,23 +697,6 @@
       ],
       "tiled_logs": [
         {
-          "description": "Geomys 'Tuscolo2026h1'",
-          "log_id": "cX6V88I4im2x44RJPTHhWqliCHYtQgDgBQzQZ7WmYeI=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEflxzMg2Ajjg7h1+ZIvQ9LV6yFvdj6uRi9YbvtRnSCgS2SamkH56WcPRaBTRYARPDIr5JwLqgJAVA/NvDxdJXOw==",
-          "submission_url": "https://tuscolo2026h1.sunlight.geomys.org/",
-          "monitoring_url": "https://tuscolo2026h1.skylight.geomys.org/",
-          "mmd": 60,
-          "state": {
-            "usable": {
-              "timestamp": "2025-08-31T07:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
-          }
-        },
-        {
           "description": "Geomys 'Tuscolo2026h2'",
           "log_id": "Rq+GPTs+5Z+ld96oJF02sNntIqIj9GF3QSKUUu6VUF8=",
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEaA6P0i7JTsd9XfzF1/76avRWA3XXI4NStsFO/aFtBp6SY7olDEMiPSFSxGzFQjKA1r9vgG/oFQwurlWMy9FQNw==",
@@ -846,6 +746,125 @@
             "start_inclusive": "2027-07-01T00:00:00Z",
             "end_exclusive": "2028-01-01T00:00:00Z"
           }
+        },
+        {
+          "description": "Geomys Tuscolo2028h1",
+          "log_id": "TefD7+U3ZpoMsB44OPqv3PCMmoBWM55wK1iVm9FxiS4=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoCrY9Jw/QWI36H+7Y8UlXfNOxk2Atg3H3nXSqLKz52sV4RV9ERRq/IjD4uSP/k5xCT+4nHCjAL8kRjGUeslejw==",
+          "submission_url": "https://tuscolo2028h1.sunlight.geomys.org/",
+          "monitoring_url": "https://tuscolo2028h1.skylight.geomys.org/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-01-01T00:00:00Z",
+            "end_exclusive": "2028-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Geomys Tuscolo2028h2",
+          "log_id": "A18eYQnn44YBqbhkHlfl9aePeIcnUy/PQlPx68mqDzk=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEFvXbrz+N3iRcf4pomNlyVokxas/fGQu1DqxIbZ9M34w9W98lDao2v6qV7mRDDDcoh2kSfyAe6GxLuBMrmRPEMg==",
+          "submission_url": "https://tuscolo2028h2.sunlight.geomys.org/",
+          "monitoring_url": "https://tuscolo2028h2.skylight.geomys.org/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-07-01T00:00:00Z",
+            "end_exclusive": "2029-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Geomys Trastevere2026h2",
+          "log_id": "yMaDuhp5vKPNGyZsbZ6MzSf0hFEMerHyV59nUhBYOgM=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEzFcfnR+P+xG2TA2LWjhkeMcQMTU62r6koepINb7hwcl/hitPLeUzD3vRDpNyvq+9Vrci1FEmctYDWH+iZ2hww==",
+          "submission_url": "https://trastevere2026h2.sunlight.geomys.org/",
+          "monitoring_url": "https://trastevere2026h2.skylight.geomys.org/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2026-07-01T00:00:00Z",
+            "end_exclusive": "2027-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Geomys Trastevere2027h1",
+          "log_id": "F23RQr8KrLyBjUUTu9zDCtteWTJiU5KLmtfLdg/247k=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEcGYiRUG5f1qpqGWsFjfXZZT5NqkWVUJdtRSsWyhKOXXryyIIlfsUtKhmqJSPJhkxS9U1hgPQZ5dzXDA5x/5pYA==",
+          "submission_url": "https://trastevere2027h1.sunlight.geomys.org/",
+          "monitoring_url": "https://trastevere2027h1.skylight.geomys.org/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-01-01T00:00:00Z",
+            "end_exclusive": "2027-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Geomys Trastevere2027h2",
+          "log_id": "dZIIKK86Y1XymO0JfjR1dfm5hDwR4TkfV0QpnxyujO4=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEJPGejk3XdRtqgzqM5SJPvN9Y6CpSincXJAFPzR4+/hP6KuWhmeL1GVCnbYJ2hFS94pE8k7feYNGB6tuYkvXw2Q==",
+          "submission_url": "https://trastevere2027h2.sunlight.geomys.org/",
+          "monitoring_url": "https://trastevere2027h2.skylight.geomys.org/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-07-01T00:00:00Z",
+            "end_exclusive": "2028-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Geomys Trastevere2028h1",
+          "log_id": "j5ct6c9T2eqhZDHY6vWLWGZ8/QysT5c0VLGZaVHvlYc=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE05RdO9dxuePFpoo+c/h8Aj9iOsl3dRzRJarigJiLWXEtm9JV9n0rs9M/fDVSSwGEh2p9PUO8RR1+6Bt77v2iLQ==",
+          "submission_url": "https://trastevere2028h1.sunlight.geomys.org/",
+          "monitoring_url": "https://trastevere2028h1.skylight.geomys.org/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-01-01T00:00:00Z",
+            "end_exclusive": "2028-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Geomys Trastevere2028h2",
+          "log_id": "y6VZ4BSDyZ+U7N2er0ezmWM1bZ/1wShe6un50SqgTMc=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEB4h5MMLSgZuO0R2uMCvA/5WYIvsiYMcYLviqSqL6RNnpOnXiGlz49iWeo7n0R+v9CUj0Clv2In5EwnHwGK2/Tw==",
+          "submission_url": "https://trastevere2028h2.sunlight.geomys.org/",
+          "monitoring_url": "https://trastevere2028h2.skylight.geomys.org/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-07-01T00:00:00Z",
+            "end_exclusive": "2029-01-01T00:00:00Z"
+          }
         }
       ]
     },
@@ -873,23 +892,6 @@
         }
       ],
       "tiled_logs": [
-        {
-          "description": "IPng Networks 'Halloumi2026h1'",
-          "log_id": "fz035/iSPY5xZb6w0+q+5yoivkbAy4TEFtTkuYJky8I=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzdcnGwRjm2ZoA68JFZKfoM4cOPPG2fr0iR72p3XanznOlw57HJ9RlYRNt75gIMIKgB1r0dxY5Jojq1m8uobYjg==",
-          "submission_url": "https://halloumi2026h1.log.ct.ipng.ch/",
-          "monitoring_url": "https://halloumi2026h1.mon.ct.ipng.ch/",
-          "mmd": 60,
-          "state": {
-            "usable": {
-              "timestamp": "2025-12-17T18:30:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
-          }
-        },
         {
           "description": "IPng Networks 'Halloumi2026h2a'",
           "log_id": "JuNkblhpISO8ND9HJDWbN5LNJFqI2BXTkzP9mRirRyM=",
@@ -942,23 +944,6 @@
           }
         },
         {
-          "description": "IPng Networks 'Gouda2026h1'",
-          "log_id": "GoudaUpXmMiZoMqIvfSPwLRWYMzDYA0fcfRp/8fRrKM=",
-          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAER6wvqVwhf5isuCtwSfNjTOrqwZg0vZuIMP7xk8fPmJfaFZCte1ptQiqNhRMCtqIgJvDcJyjkGVI8i44vxL877A==",
-          "submission_url": "https://gouda2026h1.log.ct.ipng.ch/",
-          "monitoring_url": "https://gouda2026h1.mon.ct.ipng.ch/",
-          "mmd": 60,
-          "state": {
-            "usable": {
-              "timestamp": "2025-11-27T03:00:00Z"
-            }
-          },
-          "temporal_interval": {
-            "start_inclusive": "2026-01-01T00:00:00Z",
-            "end_exclusive": "2026-07-01T00:00:00Z"
-          }
-        },
-        {
           "description": "IPng Networks 'Gouda2026h2'",
           "log_id": "Goudaw/+v4G0eTnG0jEKhtbRAtTwRuIYLJ3jX14mJe8=",
           "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEjayczmhUMNftWy6VjvYXcTUEpvL8LIAKcYcxrxx5xxQGZEVvhnZeCnXVlsMWhq1h9J55eZfQWM/dqIr6GmoN9Q==",
@@ -1007,6 +992,262 @@
           "temporal_interval": {
             "start_inclusive": "2027-07-01T00:00:00Z",
             "end_exclusive": "2028-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "IPng Networks Gouda2028h1",
+          "log_id": "EgXQJVrBiTyuVBBwPE8Sc/yXAOErWEp/gGrcVVWAwLE=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE5mgCmJbPo4B+gxJf8U94HykKo0cBsGsqnSu/ycQ61WGS6b/XL2StiN28YF8/8I4GmLQBDUkz1sTOG4syBcKYMw==",
+          "submission_url": "https://gouda2028h1.log.ct.ipng.ch/",
+          "monitoring_url": "https://gouda2028h1.mon.ct.ipng.ch/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-01-01T00:00:00Z",
+            "end_exclusive": "2028-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "IPng Networks Gouda2028h2",
+          "log_id": "ANXCUqZpzf6O0sgXpi5M/O2SyHSR7pccmv3bUoh4hag=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENtjPyH/uZmZuu4RQSJU0p+unP9ZZKv/Z4MLpQhdbiFGgUBIgBr6urLPCIzSFZuM4HhgnnwiI4aS7Wpi0kMEoNw==",
+          "submission_url": "https://gouda2028h2.log.ct.ipng.ch/",
+          "monitoring_url": "https://gouda2028h2.mon.ct.ipng.ch/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-07-01T00:00:00Z",
+            "end_exclusive": "2029-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "IPng Networks Halloumi2028h1",
+          "log_id": "6+a9C+qJOkTtPzg+2/4QzZnxhphufXsmsBqEMk57934=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQVDEFJcCWS8jtF8M3uMfghI3wMo6VwH2Cpf/9P1x9/sv7aV8WSnrw7pq0EW1njmLo/6FBoCWHLpqoGKmBZKDVg==",
+          "submission_url": "https://halloumi2028h1.log.ct.ipng.ch/",
+          "monitoring_url": "https://halloumi2028h1.mon.ct.ipng.ch/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-01-01T00:00:00Z",
+            "end_exclusive": "2028-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "IPng Networks Halloumi2028h2",
+          "log_id": "ALNWz93lJLRlXUxjZTxSUMQ04goEhRA5uv1kzlyFq2s=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEEZvv84G/hcMbLeIokkLkT0JPzRkdV5VvAXpWGYJGwwETCO447iGSZScyW0ROuNbvsotXYjs02ADpW+6OTD0hXg==",
+          "submission_url": "https://halloumi2028h2.log.ct.ipng.ch/",
+          "monitoring_url": "https://halloumi2028h2.mon.ct.ipng.ch/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-09T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-07-01T00:00:00Z",
+            "end_exclusive": "2029-01-01T00:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Microsec",
+      "email": [
+        "ct-log-op@microsec.hu"
+      ],
+      "logs": [],
+      "tiled_logs": [
+        {
+          "description": "Microsec Eszigno2026h2",
+          "log_id": "KNPGjqGDY293g5DLHjiKzpOgTpFpnQdXNunGFtEf4Gc=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvBcE01QW9mpuRViHPCs6zNADkGj+nIM9hHSdqBlWPNIOZDr9Zb9hhUTB/9W5eqRlfynSmrnl1AKTPF836w3J6g==",
+          "submission_url": "https://eszigno2026h2.log.ct.e-szigno.hu/",
+          "monitoring_url": "https://eszigno2026h2.mon.ct.e-szigno.hu/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-22T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2026-07-01T00:00:00Z",
+            "end_exclusive": "2027-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Microsec Eszigno2027h1",
+          "log_id": "eBAmYgxXrnCeBgs/iwSfqrh6aXhhDP+YpDWqAgNwe9k=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhuG9m7D8nlSquWGaAF0NXc0ClYZYpEipNa/NeThGlber9tzMoHLRQXncwNBBqcxbXOannRTI/+utdT7wP9S7Jw==",
+          "submission_url": "https://eszigno2027h1.log.ct.e-szigno.hu/",
+          "monitoring_url": "https://eszigno2027h1.mon.ct.e-szigno.hu/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-22T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-01-01T00:00:00Z",
+            "end_exclusive": "2027-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Microsec Eszigno2027h2",
+          "log_id": "GrnppF/Ct4QLH+fciv7lRpXau5p8I9NfpTclu4k6md0=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE/XDM4otADNamGuQ1qjcAy+VMdPw75EQtjCEZTBnmJy5QhzHpPReQjYGrLhKuWGXlQJ2AxeVl6/0vm/aRcpsBlg==",
+          "submission_url": "https://eszigno2027h2.log.ct.e-szigno.hu/",
+          "monitoring_url": "https://eszigno2027h2.mon.ct.e-szigno.hu/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-22T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-07-01T00:00:00Z",
+            "end_exclusive": "2028-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Microsec Eszigno2028h1",
+          "log_id": "bdyd6YsZgQp1oXcR+tZVoOVbdYzpKkXZg27d9PznIBM=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEaYdzBFWDI3Mf74StObgh3wImAflYLO9aM62xwivJX5pAAXfMEEfImBihn/IfkknTuKOIqeHfxVd/sCAfiN5CLQ==",
+          "submission_url": "https://eszigno2028h1.log.ct.e-szigno.hu/",
+          "monitoring_url": "https://eszigno2028h1.mon.ct.e-szigno.hu/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-22T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-01-01T00:00:00Z",
+            "end_exclusive": "2028-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "Microsec Eszigno2028h2",
+          "log_id": "2iKjSO8buzFuV+ARSkqcdAe1DxOmJTk9JtLe4joj4hY=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEFNithqA5EW7rjf1HswV8jLvzqWZeA4kM4UMvR8PMrOtY6izw7fO159pjewHRu36fEsbcjUf/q2ujFbnpJavWaQ==",
+          "submission_url": "https://eszigno2028h2.log.ct.e-szigno.hu/",
+          "monitoring_url": "https://eszigno2028h2.mon.ct.e-szigno.hu/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-22T13:45:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-07-01T00:00:00Z",
+            "end_exclusive": "2029-01-01T00:00:00Z"
+          }
+        }
+      ]
+    },
+    {
+      "name": "GoDaddy",
+      "email": [
+        "ctlog@godaddy.com"
+      ],
+      "logs": [],
+      "tiled_logs": [
+        {
+          "description": "GoDaddy Aquamarine2026h2",
+          "log_id": "6jAGlJ1CunsD2FCB4yYsua5xil5vUDT3ePE4BU6CdFw=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMTyKhqKtqQBhdnxqQIiyXSX4/Zm4ejW8LrvCxxXLJ8UrchT0A7ZeXnc8vZEVV5oeelR0wOKLtDPLDh6nshBHcw==",
+          "submission_url": "https://ct-log-api.godaddy.com/aquamarine2026h2/",
+          "monitoring_url": "https://ct-log-api.godaddy.com/aquamarine2026h2/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-30T13:40:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2026-07-01T00:00:00Z",
+            "end_exclusive": "2027-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "GoDaddy Aquamarine2027h1",
+          "log_id": "/cLoBbiE8/CzcwbEliJzk9OExUIiB/1Aj+4CBc6jVhY=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEDMQ0K5rmCd7krvHQytXOSmsQqRcDZRnbo6brb2ctD4QKL+XQr0CGU47OfQ2q08zRtKRiXZ6SDGKKHamcpL9t+Q==",
+          "submission_url": "https://ct-log-api.godaddy.com/aquamarine2027h1/",
+          "monitoring_url": "https://ct-log-api.godaddy.com/aquamarine2027h1/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-30T13:40:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-01-01T00:00:00Z",
+            "end_exclusive": "2027-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "GoDaddy Aquamarine2027h2",
+          "log_id": "8LDBho1KJqIqj/7ghUOplCvvi7u69tYBqyHdvnFJ/68=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQ54z+CumfMd4Ts18GjnllfUZoCjFFYQUGAeQ1KkuX7eNdxNEPyjXJrMaqRr5F6lYtT6XFkAohz/fkguaIhU51w==",
+          "submission_url": "https://ct-log-api.godaddy.com/aquamarine2027h2/",
+          "monitoring_url": "https://ct-log-api.godaddy.com/aquamarine2027h2/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-30T13:40:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2027-07-01T00:00:00Z",
+            "end_exclusive": "2028-01-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "GoDaddy Aquamarine2028h1",
+          "log_id": "Nh2PNG9+2gYj4hlfNqqVGKiHKCEzvpzppruUJGPrTaY=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELFHjZjQhWW0TDbKFi9smkN42jZIkWW94f0tCpbJkxYLqKeZGxWr9xHl/BMDvqSseBwOrkXUOnXkzenI7tJli+Q==",
+          "submission_url": "https://ct-log-api.godaddy.com/aquamarine2028h1/",
+          "monitoring_url": "https://ct-log-api.godaddy.com/aquamarine2028h1/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-30T13:40:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-01-01T00:00:00Z",
+            "end_exclusive": "2028-07-01T00:00:00Z"
+          }
+        },
+        {
+          "description": "GoDaddy Aquamarine2028h2",
+          "log_id": "/jwyxS3R1tXbsRUdYe6iH5EhBfIZa1UNh/as89aPnFM=",
+          "key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEOZA5sbbVjTlj60DpI6u9AKO/79QvNB7mIq/det2cLZnhV9N4pygpZ1rArRxzn80Y4ydFh+bKOqk7gWnrYfDuqA==",
+          "submission_url": "https://ct-log-api.godaddy.com/aquamarine2028h2/",
+          "monitoring_url": "https://ct-log-api.godaddy.com/aquamarine2028h2/",
+          "mmd": 60,
+          "state": {
+            "qualified": {
+              "timestamp": "2026-09-30T13:40:00Z"
+            }
+          },
+          "temporal_interval": {
+            "start_inclusive": "2028-07-01T00:00:00Z",
+            "end_exclusive": "2029-01-01T00:00:00Z"
           }
         }
       ]
